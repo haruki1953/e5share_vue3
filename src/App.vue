@@ -5,7 +5,7 @@ const userStore = useUserStore()
 
 <template>
   <div>
-    <!-- <router-view></router-view> -->
+    <router-view></router-view>
     我是app
     <el-button type="primary">Primary</el-button>
     <el-button type="success">Success</el-button>

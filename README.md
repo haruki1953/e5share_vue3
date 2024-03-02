@@ -1,5 +1,7 @@
 # e5share_vue3
 
+e5分享网站前端，开发中 [e5分享网站开发记录](https://github.com/haruki1953/240215-e5-website-dev-diary)
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
