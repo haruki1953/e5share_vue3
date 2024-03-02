@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { useUserStore } from '@/stores'
+import { useAuthStore } from '@/stores'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
-const baseURL = 'http://big-event-vue-api-t.itheima.net'
+const baseURL = 'http://127.0.0.1:3007'
 
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
@@ -14,7 +14,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     // TODO 2. 携带token
-    const useStore = useUserStore()
+    const useStore = useAuthStore()
     if (useStore.token) {
       config.headers.Authorization = useStore.token
     }
@@ -43,7 +43,7 @@ instance.interceptors.response.use(
     }
 
     // 错误的默认情况 => 只要给提示
-    ElMessage.error(err.response.data.message || '服务异常')
+    ElMessage.error(err.response?.data.message || '服务异常')
     return Promise.reject(err)
   }
 )

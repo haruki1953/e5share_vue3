@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 // 用户模块
-export const useUserStore = defineStore(
-  'big-user',
+export const useAuthStore = defineStore(
+  'e5share-auth',
   () => {
     const token = ref('') // 定义 token
     const setToken = (t) => {
