@@ -234,7 +234,7 @@ watch(isRegister, () => {
         <el-form-item>
           <el-button
             @click="login"
-            class="button"
+            class="button --el-color-primary-light-3"
             type="primary"
             auto-insert-space
             >登录</el-button
@@ -253,12 +253,12 @@ watch(isRegister, () => {
 <style lang="scss" scoped>
 .login-page {
   height: 100vh;
-  background-color: #fff;
+  // background-color: #fff;
   .bg {
     background:
       // url('@/assets/logo2.png') no-repeat 60% center / 240px auto,
       url('@/assets/login_bg.jpg') no-repeat center / cover;
-    border-radius: 0 20px 20px 0;
+    border-radius: 0 30px 30px 0;
   }
   .form {
     display: flex;
