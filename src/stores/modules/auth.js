@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-// 用户模块
+// 鉴权模块
 export const useAuthStore = defineStore(
   'e5share-auth',
   () => {

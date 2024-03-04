@@ -2,12 +2,12 @@ import axios from 'axios'
 import { useAuthStore } from '@/stores'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
-const baseURL = 'http://127.0.0.1:3007'
+import { axiosConfig } from '@/config'
 
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
-  baseURL,
-  timeout: 10000
+  baseURL: axiosConfig.baseURL,
+  timeout: axiosConfig.timeout
 })
 
 // 请求拦截器
@@ -49,4 +49,3 @@ instance.interceptors.response.use(
 )
 
 export default instance
-export { baseURL }

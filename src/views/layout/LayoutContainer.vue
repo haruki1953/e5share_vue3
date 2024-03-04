@@ -7,7 +7,41 @@ import {
   BellFilled,
   Tools
 } from '@element-plus/icons-vue'
-// import avatar from '@/assets/default.png'
+import { useAuthStore, useProfileStore } from '@/stores/index'
+import { avatarConfig } from '@/config'
+import { useRouter } from 'vue-router'
+
+// 路由
+const router = useRouter()
+// 鉴权信息
+const authStore = useAuthStore()
+// 用户个人信息
+const profileStore = useProfileStore()
+
+// 请求获取数据
+const fetchDataFromServer = async () => {
+  // 登陆时获取用户信息
+  if (authStore.token) {
+    await profileStore.getProfile()
+  }
+}
+fetchDataFromServer()
+
+// 退出登录
+const logout = async () => {
+  // 退出操作
+  await ElMessageBox.confirm('你确认要进行退出么', '温馨提示', {
+    type: 'warning',
+    confirmButtonText: '确认',
+    cancelButtonText: '取消'
+  })
+
+  // 清除本地的数据 (token + 信息)
+  authStore.removeToken()
+  profileStore.removeProfile()
+  // 跳转路由
+  // router.push('/login')
+}
 </script>
 
 <template>
@@ -54,27 +88,43 @@ import {
             :popperStyle="popoverStyle"
           >
             <template #reference>
-              <el-avatar
-                src="https://avatars.githubusercontent.com/u/72015883?v=4"
-              />
+              <el-avatar :src="profileStore.avatar" v-if="authStore.token" />
+              <el-avatar :src="avatarConfig.defaultAvatar" v-else />
             </template>
             <template #default>
-              <div class="user-info-container">
+              <!-- 已登录 -->
+              <div class="user-info-container" v-if="authStore.token">
                 <el-avatar
                   :size="60"
-                  src="https://avatars.githubusercontent.com/u/72015883?v=4"
+                  :src="profileStore.avatar"
                   class="user-avatar"
                 ></el-avatar>
                 <div class="user-details">
-                  <p class="user-name">Element Plus</p>
-                  <p class="user-handle">@element-plus</p>
+                  <p class="user-name">
+                    {{ profileStore.nickname }}
+                  </p>
+                  <p class="user-handle">@{{ profileStore.user.username }}</p>
+                </div>
+                <el-button @click="logout" type="primary" auto-insert-space>
+                  退出登录
+                </el-button>
+              </div>
+              <!-- 未登录 -->
+              <div class="user-info-container" v-else>
+                <el-avatar
+                  :size="60"
+                  :src="avatarConfig.defaultAvatar"
+                  class="user-avatar"
+                ></el-avatar>
+                <div class="user-details">
+                  <p class="user-name">未登录</p>
                 </div>
                 <el-button
+                  @click="router.push('/login')"
                   type="primary"
-                  class="logout-button"
                   auto-insert-space
                 >
-                  退出登录
+                  登录
                 </el-button>
               </div>
             </template>
@@ -85,36 +135,6 @@ import {
     <el-main>
       <el-scrollbar noresize>
         <router-view></router-view>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
-        <p>test</p>
       </el-scrollbar>
     </el-main>
   </el-container>
