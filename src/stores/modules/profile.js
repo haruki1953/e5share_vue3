@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { profileGetInfoService } from '@/api/profile'
 import { avatarConfig } from '@/config'
 
@@ -55,6 +55,27 @@ export const useProfileStore = defineStore(
       nickname.value = ''
     }
 
+    // 获取未读通知数
+    const unreadNotifCount = computed(() => {
+      return notifications.value.filter(
+        (notification) => !readNotifUuid.value.includes(notification.id)
+      ).length
+    })
+
+    // 设置单个通知为已读
+    const markNotifAsRead = (id) => {
+      if (!readNotifUuid.value.includes(id)) {
+        readNotifUuid.value.push(id)
+      }
+    }
+
+    // 设置全部通知为已读
+    const markAllNotifAsRead = () => {
+      readNotifUuid.value = notifications.value.map(
+        (notification) => notification.id
+      )
+    }
+
     return {
       user,
       notifications,
@@ -62,7 +83,10 @@ export const useProfileStore = defineStore(
       avatar,
       nickname,
       getProfile,
-      removeProfile
+      removeProfile,
+      unreadNotifCount,
+      markNotifAsRead,
+      markAllNotifAsRead
     }
   },
   {

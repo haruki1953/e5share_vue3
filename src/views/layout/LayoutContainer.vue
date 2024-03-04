@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import {
   HomeFilled,
   Menu,
@@ -7,9 +9,9 @@ import {
   BellFilled,
   Tools
 } from '@element-plus/icons-vue'
-import { useAuthStore, useProfileStore } from '@/stores/index'
+import { useAuthStore, useProfileStore } from '@/stores'
 import { avatarConfig } from '@/config'
-import { useRouter } from 'vue-router'
+import NotifDrawer from './components/NotifDrawer.vue'
 
 // 路由
 const router = useRouter()
@@ -30,17 +32,23 @@ fetchDataFromServer()
 // 退出登录
 const logout = async () => {
   // 退出操作
-  await ElMessageBox.confirm('你确认要进行退出么', '温馨提示', {
-    type: 'warning',
-    confirmButtonText: '确认',
-    cancelButtonText: '取消'
-  })
+  // await ElMessageBox.confirm('你确认要进行退出么', '温馨提示', {
+  //   type: 'warning',
+  //   confirmButtonText: '确认',
+  //   cancelButtonText: '取消'
+  // })
 
   // 清除本地的数据 (token + 信息)
   authStore.removeToken()
   profileStore.removeProfile()
   // 跳转路由
   // router.push('/login')
+}
+
+// 通知抽屉
+const notifDrawerRef = ref()
+const openNotifDrawer = () => {
+  notifDrawerRef.value.open()
 }
 </script>
 
@@ -69,11 +77,19 @@ const logout = async () => {
           </el-icon>
           <template #title>动态</template>
         </el-menu-item>
-        <el-menu-item>
-          <el-icon>
-            <el-badge :value="99" :max="9" class="item" type="primary">
+        <el-menu-item @click="openNotifDrawer">
+          <el-icon v-if="profileStore.unreadNotifCount">
+            <el-badge
+              :value="profileStore.unreadNotifCount"
+              :max="9"
+              class="item"
+              type="primary"
+            >
               <BellFilled />
             </el-badge>
+          </el-icon>
+          <el-icon v-else>
+            <BellFilled />
           </el-icon>
           <template #title>通知</template>
         </el-menu-item>
@@ -137,6 +153,8 @@ const logout = async () => {
         <router-view></router-view>
       </el-scrollbar>
     </el-main>
+    <!-- 通知抽屉 -->
+    <notif-drawer ref="notifDrawerRef"></notif-drawer>
   </el-container>
 </template>
 
