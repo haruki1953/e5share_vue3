@@ -5,6 +5,6 @@ export const axiosConfig = {
 
 import defaultAvatar from '@/assets/default_avatar.jpg'
 export const avatarConfig = {
-  baseURL: 'http://127.0.0.1:3007/uploads/avatar',
+  baseURL: 'http://127.0.0.1:3007/static/avatar',
   defaultAvatar
 }

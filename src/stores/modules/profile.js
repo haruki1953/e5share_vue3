@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { profileGetInfoService } from '@/api/profile'
-import { avatarConfig } from '@/config'
+import { parseUserInfo, parseUserNotification } from '@/utils/resDataHandle'
 
 // 用户信息模块
 export const useProfileStore = defineStore(
@@ -15,35 +15,15 @@ export const useProfileStore = defineStore(
     // 已读通知uuid
     const readNotifUuid = ref([])
 
-    // 头像完整地址
-    const avatar = ref('')
-
-    // 昵称
-    const nickname = ref('')
-
     // 请求获取用户信息
     const getProfile = async () => {
       const res = await profileGetInfoService() // 请求获取数据
-      user.value = res.data.data
 
-      // 请求的notifications为字符串，将其转为js对象
-      notifications.value = JSON.parse(user.value.notifications)
+      // 解析用户信息
+      user.value = parseUserInfo(res.data.data)
 
-      // 拼接头像完整地址（如果有）
-      if (user.value.avatar) {
-        // 创建基础 URL 对象
-        const baseURL = new URL(avatarConfig.baseURL)
-        // 将用户头像路径添加到基础 URL 的路径中
-        baseURL.pathname += user.value.avatar
-        // 保存完整的 URL
-        avatar.value = baseURL.toString()
-      } else {
-        // 没有时则为默认头像
-        avatar.value = avatarConfig.defaultAvatar
-      }
-
-      // 处理昵称，如果没有时则为username
-      nickname.value = user.value.nickname || user.value.username
+      // 解析通知信息
+      notifications.value = parseUserNotification(res.data.data)
     }
 
     // 清除信息
@@ -51,8 +31,6 @@ export const useProfileStore = defineStore(
       user.value = {}
       notifications.value = []
       readNotifUuid.value = []
-      avatar.value = ''
-      nickname.value = ''
     }
 
     // 获取未读通知数
@@ -80,8 +58,6 @@ export const useProfileStore = defineStore(
       user,
       notifications,
       readNotifUuid,
-      avatar,
-      nickname,
       getProfile,
       removeProfile,
       unreadNotifCount,

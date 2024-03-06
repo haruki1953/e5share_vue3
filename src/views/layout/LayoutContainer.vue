@@ -9,7 +9,7 @@ import {
   BellFilled,
   Tools
 } from '@element-plus/icons-vue'
-import { useAuthStore, useProfileStore } from '@/stores'
+import { useAuthStore, useProfileStore, useUsersStore } from '@/stores'
 import { avatarConfig } from '@/config'
 import NotifDrawer from './components/NotifDrawer.vue'
 
@@ -19,9 +19,13 @@ const router = useRouter()
 const authStore = useAuthStore()
 // 用户个人信息
 const profileStore = useProfileStore()
+// 用户列表
+const usersStore = useUsersStore()
 
 // 请求获取数据
 const fetchDataFromServer = async () => {
+  // 获取用户列表
+  usersStore.getUsers()
   // 登陆时获取用户信息
   if (authStore.token) {
     await profileStore.getProfile()
@@ -104,7 +108,10 @@ const openNotifDrawer = () => {
             :popperStyle="popoverStyle"
           >
             <template #reference>
-              <el-avatar :src="profileStore.avatar" v-if="authStore.token" />
+              <el-avatar
+                :src="profileStore.user.avatar"
+                v-if="authStore.token"
+              />
               <el-avatar :src="avatarConfig.defaultAvatar" v-else />
             </template>
             <template #default>
@@ -112,12 +119,12 @@ const openNotifDrawer = () => {
               <div class="user-info-container" v-if="authStore.token">
                 <el-avatar
                   :size="60"
-                  :src="profileStore.avatar"
+                  :src="profileStore.user.avatar"
                   class="user-avatar"
                 ></el-avatar>
                 <div class="user-details">
                   <p class="user-name">
-                    {{ profileStore.nickname }}
+                    {{ profileStore.user.nickname }}
                   </p>
                   <p class="user-handle">@{{ profileStore.user.username }}</p>
                 </div>
