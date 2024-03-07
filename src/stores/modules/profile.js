@@ -49,6 +49,7 @@ export const useProfileStore = defineStore(
 
     // 设置全部通知为已读
     const markAllNotifAsRead = () => {
+      if (!unreadNotifCount.value) return // 没有未读则返回
       readNotifUuid.value = notifications.value.map(
         (notification) => notification.id
       )

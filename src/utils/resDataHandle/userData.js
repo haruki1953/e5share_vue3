@@ -12,7 +12,7 @@ export const parseUserInfo = (resData) => {
     // 将用户头像路径添加到基础 URL 的路径中
     baseURL.pathname += resData.avatar
     // 保存完整的 URL
-    avatar = avatarConfig.baseURL + '/' + resData.avatar
+    avatar = `${avatarConfig.baseURL}/${resData.avatar}`
   } else {
     // 没有时则为默认头像
     avatar = avatarConfig.defaultAvatar

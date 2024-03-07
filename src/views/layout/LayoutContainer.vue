@@ -9,7 +9,12 @@ import {
   BellFilled,
   Tools
 } from '@element-plus/icons-vue'
-import { useAuthStore, useProfileStore, useUsersStore } from '@/stores'
+import {
+  useAuthStore,
+  useProfileStore,
+  useUsersStore,
+  usePostsStore
+} from '@/stores'
 import { avatarConfig } from '@/config'
 import NotifDrawer from './components/NotifDrawer.vue'
 
@@ -21,14 +26,18 @@ const authStore = useAuthStore()
 const profileStore = useProfileStore()
 // 用户列表
 const usersStore = useUsersStore()
+// 动态列表
+const postsStore = usePostsStore()
 
 // 请求获取数据
 const fetchDataFromServer = async () => {
   // 获取用户列表
   usersStore.getUsers()
-  // 登陆时获取用户信息
+  // 登陆时获取用户信息与动态信息
   if (authStore.token) {
     await profileStore.getProfile()
+    // 动态信息要等待个人信息获取完毕
+    await postsStore.getPostsList()
   }
 }
 fetchDataFromServer()
@@ -42,9 +51,11 @@ const logout = async () => {
   //   cancelButtonText: '取消'
   // })
 
-  // 清除本地的数据 (token + 信息)
+  // 清除本地的数据 token、信息、动态
   authStore.removeToken()
   profileStore.removeProfile()
+  postsStore.removePosts()
+
   // 跳转路由
   // router.push('/login')
 }
@@ -74,10 +85,18 @@ const openNotifDrawer = () => {
           <template #title>e5账号分享管理</template>
         </el-menu-item>
         <el-menu-item index="/post">
-          <el-icon>
-            <el-badge :value="99" :max="9" class="item" type="primary">
+          <el-icon v-if="postsStore.unreadPostCount">
+            <el-badge
+              :value="postsStore.unreadPostCount"
+              :max="9"
+              class="item"
+              type="primary"
+            >
               <Comment />
             </el-badge>
+          </el-icon>
+          <el-icon v-else>
+            <Comment />
           </el-icon>
           <template #title>动态</template>
         </el-menu-item>

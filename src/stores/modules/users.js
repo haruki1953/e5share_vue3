@@ -18,7 +18,7 @@ export const useUsersStore = defineStore(
       res.data.data.forEach((userData) => {
         userList.value.push(parseUserInfo(userData))
       })
-      console.log(userList.value)
+      // console.log(userList.value)
     }
 
     return {

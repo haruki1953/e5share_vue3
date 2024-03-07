@@ -1,14 +1,14 @@
 <script setup>
-import { User, Lock, Message } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue'
-
+import { useRouter } from 'vue-router'
+import { User, Lock, Message } from '@element-plus/icons-vue'
 import {
   authRegisterService,
   authLoginByUsernameService,
   authLoginByEmailService
 } from '@/api/auth.js'
-import { useAuthStore } from '@/stores/index'
-import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores'
+import { adminContact } from '@/config'
 
 const isRegister = ref(false)
 
@@ -25,17 +25,6 @@ const formModel = ref({
   isLoginByEmail: false
 })
 
-// 整个表单的校验规则
-// 1. 非空校验 required: true      message消息提示，  trigger触发校验的时机 blur change
-// 2. 长度校验 min:xx, max: xx
-// 3. 正则校验 pattern: 正则规则    \S 非空字符
-// 4. 自定义校验 => 自己写逻辑校验 (校验函数)
-//    validator: (rule, value, callback)
-//    (1) rule  当前校验规则相关的信息
-//    (2) value 所校验的表单元素目前的表单值
-//    (3) callback 无论成功还是失败，都需要 callback 回调
-//        - callback() 校验成功
-//        - callback(new Error(错误信息)) 校验失败
 const rules = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -78,37 +67,53 @@ const rules = {
 }
 
 // 注册
+const isRegistering = ref(false) // 标记状态
 const register = async () => {
-  // 注册成功之前，先进行校验，校验成功 → 请求，校验失败 → 自动提示
-  await form.value.validate()
-  await authRegisterService(formModel.value)
-  ElMessage.success('注册成功')
-  isRegister.value = false
+  // 设置为注册中状态
+  isRegistering.value = true
+  try {
+    // 注册成功之前，先进行校验，校验成功 → 请求，校验失败 → 自动提示
+    await form.value.validate()
+    await authRegisterService(formModel.value)
+    ElMessage.success('注册成功')
+    isRegister.value = false
+  } finally {
+    // 无论注册成功或失败，都要解除注册中状态
+    isRegistering.value = false
+  }
 }
 
 const authStore = useAuthStore()
 const router = useRouter()
+
 // 登录
+const isLogingIn = ref(false) // 标记状态
 const login = async () => {
-  await form.value.validate()
-  let res
-  // 根据 isLoginByEmail 选择调用的登陆方式
-  if (formModel.value.isLoginByEmail) {
-    res = await authLoginByEmailService(formModel.value)
-  } else {
-    // eslint-disable-next-line no-unused-vars
-    res = await authLoginByUsernameService(formModel.value)
+  isLogingIn.value = true
+  try {
+    await form.value.validate()
+    let res
+    // 根据 isLoginByEmail 选择调用的登陆方式
+    if (formModel.value.isLoginByEmail) {
+      res = await authLoginByEmailService(formModel.value)
+    } else {
+      // eslint-disable-next-line no-unused-vars
+      res = await authLoginByUsernameService(formModel.value)
+    }
+    // 保存token
+    authStore.setToken(res.data.token)
+    ElMessage.success('登录成功')
+    // 跳转至根路径
+    router.push('/')
+  } finally {
+    // 无论成功或失败，都要解除状态
+    isLogingIn.value = false
   }
-  // 保存token
-  authStore.setToken(res.data.token)
-  ElMessage.success('登录成功')
-  // 跳转至根路径
-  router.push('/')
 }
 
 // 点击忘记密码时弹出的消息
 const forgotPasswordMessage = () => {
-  ElMessage('请联系管理员 X / Twitter: @haruki19530615')
+  ElMessage(`请联系管理员 ${adminContact}`)
 }
 
 watch(isRegister, () => {
@@ -170,6 +175,7 @@ watch(isRegister, () => {
         <el-form-item>
           <el-button
             @click="register"
+            :loading="isRegistering"
             class="button"
             type="primary"
             auto-insert-space
@@ -234,6 +240,7 @@ watch(isRegister, () => {
         <el-form-item>
           <el-button
             @click="login"
+            :loading="isLogingIn"
             class="button --el-color-primary-light-3"
             type="primary"
             auto-insert-space

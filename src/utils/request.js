@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores'
-import { ElMessage } from 'element-plus'
 import router from '@/router'
 import { axiosConfig } from '@/config'
 
