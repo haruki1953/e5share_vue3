@@ -1,3 +1,7 @@
+// logo图标
+import logoImage from '@/assets/logo.png'
+export { logoImage }
+
 // axios配置，基地址、超时时间
 export const axiosConfig = {
   baseURL: 'http://127.0.0.1:3007',
@@ -19,4 +23,27 @@ export const accountStatus = {
   active: 'active',
   banned: 'banned',
   sharing: 'sharing'
+}
+
+// 未登录时可以访问的路径
+export const publicRoutes = ['/login', '/home']
+
+// 通知类型配置
+export const notificationType = {
+  // 系统通知
+  system: 'system',
+  // 其他通知
+  other: 'other',
+  // e5分享申请通知
+  e5_share_application: 'e5_share_application',
+  // e5分享确认通知
+  e5_share_confirmation: 'e5_share_confirmation',
+  // e5分享完成通知
+  e5_share_completion: 'e5_share_completion',
+  // e5分享注销通知
+  e5_share_closure: 'e5_share_closure',
+  // e5账号主停止分享通知
+  e5_share_sharer_stop: 'e5_share_sharer_stop',
+  // 用户停止接受分享通知
+  e5_share_receiver_stop: 'e5_share_receiver_stop'
 }

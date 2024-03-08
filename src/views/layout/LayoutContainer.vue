@@ -15,7 +15,7 @@ import {
   useUsersStore,
   usePostsStore
 } from '@/stores'
-import { avatarConfig } from '@/config'
+import { avatarConfig, logoImage } from '@/config'
 import NotifDrawer from './components/NotifDrawer.vue'
 
 // 路由
@@ -63,6 +63,8 @@ const logout = async () => {
 // 通知抽屉
 const notifDrawerRef = ref()
 const openNotifDrawer = () => {
+  // 登录访问拦截
+  if (!authStore.token) router.push('/login')
   notifDrawerRef.value.open()
 }
 </script>
@@ -70,8 +72,11 @@ const openNotifDrawer = () => {
 <template>
   <el-container class="layout-container">
     <el-scrollbar noresize>
-      <el-menu :default-active="$route.path" router :collapse="true">
-        <div class="el-menu__logo"></div>
+      <el-menu :default-active="$route.path" router collapse="true">
+        <div
+          class="el-menu__logo"
+          :style="{ backgroundImage: `url(${logoImage})` }"
+        ></div>
         <el-menu-item index="/home">
           <el-icon><HomeFilled /></el-icon>
           <template #title>首页</template>
@@ -197,7 +202,9 @@ const openNotifDrawer = () => {
     // border-right: none;
     &__logo {
       height: 120px;
-      background: url('@/assets/logo.png') no-repeat center / 40px auto;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 40px auto;
     }
     .el-badge {
       font-style: normal;

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useProfileStore } from '@/stores'
+import NotifCard from './NotifCard.vue'
 
 // 用户信息
 const profileStore = useProfileStore()
@@ -19,12 +20,15 @@ defineExpose({
 </script>
 
 <template>
-  <el-drawer
-    v-model="visibleDrawer"
-    title="通知"
-    direction="rtl"
-    size="50%"
-  ></el-drawer>
+  <el-drawer v-model="visibleDrawer" title="通知" direction="rtl" size="50%">
+    <el-scrollbar>
+      <notif-card
+        v-for="item in profileStore.notifications"
+        :key="item.id"
+        :notif="item"
+      ></notif-card>
+    </el-scrollbar>
+  </el-drawer>
 </template>
 
 <style lang="scss" scoped></style>

@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores'
+import { publicRoutes } from '@/config'
 
 // createRouter 创建路由实例
 // 配置 history 模式
@@ -44,6 +46,13 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+// 登录访问拦截
+router.beforeEach((to) => {
+  // 如果没有token, 且访问的不是公开页面，拦截到登录，其他情况正常放行
+  const authStore = useAuthStore()
+  if (!authStore.token && !publicRoutes.includes(to.path)) return '/login'
 })
 
 export default router
