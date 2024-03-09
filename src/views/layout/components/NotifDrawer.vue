@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useProfileStore } from '@/stores'
 import NotifCard from './NotifCard.vue'
 
@@ -14,16 +14,32 @@ const open = () => {
   // 设置已读
   profileStore.markAllNotifAsRead()
 }
+
+// 对通知进行倒序排序
+const sortedNotifications = computed(() => {
+  return profileStore.notifications.slice().reverse()
+})
+
 defineExpose({
   open
 })
 </script>
 
 <template>
-  <el-drawer v-model="visibleDrawer" title="通知" direction="rtl" size="50%">
+  <el-drawer
+    v-model="visibleDrawer"
+    :with-header="false"
+    title="通知"
+    direction="rtl"
+    size="50%"
+  >
     <el-scrollbar>
+      <el-empty
+        description="暂无通知"
+        v-if="!profileStore.notifications.length"
+      />
       <notif-card
-        v-for="item in profileStore.notifications"
+        v-for="item in sortedNotifications"
         :key="item.id"
         :notif="item"
       ></notif-card>

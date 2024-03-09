@@ -21,9 +21,16 @@ export const useUsersStore = defineStore(
       // console.log(userList.value)
     }
 
+    // 根据id查找用户
+    const findUserById = (id) => {
+      // 在用户列表中查找匹配的用户
+      return userList.value.find((user) => user.id === id)
+    }
+
     return {
       userList,
-      getUsers
+      getUsers,
+      findUserById
     }
   },
   {
