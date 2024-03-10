@@ -23,3 +23,24 @@ export const formatTime = (timeString) => {
   })
   return localTime
 }
+
+/**
+ * 将时间字符串转换为本地日期字符串
+ * @param {string} timeString 时间字符串，例如 "2024-02-29T10:05:34.089Z"
+ * @returns {string} 格式化后的本地日期字符串，例如 "2024/02/29"
+ */
+export const formatDate = (timeString) => {
+  const date = new Date(timeString)
+
+  // 检查日期对象是否有效
+  if (Number.isNaN(date.getTime())) {
+    return 'N/A'
+  }
+
+  const localDate = date.toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  })
+  return localDate
+}

@@ -71,122 +71,131 @@ const openNotifDrawer = () => {
 
 <template>
   <el-container class="layout-container">
-    <el-scrollbar noresize>
-      <el-menu :default-active="$route.path" router collapse="true">
-        <div
-          class="el-menu__logo"
-          :style="{ backgroundImage: `url(${logoImage})` }"
-        ></div>
-        <el-menu-item index="/home">
-          <el-icon><HomeFilled /></el-icon>
-          <template #title>首页</template>
-        </el-menu-item>
-        <el-menu-item index="/user-list">
-          <el-icon><Menu /></el-icon>
-          <template #title>用户列表</template>
-        </el-menu-item>
-        <el-menu-item index="/share">
-          <el-icon><Share /></el-icon>
-          <template #title>e5账号分享管理</template>
-        </el-menu-item>
-        <el-menu-item index="/post">
-          <el-icon v-if="postsStore.unreadPostCount">
-            <el-badge
-              :value="postsStore.unreadPostCount"
-              :max="9"
-              class="item"
-              type="primary"
-            >
+    <el-aside width="65px">
+      <el-scrollbar>
+        <el-menu :default-active="$route.path" router :collapse="true">
+          <div
+            class="el-menu__logo"
+            :style="{ backgroundImage: `url(${logoImage})` }"
+          ></div>
+          <el-menu-item index="/home">
+            <el-icon><HomeFilled /></el-icon>
+            <template #title>首页</template>
+          </el-menu-item>
+          <el-menu-item index="/user-list">
+            <el-icon><Menu /></el-icon>
+            <template #title>用户列表</template>
+          </el-menu-item>
+          <el-menu-item index="/share">
+            <el-icon><Share /></el-icon>
+            <template #title>e5账号分享管理</template>
+          </el-menu-item>
+          <el-menu-item index="/post">
+            <el-icon v-if="postsStore.unreadPostCount">
+              <el-badge
+                :value="postsStore.unreadPostCount"
+                :max="9"
+                class="item"
+                type="primary"
+              >
+                <Comment />
+              </el-badge>
+            </el-icon>
+            <el-icon v-else>
               <Comment />
-            </el-badge>
-          </el-icon>
-          <el-icon v-else>
-            <Comment />
-          </el-icon>
-          <template #title>动态</template>
-        </el-menu-item>
-        <el-menu-item @click="openNotifDrawer">
-          <el-icon v-if="profileStore.unreadNotifCount">
-            <el-badge
-              :value="profileStore.unreadNotifCount"
-              :max="9"
-              class="item"
-              type="primary"
-            >
+            </el-icon>
+            <template #title>动态</template>
+          </el-menu-item>
+          <el-menu-item @click="openNotifDrawer">
+            <el-icon v-if="profileStore.unreadNotifCount">
+              <el-badge
+                :value="profileStore.unreadNotifCount"
+                :max="9"
+                class="item"
+                type="primary"
+              >
+                <BellFilled />
+              </el-badge>
+            </el-icon>
+            <el-icon v-else>
               <BellFilled />
-            </el-badge>
-          </el-icon>
-          <el-icon v-else>
-            <BellFilled />
-          </el-icon>
-          <template #title>通知</template>
-        </el-menu-item>
-        <el-menu-item index="/setting">
-          <el-icon><Tools /></el-icon>
-          <template #title>设置</template>
-        </el-menu-item>
-        <div class="avatar-container">
-          <el-popover
-            :width="256"
-            placement="right"
-            :popperStyle="popoverStyle"
-          >
-            <template #reference>
-              <el-avatar
-                :src="profileStore.user.avatar"
-                v-if="authStore.token"
-              />
-              <el-avatar :src="avatarConfig.defaultAvatar" v-else />
-            </template>
-            <template #default>
-              <!-- 已登录 -->
-              <div class="user-info-container" v-if="authStore.token">
+            </el-icon>
+            <template #title>通知</template>
+          </el-menu-item>
+          <el-menu-item index="/setting">
+            <el-icon><Tools /></el-icon>
+            <template #title>设置</template>
+          </el-menu-item>
+          <div class="avatar-container">
+            <el-popover :width="256" placement="right">
+              <template #reference>
                 <el-avatar
-                  :size="60"
                   :src="profileStore.user.avatar"
-                  class="user-avatar"
-                ></el-avatar>
-                <div class="user-details">
-                  <p class="user-name">
-                    {{ profileStore.user.nickname }}
-                  </p>
-                  <p class="user-handle">@{{ profileStore.user.username }}</p>
+                  v-if="authStore.token"
+                />
+                <el-avatar :src="avatarConfig.defaultAvatar" v-else />
+              </template>
+              <template #default>
+                <!-- 已登录 -->
+                <div class="user-info-container" v-if="authStore.token">
+                  <el-row>
+                    <el-avatar
+                      :size="60"
+                      :src="profileStore.user.avatar"
+                      class="user-avatar"
+                      @click="$router.push(`/user/${profileStore.user.id}`)"
+                    ></el-avatar>
+                  </el-row>
+                  <el-row>
+                    <el-text tag="b">{{ profileStore.user.nickname }}</el-text>
+                  </el-row>
+                  <el-row>
+                    <el-link
+                      type="info"
+                      :underline="false"
+                      @click="$router.push(`/user/${profileStore.user.id}`)"
+                    >
+                      @{{ profileStore.user.username }}
+                    </el-link>
+                  </el-row>
+
+                  <el-button @click="logout" type="primary" auto-insert-space>
+                    退出登录
+                  </el-button>
                 </div>
-                <el-button @click="logout" type="primary" auto-insert-space>
-                  退出登录
-                </el-button>
-              </div>
-              <!-- 未登录 -->
-              <div class="user-info-container" v-else>
-                <el-avatar
-                  :size="60"
-                  :src="avatarConfig.defaultAvatar"
-                  class="user-avatar"
-                ></el-avatar>
-                <div class="user-details">
-                  <p class="user-name">未登录</p>
+                <!-- 未登录 -->
+                <div class="user-info-container" v-else>
+                  <el-row>
+                    <el-avatar
+                      :size="60"
+                      :src="avatarConfig.defaultAvatar"
+                      class="user-avatar"
+                      @click="router.push('/login')"
+                    ></el-avatar>
+                  </el-row>
+                  <el-row>
+                    <el-text tag="b">未登录</el-text>
+                  </el-row>
+                  <el-button
+                    @click="router.push('/login')"
+                    type="primary"
+                    auto-insert-space
+                  >
+                    登录
+                  </el-button>
                 </div>
-                <el-button
-                  @click="router.push('/login')"
-                  type="primary"
-                  auto-insert-space
-                >
-                  登录
-                </el-button>
-              </div>
-            </template>
-          </el-popover>
-        </div>
-      </el-menu>
-    </el-scrollbar>
-    <el-main>
-      <el-scrollbar noresize>
-        <router-view></router-view>
+              </template>
+            </el-popover>
+          </div>
+        </el-menu>
       </el-scrollbar>
+    </el-aside>
+    <el-main>
+      <router-view></router-view>
     </el-main>
-    <!-- 通知抽屉 -->
-    <notif-drawer ref="notifDrawerRef"></notif-drawer>
   </el-container>
+  <!-- 通知抽屉 -->
+  <notif-drawer ref="notifDrawerRef"></notif-drawer>
 </template>
 
 <style lang="scss" scoped>
@@ -228,32 +237,19 @@ const openNotifDrawer = () => {
     }
   }
   .el-main {
-    --el-main-padding: 0;
-    .el-scrollbar {
-      padding: 0 20px;
-    }
+    padding: 0 0 0 20px;
   }
 }
 
 .user-info-container {
   display: flex;
-  gap: 16px;
   flex-direction: column;
-
   .user-avatar {
+    margin-bottom: 8px;
     cursor: pointer; // 当光标悬停在头像上时，显示小手指示
   }
-  .user-details {
-    .user-name {
-      margin: 0;
-      font-weight: 500;
-    }
-
-    .user-handle {
-      margin: 0;
-      font-size: 14px;
-      color: var(--el-color-info);
-    }
+  .el-button {
+    margin-top: 10px;
   }
 }
 </style>

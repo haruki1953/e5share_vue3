@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { publicGetUsersService } from '@/api/public'
 import { parseUserInfo } from '@/utils/resDataHandle'
+import { accountStatus } from '@/config'
 
 export const useUsersStore = defineStore(
   'e5share-users',
@@ -27,10 +28,20 @@ export const useUsersStore = defineStore(
       return userList.value.find((user) => user.id === id)
     }
 
+    // 正在分享的用户
+    // 正在分享的用户列表
+    const sharingUsers = computed(() => {
+      // 过滤正在分享的用户
+      return userList.value.filter(
+        (user) => user.account_status === accountStatus.sharing
+      )
+    })
+
     return {
       userList,
       getUsers,
-      findUserById
+      findUserById,
+      sharingUsers
     }
   },
   {

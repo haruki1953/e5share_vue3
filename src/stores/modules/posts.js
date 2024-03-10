@@ -55,7 +55,6 @@ export const usePostsStore = defineStore(
           (post) => !readPostUuid.value.includes(post.id)
         ).length
       })
-      console.log(count)
       return count
     })
 
