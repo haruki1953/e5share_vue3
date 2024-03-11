@@ -1,9 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
 import { useUsersStore } from '@/stores'
-import E5sharingCard from './components/E5sharingCard.vue'
-import E5sharingSkeleton from './components/E5sharingSkeleton.vue'
 
 // 用户列表
 const usersStore = useUsersStore()
@@ -11,11 +8,10 @@ const usersStore = useUsersStore()
 // 要显示的数据
 const dataList = computed(() => {
   const sharingUsers = usersStore.sharingUsers
-  // 如果sharingUsers（user对象数组）小于六个，创建骨架屏对象补充
+  // 如果sharingUsers（user对象数组）小于5个，创建骨架屏对象补充
   const skeletonItems = Array.from(
-    { length: Math.max(0, 6 - sharingUsers.length) },
+    { length: Math.max(0, 5 - sharingUsers.length) },
     () => ({
-      id: uuidv4(),
       skeleton: true,
       // 骨架行数随机3-9
       rows: Math.floor(Math.random() * (9 - 3 + 1)) + 3
@@ -28,22 +24,36 @@ const dataList = computed(() => {
 
 <template>
   <el-scrollbar>
-    <el-row class="card-container">
-      <el-col v-for="item in dataList" :key="item.id" :span="8">
+    <!-- 使用列布局 -->
+    <div class="card-container">
+      <div class="card-item" v-for="(item, index) in dataList" :key="index">
         <!-- 骨架屏 -->
-        <e5sharing-skeleton
-          v-if="item.skeleton"
-          :rows="item.rows"
-        ></e5sharing-skeleton>
+        <user-skeleton v-if="item.skeleton" :rows="item.rows"></user-skeleton>
         <!-- 用户卡片 -->
-        <e5sharing-card v-else :user="item"></e5sharing-card>
-      </el-col>
-    </el-row>
+        <user-card v-else :user="item"></user-card>
+      </div>
+    </div>
   </el-scrollbar>
 </template>
 
 <style lang="scss" scoped>
 .card-container {
-  margin-top: 10px;
+  margin: 10px 20px 10px 0;
+  // 使用列布局
+  column-count: 1; // 列数 默认为1列
+  column-gap: 20px; // 列间距
+  // 视口宽度大于900px时为2列
+  @media (min-width: 900px) {
+    column-count: 2;
+  }
+  // 视口宽度大于1300px时为3列
+  @media (min-width: 1300px) {
+    column-count: 3;
+  }
+  // 每个元素的样式
+  .card-item {
+    break-inside: avoid; // 避免元素跨列
+    margin-bottom: 20px; // 行间距
+  }
 }
 </style>

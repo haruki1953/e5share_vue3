@@ -37,7 +37,6 @@ defineProps({
 <style lang="scss" scoped>
 .el-card {
   border-radius: 15px;
-  margin: 0 20px 20px 0;
   .user-e5 {
     margin: 0 0 6px 5px;
     .user-avatar {

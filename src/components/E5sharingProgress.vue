@@ -21,12 +21,15 @@ const remainingDays = computed(() =>
   Math.round((endDate.value - new Date()) / (1000 * 60 * 60 * 24))
 )
 // 进度值
-const progressVal = computed(() =>
-  Math.min(
+const progressVal = computed(() => {
+  if (startDate.value > new Date()) {
+    return 0 // 未开始状态，即订阅开始日期晚于当前日期
+  }
+  return Math.min(
     ((totalDays.value - remainingDays.value) / totalDays.value) * 100,
     100
   )
-)
+})
 // 状态 剩余天数大于10时为空，小于时为warning，为小于等于0时为exception
 const progressStatus = computed(() => {
   let status = '' // 默认为空状态
@@ -34,6 +37,8 @@ const progressStatus = computed(() => {
     status = 'warning' // 警告状态
   } else if (remainingDays.value <= 0) {
     status = 'exception' // 异常状态
+  } else if (startDate.value > new Date()) {
+    status = 'notStarted' // 未开始状态，即订阅开始日期晚于当前日期
   }
   return status
 })
@@ -53,6 +58,9 @@ defineExpose({
   <el-progress type="circle" :percentage="progressVal" :status="progressStatus">
     <div v-if="progressStatus === 'exception'">
       <el-text size="large">已过期</el-text>
+    </div>
+    <div v-else-if="progressStatus === 'notStarted'">
+      <el-text size="large">未开始</el-text>
     </div>
     <div v-else>
       <span class="percentage-value"

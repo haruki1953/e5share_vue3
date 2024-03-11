@@ -40,6 +40,6 @@ defineExpose({
   <div>
     <el-tag type="success" v-if="isHelpingByThisUser">您正在被TA帮助</el-tag>
     <el-tag type="primary" v-if="isHelpingThisUser">您正在帮助TA</el-tag>
-    <el-tag type="info" v-if="isMyself">您的分享</el-tag>
+    <el-tag type="info" v-if="isMyself">您的信息</el-tag>
   </div>
 </template>

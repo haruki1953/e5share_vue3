@@ -31,7 +31,7 @@ defineExpose({
     :with-header="false"
     title="通知"
     direction="rtl"
-    size="50%"
+    size="600"
   >
     <el-scrollbar>
       <el-empty
