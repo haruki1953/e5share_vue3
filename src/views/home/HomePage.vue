@@ -1,53 +1,42 @@
 <script setup>
 import { computed } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import { useUsersStore } from '@/stores'
 import E5sharingCard from './components/E5sharingCard.vue'
+import E5sharingSkeleton from './components/E5sharingSkeleton.vue'
 
 // 用户列表
 const usersStore = useUsersStore()
 
-// 骨架屏的数量：当分享用户不足6个时补充
-const skeletonCount = computed(() => {
-  const sharingUsersCount = usersStore.sharingUsers.length
-  return Math.max(6 - sharingUsersCount, 0)
+// 要显示的数据
+const dataList = computed(() => {
+  const sharingUsers = usersStore.sharingUsers
+  // 如果sharingUsers（user对象数组）小于六个，创建骨架屏对象补充
+  const skeletonItems = Array.from(
+    { length: Math.max(0, 6 - sharingUsers.length) },
+    () => ({
+      id: uuidv4(),
+      skeleton: true,
+      // 骨架行数随机3-9
+      rows: Math.floor(Math.random() * (9 - 3 + 1)) + 3
+    })
+  )
+  // 合并 sharingUsers 和 skeletonItems
+  return [...sharingUsers, ...skeletonItems]
 })
 </script>
 
 <template>
   <el-scrollbar>
     <el-row class="card-container">
-      <el-col v-for="item in usersStore.sharingUsers" :key="item.id" :span="8">
-        <e5sharing-card :user="item"></e5sharing-card>
-      </el-col>
-      <!-- 骨架屏 -->
-      <el-col v-for="index in skeletonCount" :key="index" :span="8">
-        <el-card shadow="hover">
-          <el-row class="user-e5">
-            <el-col :span="10">
-              <el-row class="user-avatar">
-                <el-skeleton style="--el-skeleton-circle-size: 64px" animated>
-                  <template #template>
-                    <el-skeleton-item variant="circle" />
-                  </template>
-                </el-skeleton>
-              </el-row>
-            </el-col>
-            <el-col :span="14" class="progress-container">
-              <el-skeleton style="--el-skeleton-circle-size: 126px" animated>
-                <template #template>
-                  <el-skeleton-item variant="circle" />
-                </template>
-              </el-skeleton>
-            </el-col>
-          </el-row>
-          <el-row>
-            <!-- 骨架随机3-9 -->
-            <el-skeleton
-              :rows="Math.floor(Math.random() * (10 - 3 + 1)) + 3"
-              animated
-            />
-          </el-row>
-        </el-card>
+      <el-col v-for="item in dataList" :key="item.id" :span="8">
+        <!-- 骨架屏 -->
+        <e5sharing-skeleton
+          v-if="item.skeleton"
+          :rows="item.rows"
+        ></e5sharing-skeleton>
+        <!-- 用户卡片 -->
+        <e5sharing-card v-else :user="item"></e5sharing-card>
       </el-col>
     </el-row>
   </el-scrollbar>
@@ -56,23 +45,5 @@ const skeletonCount = computed(() => {
 <style lang="scss" scoped>
 .card-container {
   margin-top: 10px;
-  .el-card {
-    border-radius: 15px;
-    margin: 0 20px 20px 0;
-    .user-e5 {
-      margin: 0 0 6px 5px;
-      .user-avatar {
-        margin: 4px 0 8px 0;
-      }
-      .progress-container {
-        display: flex;
-        justify-content: flex-end;
-        .el-skeleton {
-          display: flex;
-          justify-content: flex-end;
-        }
-      }
-    }
-  }
 }
 </style>
