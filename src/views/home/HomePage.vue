@@ -7,18 +7,12 @@ const usersStore = useUsersStore()
 
 // 要显示的数据
 const dataList = computed(() => {
-  const sharingUsers = usersStore.sharingUsers
-  // 如果sharingUsers（user对象数组）小于5个，创建骨架屏对象补充
-  const skeletonItems = Array.from(
-    { length: Math.max(0, 5 - sharingUsers.length) },
-    () => ({
-      skeleton: true,
-      // 骨架行数随机3-9
-      rows: Math.floor(Math.random() * (9 - 3 + 1)) + 3
-    })
-  )
-  // 合并 sharingUsers 和 skeletonItems
-  return [...sharingUsers, ...skeletonItems]
+  return usersStore.sharingUsers
+})
+
+// 骨架屏数量，首页卡片小于5个时补充
+const skeletonCount = computed(() => {
+  return Math.max(0, 5 - dataList.value.length)
 })
 </script>
 
@@ -26,11 +20,13 @@ const dataList = computed(() => {
   <el-scrollbar>
     <!-- 使用列布局 -->
     <div class="card-container">
-      <div class="card-item" v-for="(item, index) in dataList" :key="index">
-        <!-- 骨架屏 -->
-        <user-skeleton v-if="item.skeleton" :rows="item.rows"></user-skeleton>
+      <div v-for="item in dataList" :key="item.id" class="card-item">
         <!-- 用户卡片 -->
-        <user-card v-else :user="item"></user-card>
+        <user-card :user="item"></user-card>
+      </div>
+      <div v-for="index in skeletonCount" :key="index" class="card-item">
+        <!-- 骨架屏 -->
+        <user-skeleton></user-skeleton>
       </div>
     </div>
   </el-scrollbar>

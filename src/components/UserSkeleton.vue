@@ -1,12 +1,21 @@
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   // 内容的行数
   rows: {
-    required: true,
-    type: Number
+    type: Number,
+    // 默认值为空，如果未传行数，则随机生成
+    default: null
   }
 })
+
+// 如果 props.rows 为空，则生成随机3-9作为行数
+const skeletonRows = computed(() =>
+  props.rows ? props.rows : Math.floor(Math.random() * (9 - 3 + 1)) + 3
+)
 </script>
+
 <template>
   <el-card shadow="hover">
     <el-row class="user-e5">
@@ -28,8 +37,7 @@ defineProps({
       </el-col>
     </el-row>
     <el-row>
-      <!-- 骨架随机3-9 -->
-      <el-skeleton :rows="rows" animated />
+      <el-skeleton :rows="skeletonRows" animated />
     </el-row>
   </el-card>
 </template>
