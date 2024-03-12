@@ -43,3 +43,9 @@ defineExpose({
     <el-tag type="info" v-if="isMyself">您的信息</el-tag>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.el-tag {
+  margin: 2px;
+}
+</style>

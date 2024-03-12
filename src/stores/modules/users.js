@@ -28,7 +28,6 @@ export const useUsersStore = defineStore(
       return userList.value.find((user) => user.id === id)
     }
 
-    // 正在分享的用户
     // 正在分享的用户列表
     const sharingUsers = computed(() => {
       // 过滤正在分享的用户
@@ -37,11 +36,31 @@ export const useUsersStore = defineStore(
       )
     })
 
+    // 搜索用户
+    const searchUsers = (key) => {
+      if (!key) {
+        // 如果关键字为空，返回所有用户列表
+        return userList.value
+      }
+      // 过滤用户列表，匹配关键字的用户
+      return userList.value.filter((user) => {
+        return (
+          user.id.toString().includes(key) ||
+          user.username.includes(key) ||
+          user.nickname.includes(key) ||
+          user.email.includes(key) ||
+          (user.contact_info && user.contact_info.includes(key)) ||
+          (user.bio && user.bio.includes(key))
+        )
+      })
+    }
+
     return {
       userList,
       getUsers,
       findUserById,
-      sharingUsers
+      sharingUsers,
+      searchUsers
     }
   },
   {

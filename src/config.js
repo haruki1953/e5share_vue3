@@ -2,6 +2,10 @@
 import logoImage from '@/assets/logo.png'
 export { logoImage }
 
+// 登录页图片
+import loginImage from '@/assets/login_bg.jpg'
+export { loginImage }
+
 // axios配置，基地址、超时时间
 export const axiosConfig = {
   baseURL: 'http://127.0.0.1:3007',

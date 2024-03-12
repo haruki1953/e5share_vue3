@@ -22,14 +22,14 @@ const e5expirationDate = computed(() =>
 <template>
   <el-card shadow="hover" @click="$router.push(`/user/${user.id}`)">
     <el-row class="user-e5">
-      <el-col :span="14">
+      <div>
         <el-row class="user-avatar">
-          <el-col :span="10">
+          <div>
             <el-avatar :size="64" :src="user.avatar" />
-          </el-col>
-          <el-col :span="14" class="tag-box">
+          </div>
+          <div class="tag-box">
             <aboutme-tag :user="user"></aboutme-tag>
-          </el-col>
+          </div>
         </el-row>
         <el-row>
           <el-text tag="b">{{ user.nickname }}</el-text>
@@ -39,16 +39,15 @@ const e5expirationDate = computed(() =>
             @{{ user.username }}
           </el-link>
         </el-row>
-      </el-col>
-      <el-col :span="10" class="progress-container">
-        <e5sharing-progress
-          :user="user"
-          v-if="user.account_status === accountStatus.sharing"
-        ></e5sharing-progress>
-        <el-progress v-else type="circle" :percentage="0">
-          <el-text size="large">未分享</el-text>
-        </el-progress>
-      </el-col>
+      </div>
+
+      <e5sharing-progress
+        :user="user"
+        v-if="user.account_status === accountStatus.sharing"
+      ></e5sharing-progress>
+      <el-progress v-else type="circle" :percentage="0">
+        <el-text size="large">未分享</el-text>
+      </el-progress>
     </el-row>
     <el-row class="row-bio" v-if="user.bio">
       <el-text tag="b"> 简介： </el-text>
@@ -84,16 +83,19 @@ const e5expirationDate = computed(() =>
   .user-e5 {
     height: 126px;
     margin: 0 0 6px 5px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap; /* 不换行 */
     .user-avatar {
+      display: flex;
+      flex-wrap: nowrap; /* 不换行 */
       margin: 4px 0;
-    }
-    .tag-box {
-      display: flex;
-      align-items: center;
-    }
-    .progress-container {
-      display: flex;
-      justify-content: flex-end;
+      .tag-box {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+      }
     }
   }
   .row-bio {

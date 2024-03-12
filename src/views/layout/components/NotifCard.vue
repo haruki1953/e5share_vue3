@@ -128,12 +128,6 @@ const notifContent = computed(() => {
           @click="handleConfirmation"
           >确认</el-button
         >
-        <el-button
-          v-else-if="notif.type === notificationType.e5_share_completion"
-          @click="$router.push('/share')"
-          type="primary"
-          >查看</el-button
-        >
       </div>
     </div>
 

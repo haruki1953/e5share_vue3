@@ -8,7 +8,7 @@ import {
   authLoginByEmailService
 } from '@/api/auth.js'
 import { useAuthStore } from '@/stores'
-import { adminContact } from '@/config'
+import { adminContact, loginImage } from '@/config'
 
 const isRegister = ref(false)
 
@@ -128,7 +128,11 @@ watch(isRegister, () => {
 
 <template>
   <el-row class="login-page">
-    <el-col :span="12" class="bg"></el-col>
+    <el-col
+      :span="12"
+      class="bg"
+      :style="{ backgroundImage: `url(${loginImage})` }"
+    ></el-col>
     <el-col :span="6" :offset="3" class="form">
       <el-form
         :model="formModel"
@@ -262,9 +266,11 @@ watch(isRegister, () => {
   height: 100vh;
   // background-color: #fff;
   .bg {
-    background:
-      // url('@/assets/logo2.png') no-repeat 60% center / 240px auto,
-      url('@/assets/login_bg.jpg') no-repeat center / cover;
+    // background: url('@/assets/login_bg.jpg') no-repeat center / cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
     border-radius: 0 30px 30px 0;
   }
   .form {
