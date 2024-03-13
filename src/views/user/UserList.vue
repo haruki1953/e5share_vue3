@@ -27,6 +27,16 @@ const showAll = () => {
   searchVal.value = ''
   searchKey.value = ''
 }
+
+// 控制最小卡片数
+const minCardCount = computed(() => {
+  // 搜索用户时不显示骨架屏
+  if (searchKey.value) {
+    return 0
+  }
+  // 默认显示全部用户时，最小卡片数为5
+  return 5
+})
 </script>
 
 <template>
@@ -52,8 +62,12 @@ const showAll = () => {
       </div>
     </el-card>
     <!-- 用户卡片容器 -->
-    <usercard-container :dataList="dataList"></usercard-container>
-    <el-empty v-if="!dataList.length" description="未找到用户">
+    <usercard-container
+      :dataList="dataList"
+      :minCardCount="minCardCount"
+    ></usercard-container>
+    <!-- 在搜索时无数据，显示空状态 -->
+    <el-empty v-if="!dataList.length && searchKey" description="未找到用户">
       <el-button type="primary" size="large" @click="showAll">
         显示全部用户
       </el-button>

@@ -39,7 +39,7 @@ const userList = computed(() => {
   .user-item {
     display: flex;
     align-items: center;
-    margin-bottom: 6px;
+    margin-top: 10px;
     .el-avatar {
       margin-right: 10px;
     }

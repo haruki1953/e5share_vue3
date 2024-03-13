@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import { accountStatus } from '@/config'
 
 const props = defineProps({
   // 要展示的用户对象
@@ -55,7 +56,12 @@ defineExpose({
 </script>
 
 <template>
-  <el-progress type="circle" :percentage="progressVal" :status="progressStatus">
+  <el-progress
+    v-if="user.account_status === accountStatus.sharing"
+    type="circle"
+    :percentage="progressVal"
+    :status="progressStatus"
+  >
     <div v-if="progressStatus === 'exception'">
       <el-text size="large">已过期</el-text>
     </div>
@@ -68,6 +74,9 @@ defineExpose({
       </span>
       <el-text class="percentage-label">剩余天数</el-text>
     </div>
+  </el-progress>
+  <el-progress v-else type="circle" :percentage="0">
+    <el-text size="large">未分享</el-text>
   </el-progress>
 </template>
 

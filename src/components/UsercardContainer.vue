@@ -42,8 +42,8 @@ const skeletonCount = computed(() => {
   @media (min-width: 900px) {
     column-count: 2;
   }
-  // 视口宽度大于1300px时为3列
-  @media (min-width: 1300px) {
+  // 视口宽度大于1400px时为3列
+  @media (min-width: 1400px) {
     column-count: 3;
   }
   // 每个元素的样式
