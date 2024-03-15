@@ -237,7 +237,7 @@ const openNotifDrawer = () => {
     }
   }
   .el-main {
-    padding: 0 0 0 20px;
+    padding: 0;
   }
 }
 

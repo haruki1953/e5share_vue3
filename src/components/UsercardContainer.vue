@@ -34,7 +34,7 @@ const skeletonCount = computed(() => {
 </template>
 <style lang="scss" scoped>
 .card-container {
-  margin: 10px 20px 10px 0;
+  margin: 10px 20px;
   // 使用列布局
   column-count: 1; // 列数 默认为1列
   column-gap: 20px; // 列间距

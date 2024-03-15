@@ -42,25 +42,27 @@ const minCardCount = computed(() => {
 <template>
   <el-scrollbar>
     <!-- 搜索栏 -->
-    <el-card class="search-card">
-      <div class="search-row">
-        <el-input
-          v-model="searchVal"
-          size="large"
-          placeholder="搜索用户"
-          :prefix-icon="Search"
-          clearable
-          @keydown.enter="handleSearch"
-        />
-        <el-button
-          type="primary"
-          size="large"
-          :icon="Search"
-          circle
-          @click="handleSearch"
-        />
-      </div>
-    </el-card>
+    <el-affix :offset="-5">
+      <el-card class="search-card">
+        <div class="search-row">
+          <el-input
+            v-model="searchVal"
+            size="large"
+            placeholder="搜索用户"
+            :prefix-icon="Search"
+            clearable
+            @keydown.enter="handleSearch"
+          />
+          <el-button
+            type="primary"
+            size="large"
+            :icon="Search"
+            circle
+            @click="handleSearch"
+          />
+        </div>
+      </el-card>
+    </el-affix>
     <!-- 用户卡片容器 -->
     <usercard-container
       :dataList="dataList"
@@ -77,8 +79,9 @@ const minCardCount = computed(() => {
 
 <style lang="scss" scoped>
 .search-card {
-  margin: 10px 20px 15px 0;
-  border-radius: 15px;
+  margin: 10px 30px;
+  padding: 0 15px;
+  border-radius: 35px;
   .search-row {
     display: flex;
     align-items: center;

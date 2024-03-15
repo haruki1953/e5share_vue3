@@ -205,7 +205,7 @@ const shouldDisplayShareInfoButton = computed(() => {
 
 <style lang="scss" scoped>
 .userinfo-card {
-  margin: 10px 20px 15px 0;
+  margin: 10px 20px;
   padding: 10px;
   border-radius: 20px;
   .user-e5 {
