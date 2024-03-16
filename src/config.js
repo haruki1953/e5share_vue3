@@ -19,6 +19,39 @@ export const avatarConfig = {
   defaultAvatar
 }
 
+// 联系方式
+export const contactInfo = {
+  twitter: {
+    name: 'X / Twitter', // 平台名称
+    fontawesomeClass: 'fab fa-twitter', // fontawesome图标的class
+    logoUrl: '', // 图标地址(有fontawesomeClass则不显示)
+    description: '@harukiO_0', // 描述,简介
+    link: 'https://twitter.com/harukiO_0' // 链接
+  },
+  discord: {
+    name: 'Discord',
+    fontawesomeClass: 'fab fa-discord',
+    description: '小祥の小窝',
+    link: 'https://discord.gg/'
+  },
+  github: {
+    name: 'Github',
+    fontawesomeClass: 'fab fa-github',
+    description: 'haruki1953/e5share_vue3',
+    link: 'https://github.com/haruki1953/e5share_vue3'
+  }
+}
+
+// 友情链接
+export const friendshipLinks = {
+  sakikoAlist: {
+    name: '小祥の小窝',
+    logoUrl: 'https://static.sakiko.top/sakiko/sakiko.ico',
+    description: '一个番剧小窝',
+    link: 'https://pan.sakiko.top/'
+  }
+}
+
 // 管理员联系方式
 export const adminContact = 'X / Twitter: @harukiO_0'
 

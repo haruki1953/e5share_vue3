@@ -1,87 +1,36 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
+import ProfileCard from './components/ProfileCard.vue'
+import AvatarCard from './components/AvatarCard.vue'
+import EmailCard from './components/EmailCard.vue'
+import PasswordCard from './components/PasswordCard.vue'
+import E5Card from './components/E5Card.vue'
+import { contactInfo, friendshipLinks } from '@/config'
 
-const editUserInfoCard = ref()
+const editProfileCard = ref()
 const editAvatarCard = ref()
 const editEmailCard = ref()
 const editPasswordCard = ref()
-const editE5SubscriptionCard = ref()
+const editE5Card = ref()
 
-//
-const userInfoForm = ref({
-  nickname: '',
-  contactInfo: '',
-  bio: ''
-})
+// 设置菜单项的活动状态
+const activeMenuItem = ref('1')
 
-const emailForm = ref({
-  email: ''
-})
-
-const passwordForm = ref({
-  oldPassword: '',
-  newPassword: ''
-})
-
-const e5SubscriptionForm = ref({
-  subscriptionDate: '',
-  expirationDate: ''
-})
-
-// 提交修改用户信息
-const submitUserInfo = () => {
-  // 调用修改用户信息的接口
-  // ...
-  ElMessage.success('修改成功')
+// scrollToCard 函数，根据传入卡片的引用名称进行滚动
+const scrollToCard = (refName) => {
+  nextTick(() => {
+    const cardRef = eval(refName)
+    if (cardRef && cardRef.value) {
+      // 如果卡片引用存在且不为 null，则执行滚动
+      cardRef.value.$el.scrollIntoView({ behavior: 'smooth' })
+    }
+  })
 }
 
-// 提交修改邮箱
-const submitEmail = () => {
-  // 调用修改邮箱的接口
-  // ...
-  ElMessage.success('修改成功')
+// 设置菜单项的活动状态
+const setActiveMenuItem = (index) => {
+  activeMenuItem.value = index
 }
-
-// 提交修改密码
-const submitPassword = () => {
-  // 调用修改密码的接口
-  // ...
-  ElMessage.success('修改成功')
-}
-
-// 提交修改E5订阅信息
-const submitE5Subscription = () => {
-  // 调用修改E5订阅信息的接口
-  // ...
-  ElMessage.success('修改成功')
-}
-
-// // 头像上传前的钩子函数
-// const beforeAvatarUpload = (file) => {
-//   const isJPG = file.type === 'image/jpeg'
-//   const isLt2M = file.size / 1024 / 1024 < 2
-
-//   if (!isJPG) {
-//     ElMessage.error('上传头像图片只能是 JPG 格式!')
-//   }
-//   if (!isLt2M) {
-//     ElMessage.error('上传头像图片大小不能超过 2MB!')
-//   }
-//   return isJPG && isLt2M
-// }
-
-// // 头像上传成功后的回调函数
-// const handleAvatarSuccess = (response, file) => {
-//   const avatarUrl = response.data.url // 根据实际的接口返回值获取头像 URL
-//   ElMessage.success('头像上传成功')
-// }
-
-// // 头像上传失败后的回调函数
-// const handleAvatarError = (err, file) => {
-//   ElMessage.error('头像上传失败')
-// }
-
-// const avatarUrl = ref('') // 用于显示头像的 URL
 </script>
 
 <template>
@@ -89,153 +38,94 @@ const submitE5Subscription = () => {
     <el-aside>
       <el-scrollbar>
         <el-card class="setting-tab" shadow="hover">
-          <el-menu
-            default-active="1"
-            class="el-menu-vertical-demo"
-            @open="handleOpen"
-            @close="handleClose"
-          >
-            <el-menu-item index="1">
+          <template #header>
+            <el-text tag="b" size="large" type="primary"> 设置 </el-text>
+          </template>
+          <el-menu :default-active="activeMenuItem">
+            <!-- 根据卡片引用对象中的键值来触发滚动 -->
+            <el-menu-item index="1" @click="scrollToCard('editProfileCard')">
               <el-text tag="b" size="large">修改用户信息</el-text>
             </el-menu-item>
-            <el-menu-item index="2">
+            <el-menu-item index="2" @click="scrollToCard('editAvatarCard')">
               <el-text tag="b" size="large">修改头像</el-text>
             </el-menu-item>
-            <el-menu-item index="3">
+            <el-menu-item index="3" @click="scrollToCard('editEmailCard')">
               <el-text tag="b" size="large">修改邮箱</el-text>
             </el-menu-item>
-            <el-menu-item index="4">
+            <el-menu-item index="4" @click="scrollToCard('editPasswordCard')">
               <el-text tag="b" size="large">修改密码</el-text>
             </el-menu-item>
-            <el-menu-item index="5">
+            <el-menu-item index="5" @click="scrollToCard('editE5Card')">
               <el-text tag="b" size="large">修改E5订阅信息</el-text>
             </el-menu-item>
           </el-menu>
         </el-card>
+        <!-- 联系方式卡片 -->
+        <links-card
+          :dataObj="contactInfo"
+          title="联系方式 | 交流讨论 | 问题反馈"
+          class="links-card"
+        ></links-card>
+        <!-- 友情链接 -->
+        <links-card
+          :dataObj="friendshipLinks"
+          title="广告位（bushi）"
+          class="links-card"
+        ></links-card>
       </el-scrollbar>
     </el-aside>
     <el-main class="setting-main">
       <el-scrollbar>
         <!-- 修改用户信息 -->
-        <el-card ref="editUserInfoCard" class="setting-card" shadow="hover">
-          <el-form :model="userInfoForm" label-width="120px">
-            <el-form-item label="昵称" prop="nickname">
-              <el-input
-                v-model="userInfoForm.nickname"
-                placeholder="请输入昵称"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="联系信息" prop="contactInfo">
-              <el-input
-                v-model="userInfoForm.contactInfo"
-                placeholder="请输入联系信息"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="简介" prop="bio">
-              <el-input
-                v-model="userInfoForm.bio"
-                type="textarea"
-                placeholder="请输入简介"
-              ></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitUserInfo">保存</el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
+        <profile-card
+          ref="editProfileCard"
+          class="setting-card"
+          @mouseenter="setActiveMenuItem('1')"
+        ></profile-card>
 
         <!-- 修改头像 -->
-        <el-card ref="editAvatarCard" class="setting-card" shadow="hover">
-          <!-- <el-upload
-            class="avatar-uploader"
-            action="/user/avatar"
-            :headers="{ Authorization: 'Bearer ' + token }"
-            :before-upload="beforeAvatarUpload"
-            :show-file-list="false"
-          >
-            <img v-if="avatarUrl" :src="avatarUrl" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload> -->
-        </el-card>
+        <avatar-card
+          ref="editAvatarCard"
+          class="setting-card"
+          @mouseenter="setActiveMenuItem('2')"
+        ></avatar-card>
 
         <!-- 修改邮箱 -->
-        <el-card ref="editEmailCard" class="setting-card" shadow="hover">
-          <el-form :model="emailForm" label-width="120px">
-            <el-form-item label="新邮箱" prop="email">
-              <el-input
-                v-model="emailForm.email"
-                placeholder="请输入新邮箱"
-              ></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitEmail">保存</el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
+        <email-card
+          ref="editEmailCard"
+          class="setting-card"
+          @mouseenter="setActiveMenuItem('3')"
+        ></email-card>
 
         <!-- 修改密码 -->
-        <el-card ref="editPasswordCard" class="setting-card" shadow="hover">
-          <el-form :model="passwordForm" label-width="120px">
-            <el-form-item label="旧密码" prop="oldPassword">
-              <el-input
-                v-model="passwordForm.oldPassword"
-                placeholder="请输入旧密码"
-                type="password"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="新密码" prop="newPassword">
-              <el-input
-                v-model="passwordForm.newPassword"
-                placeholder="请输入新密码"
-                type="password"
-              ></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitPassword">保存</el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
+        <password-card
+          ref="editPasswordCard"
+          class="setting-card"
+          @mouseenter="setActiveMenuItem('4')"
+        ></password-card>
 
         <!-- 修改E5订阅信息 -->
-        <el-card
-          ref="editE5SubscriptionCard"
+        <e5-card
+          ref="editE5Card"
           class="setting-card"
-          shadow="hover"
-        >
-          <el-form :model="e5SubscriptionForm" label-width="120px">
-            <el-form-item label="订阅开始日期" prop="subscriptionDate">
-              <el-date-picker
-                v-model="e5SubscriptionForm.subscriptionDate"
-                type="date"
-                placeholder="选择日期"
-              ></el-date-picker>
-            </el-form-item>
-            <el-form-item label="订阅到期日期" prop="expirationDate">
-              <el-date-picker
-                v-model="e5SubscriptionForm.expirationDate"
-                type="date"
-                placeholder="选择日期"
-              ></el-date-picker>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitE5Subscription"
-                >保存</el-button
-              >
-            </el-form-item>
-          </el-form>
-        </el-card>
+          @mouseenter="setActiveMenuItem('5')"
+        ></e5-card>
       </el-scrollbar>
     </el-main>
   </el-container>
 </template>
 
 <style lang="scss" scoped>
+.el-container {
+  height: 100vh;
+}
+
 .setting-tab {
   margin: 10px 5px 10px 20px;
   border-radius: 20px;
   :deep() {
     .el-card__body {
-      padding: 30px 0;
+      padding: 0;
     }
   }
   .el-menu {
@@ -248,14 +138,17 @@ const submitE5Subscription = () => {
   }
 }
 
+.links-card {
+  margin: 10px 5px 10px 20px;
+  border-radius: 20px;
+}
+
 .setting-main {
   padding: 0;
-  height: 100vh;
 }
 
 .setting-card {
-  margin: 10px 20px 10px 5px;
-  padding: 10px;
+  margin: 10px 20px 20px 5px;
   border-radius: 20px;
 }
 </style>

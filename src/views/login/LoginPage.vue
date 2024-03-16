@@ -248,8 +248,9 @@ watch(isRegister, () => {
             class="button --el-color-primary-light-3"
             type="primary"
             auto-insert-space
-            >登录</el-button
           >
+            登录
+          </el-button>
         </el-form-item>
         <el-form-item class="flex">
           <el-link type="info" :underline="false" @click="isRegister = true">
