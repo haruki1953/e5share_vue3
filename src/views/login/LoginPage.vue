@@ -9,6 +9,7 @@ import {
 } from '@/api/auth.js'
 import { useAuthStore } from '@/stores'
 import { adminContact, loginImage } from '@/config'
+import { userRules } from '@/config/rules'
 
 const isRegister = ref(false)
 
@@ -26,30 +27,7 @@ const formModel = ref({
 })
 
 const rules = {
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    {
-      pattern: /^[a-zA-Z0-9_]{1,32}$/,
-      message: '用户名必须是 1-32位 的字符，只能包含字母数字下划线',
-      trigger: 'blur'
-    }
-  ],
-  email: [
-    { required: true, message: '请输入邮箱', trigger: 'blur' },
-    {
-      type: 'email',
-      message: '请输入正确的邮箱格式',
-      trigger: 'blur'
-    }
-  ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    {
-      pattern: /^[a-zA-Z0-9_]{6,32}$/,
-      message: '密码必须是 6-32位 的字符，只能包含字母数字下划线',
-      trigger: 'blur'
-    }
-  ],
+  ...userRules,
   repassword: [
     {
       validator: (rule, value, callback) => {
@@ -62,8 +40,7 @@ const rules = {
       },
       trigger: 'blur'
     }
-  ],
-  isLoginByEmail: []
+  ]
 }
 
 // 注册

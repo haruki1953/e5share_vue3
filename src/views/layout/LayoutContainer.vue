@@ -9,12 +9,8 @@ import {
   BellFilled,
   Tools
 } from '@element-plus/icons-vue'
-import {
-  useAuthStore,
-  useProfileStore,
-  useUsersStore,
-  usePostsStore
-} from '@/stores'
+import { useAuthStore, useProfileStore, usePostsStore } from '@/stores'
+import { loadData } from '@/utils/initial'
 import { avatarConfig, logoImage } from '@/config'
 import NotifDrawer from './components/NotifDrawer.vue'
 
@@ -24,23 +20,11 @@ const router = useRouter()
 const authStore = useAuthStore()
 // 用户个人信息
 const profileStore = useProfileStore()
-// 用户列表
-const usersStore = useUsersStore()
 // 动态列表
 const postsStore = usePostsStore()
 
 // 请求获取数据
-const fetchDataFromServer = async () => {
-  // 获取用户列表
-  usersStore.getUsers()
-  // 登陆时获取用户信息与动态信息
-  if (authStore.token) {
-    await profileStore.getProfile()
-    // 动态信息要等待个人信息获取完毕
-    await postsStore.getPostsList()
-  }
-}
-fetchDataFromServer()
+loadData()
 
 // 退出登录
 const logout = async () => {
@@ -88,7 +72,7 @@ const openNotifDrawer = () => {
           </el-menu-item>
           <el-menu-item index="/share">
             <el-icon><Share /></el-icon>
-            <template #title>e5账号分享管理</template>
+            <template #title>E5分享管理</template>
           </el-menu-item>
           <el-menu-item index="/post">
             <el-icon v-if="postsStore.unreadPostCount">

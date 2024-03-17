@@ -18,8 +18,17 @@ export const parseUserInfo = (resData) => {
     avatar = avatarConfig.defaultAvatar
   }
 
-  // 处理昵称，如果没有时则为username
-  const nickname = resData.nickname || resData.username
+  // 处理昵称去除首尾空格
+  let nickname =
+    typeof resData.nickname === 'string' ? resData.nickname.trim() : ''
+  // 如果昵称为空或不是字符串，则显示username
+  nickname = nickname || resData.username
+
+  // 处理简介去除首尾空格
+  const bio = typeof resData.bio === 'string' ? resData.bio.trim() : ''
+  // 处理联系方式去除首尾空格
+  const contact_info =
+    typeof resData.contact_info === 'string' ? resData.contact_info.trim() : ''
 
   // 处理帮助用户相关信息，从json字符串转为js对象
   const helping_users = JSON.parse(resData.helping_users)
@@ -32,13 +41,10 @@ export const parseUserInfo = (resData) => {
     id: resData.id,
     username: resData.username,
     email: resData.email,
-    // nickname: escape(nickname),
     nickname,
     avatar,
-    // contact_info: escape(resData.contact_info),
-    contact_info: resData.contact_info,
-    // bio: escape(resData.bio),
-    bio: resData.bio,
+    contact_info,
+    bio,
     registered_at: resData.registered_at,
     last_login: resData.last_login,
     account_status: resData.account_status,

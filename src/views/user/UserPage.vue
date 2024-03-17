@@ -72,7 +72,7 @@ const shouldDisplayShareInfoButton = computed(() => {
                 type="primary"
                 size="large"
               >
-                向TA申请e5账号
+                向TA申请E5账号
               </el-button>
               <el-button
                 v-if="shouldDisplayShareInfoButton"
@@ -122,13 +122,13 @@ const shouldDisplayShareInfoButton = computed(() => {
           </el-row>
           <el-row class="row-info">
             <el-text tag="b" size="large"> 简介： </el-text>
-            <el-text type="info" size="large">
+            <el-text class="text-info" type="info" size="large">
               {{ user.bio || '无' }}
             </el-text>
           </el-row>
           <el-row class="row-info">
             <el-text tag="b" size="large"> 联系方式： </el-text>
-            <el-text type="info" size="large">
+            <el-text class="text-info" type="info" size="large">
               {{ user.contact_info || '无' }}
             </el-text>
           </el-row>
@@ -244,6 +244,9 @@ const shouldDisplayShareInfoButton = computed(() => {
   }
   .row-info {
     margin-top: 20px;
+    .text-info {
+      white-space: pre-line;
+    }
   }
 
   .el-divider {

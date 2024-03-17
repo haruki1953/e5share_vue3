@@ -80,7 +80,7 @@ const openLink = (url) => {
       height: 28px;
       background-repeat: no-repeat;
       background-position: center;
-      background-size: 28px auto;
+      background-size: cover;
     }
   }
 }

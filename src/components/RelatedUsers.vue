@@ -19,7 +19,7 @@ const userList = computed(() => {
 <template>
   <ul class="list-container">
     <li v-for="item in userList" :key="item.id" class="user-item">
-      <el-avatar :src="item.avatar" />
+      <div><el-avatar :src="item.avatar" /></div>
       <el-text tag="b">{{ item.nickname }}</el-text>
       <el-link
         type="info"

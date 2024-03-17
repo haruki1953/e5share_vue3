@@ -32,7 +32,9 @@ const e5expirationDate = computed(() =>
           </div>
         </el-row>
         <el-row>
-          <el-text tag="b">{{ user.nickname }}</el-text>
+          <el-text tag="b">
+            {{ user.nickname }}
+          </el-text>
         </el-row>
         <el-row>
           <el-link type="info" :underline="false">
@@ -41,34 +43,28 @@ const e5expirationDate = computed(() =>
         </el-row>
       </div>
 
-      <e5sharing-progress
-        :user="user"
-        v-if="user.account_status === accountStatus.sharing"
-      ></e5sharing-progress>
-      <el-progress v-else type="circle" :percentage="0">
-        <el-text size="large">未分享</el-text>
-      </el-progress>
+      <e5sharing-progress :user="user"></e5sharing-progress>
     </el-row>
     <el-row class="row-info" v-if="user.bio">
       <el-text tag="b"> 简介： </el-text>
-      <el-text type="info">
+      <el-text class="text-info" type="info" line-clamp="5">
         {{ user.bio }}
       </el-text>
     </el-row>
     <el-row class="row-info" v-if="user.contact_info">
       <el-text tag="b"> 联系方式： </el-text>
-      <el-text type="info">
+      <el-text class="text-info" type="info" line-clamp="5">
         {{ user.contact_info }}
       </el-text>
     </el-row>
     <div v-if="user.account_status === accountStatus.sharing">
       <el-row class="row-info">
         <el-col :span="12">
-          <el-text tag="b"> e5订阅开始日： </el-text>
+          <el-text tag="b"> E5订阅开始日： </el-text>
           <el-text type="info"> {{ e5subscriptionDate }} </el-text>
         </el-col>
         <el-col :span="12">
-          <el-text tag="b"> e5订阅结束日： </el-text>
+          <el-text tag="b"> E5订阅结束日： </el-text>
           <el-text type="info"> {{ e5expirationDate }} </el-text>
         </el-col>
       </el-row>
@@ -106,6 +102,9 @@ const e5expirationDate = computed(() =>
   }
   .row-info {
     margin-top: 12px;
+    .text-info {
+      white-space: pre-line;
+    }
   }
   .el-divider {
     margin-top: 24px;

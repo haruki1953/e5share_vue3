@@ -29,6 +29,10 @@ instance.interceptors.response.use(
     if (res.data.code === 0) {
       return res
     }
+    if (res.status === 204) {
+      // 204 响应表示请求成功但无内容，不需要给出错误提示
+      return
+    }
     // TODO 3. 处理业务失败
     // 处理业务失败, 给错误提示，抛出错误
     ElMessage.error(res.data.message || '服务异常')

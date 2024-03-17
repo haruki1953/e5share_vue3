@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { profileGetInfoService } from '@/api/profile'
+import { userGetInfoService } from '@/api/user'
 import { parseUserInfo, parseUserNotification } from '@/utils/resDataHandle'
 
 // 用户信息模块
@@ -17,7 +17,7 @@ export const useProfileStore = defineStore(
 
     // 请求获取用户信息
     const getProfile = async () => {
-      const res = await profileGetInfoService() // 请求获取数据
+      const res = await userGetInfoService() // 请求获取数据
 
       // 解析用户信息
       user.value = parseUserInfo(res.data.data)
