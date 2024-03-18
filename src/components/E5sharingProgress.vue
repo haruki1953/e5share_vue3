@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { accountStatus } from '@/config'
+import { formatDate } from '@/utils/timeUtils'
 
 const props = defineProps({
   // 要展示的用户对象
@@ -10,9 +11,13 @@ const props = defineProps({
   }
 })
 
-// 开始日期与结束日期
-const startDate = computed(() => new Date(props.user.e5_subscription_date))
-const endDate = computed(() => new Date(props.user.e5_expiration_date))
+// 开始日期与结束日期，formatDate去掉时间应该比较好
+const startDate = computed(
+  () => new Date(formatDate(props.user.e5_subscription_date))
+)
+const endDate = computed(
+  () => new Date(formatDate(props.user.e5_expiration_date))
+)
 // 总天数
 const totalDays = computed(() =>
   Math.round((endDate.value - startDate.value) / (1000 * 60 * 60 * 24))

@@ -13,3 +13,6 @@ export const userUpdateEmailService = ({ email }) =>
 
 export const userUpdatePasswordService = ({ oldPassword, newPassword }) =>
   request.put('/user/password', { oldPassword, newPassword })
+
+export const userUpdateE5infoService = ({ subscriptionDate, expirationDate }) =>
+  request.put('/user/e5info', { subscriptionDate, expirationDate })

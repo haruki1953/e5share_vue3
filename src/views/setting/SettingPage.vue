@@ -32,6 +32,12 @@ const previewUser = computed(() => {
   if (avatarUrl) {
     user.avatar = avatarUrl
   }
+  // e5订阅日期
+  const e5Form = editE5Card.value?.e5Form
+  if (e5Form) {
+    user.e5_subscription_date = e5Form.subscriptionDate
+    user.e5_expiration_date = e5Form.expirationDate
+  }
   return user
 })
 
@@ -78,7 +84,7 @@ const setActiveMenuItem = (index) => {
             </el-menu-item>
             <el-menu-item
               index="5"
-              @click="scrollToCard('editE5Card')"
+              @click="scrollToCard(editE5Card)"
               :disabled="
                 profileStore.user.account_status !== accountStatus.sharing
               "
