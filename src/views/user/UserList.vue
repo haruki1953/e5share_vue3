@@ -79,7 +79,7 @@ const minCardCount = computed(() => {
 
 <style lang="scss" scoped>
 .search-card {
-  margin: 10px 30px;
+  margin: 10px 20px;
   padding: 0 15px;
   border-radius: 35px;
   .search-row {

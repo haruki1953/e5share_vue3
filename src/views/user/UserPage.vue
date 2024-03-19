@@ -94,13 +94,13 @@ const shouldDisplayShareInfoButton = computed(() => {
             v-if="user.account_status === accountStatus.sharing"
           >
             <el-col :span="12">
-              <el-text tag="b" size="large"> e5订阅开始日： </el-text>
+              <el-text tag="b" size="large"> E5订阅开始日： </el-text>
               <el-text type="info" size="large">
                 {{ formatDate(user.e5_subscription_date) }}
               </el-text>
             </el-col>
             <el-col :span="12">
-              <el-text tag="b" size="large"> e5订阅结束日： </el-text>
+              <el-text tag="b" size="large"> E5订阅结束日： </el-text>
               <el-text type="info" size="large">
                 {{ formatDate(user.e5_expiration_date) }}
               </el-text>

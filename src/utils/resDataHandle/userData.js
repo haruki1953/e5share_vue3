@@ -31,10 +31,30 @@ export const parseUserInfo = (resData) => {
     typeof resData.contact_info === 'string' ? resData.contact_info.trim() : ''
 
   // 处理帮助用户相关信息，从json字符串转为js对象
-  const helping_users = JSON.parse(resData.helping_users)
-  const helped_users = JSON.parse(resData.helped_users)
-  const helping_by_users = JSON.parse(resData.helping_by_users)
-  const helped_by_users = JSON.parse(resData.helped_by_users)
+  let helping_users = []
+  let helped_users = []
+  let helping_by_users = []
+  let helped_by_users = []
+  try {
+    helping_users = JSON.parse(resData.helping_users)
+  } catch (error) {
+    console.warn('Error parsing helping_users JSON:', error)
+  }
+  try {
+    helped_users = JSON.parse(resData.helped_users)
+  } catch (error) {
+    console.warn('Error parsing helped_users JSON:', error)
+  }
+  try {
+    helping_by_users = JSON.parse(resData.helping_by_users)
+  } catch (error) {
+    console.warn('Error parsing helping_by_users JSON:', error)
+  }
+  try {
+    helped_by_users = JSON.parse(resData.helped_by_users)
+  } catch (error) {
+    console.warn('Error parsing helped_by_users JSON:', error)
+  }
 
   // 返回一个新对象，对用户可以自定义的信息，转义特殊字符（也可以不用）
   return {
@@ -57,11 +77,13 @@ export const parseUserInfo = (resData) => {
   }
 }
 
-// 解析用户通知、"content"转义特殊字符（也可以不用）
+// 解析用户通知
 export const parseUserNotification = (resData) => {
-  const notifications = JSON.parse(resData.notifications)
-  // notifications.forEach((notification) => {
-  //   notification.content = escape(notification.content)
-  // })
+  let notifications = []
+  try {
+    notifications = JSON.parse(resData.notifications)
+  } catch (error) {
+    console.warn('Error parsing notifications JSON:', error)
+  }
   return notifications
 }

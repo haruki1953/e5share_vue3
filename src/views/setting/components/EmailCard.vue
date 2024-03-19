@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { userRules } from '@/config/rules'
 import { useProfileStore } from '@/stores'
-import { loadData } from '@/utils/initial'
+import { loadAll } from '@/utils/dataManage'
 import { userUpdateEmailService } from '@/api/user'
 
 // 表单组件
@@ -46,7 +46,7 @@ const submitEmail = async () => {
     // 调用修改邮箱的接口
     await userUpdateEmailService(emailForm.value)
     // 重新获取数据
-    await loadData()
+    await loadAll()
     showOldData()
     ElMessage.success('修改成功')
   } finally {
@@ -88,3 +88,4 @@ defineExpose({
     </el-form>
   </el-card>
 </template>
+@/utils/dataManage

@@ -28,6 +28,12 @@ export const useUsersStore = defineStore(
       return userList.value.find((user) => user.id === id)
     }
 
+    // 根据id数组返回用户列表
+    const filterUsersByIds = (idList) => {
+      // 使用 Array.filter 方法过滤出与给定id数组匹配的用户
+      return userList.value.filter((user) => idList.includes(user.id))
+    }
+
     // 正在分享的用户列表
     const sharingUsers = computed(() => {
       // 过滤正在分享的用户
@@ -59,6 +65,7 @@ export const useUsersStore = defineStore(
       userList,
       getUsers,
       findUserById,
+      filterUsersByIds,
       sharingUsers,
       searchUsers
     }

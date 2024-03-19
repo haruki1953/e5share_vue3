@@ -10,9 +10,10 @@ import {
   Tools
 } from '@element-plus/icons-vue'
 import { useAuthStore, useProfileStore, usePostsStore } from '@/stores'
-import { loadData } from '@/utils/initial'
+import { loadAll } from '@/utils/dataManage'
 import { avatarConfig, logoImage } from '@/config'
 import NotifDrawer from './components/NotifDrawer.vue'
+import { removeLogin } from '@/utils/dataManage'
 
 // 路由
 const router = useRouter()
@@ -24,7 +25,7 @@ const profileStore = useProfileStore()
 const postsStore = usePostsStore()
 
 // 请求获取数据
-loadData()
+loadAll()
 
 // 退出登录
 const logout = async () => {
@@ -35,10 +36,8 @@ const logout = async () => {
   //   cancelButtonText: '取消'
   // })
 
-  // 清除本地的数据 token、信息、动态
-  authStore.removeToken()
-  profileStore.removeProfile()
-  postsStore.removePosts()
+  // 清除本地登录的数据
+  await removeLogin()
 
   // 跳转路由
   // router.push('/login')
@@ -237,3 +236,4 @@ const openNotifDrawer = () => {
   }
 }
 </style>
+@/utils/dataManage

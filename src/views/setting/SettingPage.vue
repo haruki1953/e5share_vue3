@@ -92,16 +92,7 @@ const setActiveMenuItem = (index) => {
               <el-text tag="b" size="large"> 修改E5订阅信息 </el-text>
             </el-menu-item>
             <el-menu-item @click="$router.push('/share')">
-              <el-text tag="b" size="large">
-                <span
-                  v-if="
-                    profileStore.user.account_status === accountStatus.sharing
-                  "
-                >
-                  E5分享管理
-                </span>
-                <span v-else> E5分享登记 </span>
-              </el-text>
+              <el-text tag="b" size="large"> E5分享管理 </el-text>
             </el-menu-item>
           </el-menu>
         </el-card>
