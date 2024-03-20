@@ -61,11 +61,15 @@ const e5expirationDate = computed(() =>
       <el-row class="row-info">
         <el-col :span="12">
           <el-text tag="b"> E5订阅开始日： </el-text>
-          <el-text type="info"> {{ e5subscriptionDate }} </el-text>
+          <el-text type="info" class="date-text">
+            {{ e5subscriptionDate }}
+          </el-text>
         </el-col>
         <el-col :span="12">
           <el-text tag="b"> E5订阅结束日： </el-text>
-          <el-text type="info"> {{ e5expirationDate }} </el-text>
+          <el-text type="info" class="date-text">
+            {{ e5expirationDate }}
+          </el-text>
         </el-col>
       </el-row>
       <el-divider content-position="left">
@@ -105,6 +109,10 @@ const e5expirationDate = computed(() =>
     .text-info {
       white-space: pre-line;
     }
+  }
+  .date-text {
+    margin-right: 10px;
+    white-space: nowrap;
   }
   .el-divider {
     margin-top: 24px;

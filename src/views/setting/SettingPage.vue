@@ -1,6 +1,7 @@
 <script setup>
 import 'element-plus/theme-chalk/display.css'
-import { ref, nextTick, computed } from 'vue'
+import { ref, nextTick, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import ProfileCard from './components/ProfileCard.vue'
 import AvatarCard from './components/AvatarCard.vue'
 import EmailCard from './components/EmailCard.vue'
@@ -58,6 +59,17 @@ const scrollToCard = (cardRef) => {
 const setActiveMenuItem = (index) => {
   activeMenuItem.value = index
 }
+
+const route = useRoute()
+onMounted(() => {
+  // 判断参数，滚动至对应卡片
+  switch (route.query.setting) {
+    case 'e5':
+      scrollToCard(editE5Card.value)
+      setActiveMenuItem(5)
+      break
+  }
+})
 </script>
 
 <template>

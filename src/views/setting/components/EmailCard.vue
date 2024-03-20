@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { userRules } from '@/config/rules'
 import { useProfileStore } from '@/stores'
-import { loadAll } from '@/utils/dataManage'
+import { loadUserData } from '@/utils/dataManage'
 import { userUpdateEmailService } from '@/api/user'
 
 // 表单组件
@@ -46,7 +46,7 @@ const submitEmail = async () => {
     // 调用修改邮箱的接口
     await userUpdateEmailService(emailForm.value)
     // 重新获取数据
-    await loadAll()
+    await loadUserData()
     showOldData()
     ElMessage.success('修改成功')
   } finally {

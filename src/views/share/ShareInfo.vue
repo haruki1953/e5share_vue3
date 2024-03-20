@@ -1,19 +1,23 @@
 <script setup>
 import { computed } from 'vue'
-import { useUsersStore, useProfileStore } from '@/stores'
-import { accountStatus } from '@/config'
+import { useUsersStore, useProfileStore, useShareStore } from '@/stores'
+import { accountStatus, shareInfoStatus } from '@/config'
 
 const usersStore = useUsersStore()
 const profileStore = useProfileStore()
+const shareStore = useShareStore()
 
 // 要显示的数据，帮助自己的用户列表
 const helpingByUsers = computed(() => {
   return usersStore.filterUsersByIds(profileStore.user.helping_by_users)
 })
-
 // 用户信息
 const user = computed(() => {
   return profileStore.user
+})
+// 分享信息表格
+const shareInfo = computed(() => {
+  return shareStore.shareInfoList
 })
 </script>
 
@@ -32,6 +36,7 @@ const user = computed(() => {
           </div>
         </div>
       </template>
+      <!-- 当前用户信息 -->
       <el-row class="user-e5">
         <div>
           <el-row class="user-avatar">
@@ -62,7 +67,7 @@ const user = computed(() => {
               <el-button
                 type="primary"
                 size="large"
-                @click="$router.push('/setting')"
+                @click="$router.push('/setting?setting=e5')"
               >
                 修改E5订阅信息
               </el-button>
@@ -71,9 +76,67 @@ const user = computed(() => {
           <e5sharing-progress :user="user"></e5sharing-progress>
         </div>
       </el-row>
-      <div class="helping-table"></div>
+      <!-- 分享信息表格 -->
+      <div class="share-table">
+        <el-table
+          :data="shareInfo"
+          stripe
+          table-layout="auto"
+          empty-text="暂无分享信息"
+        >
+          <el-table-column label="用户">
+            <template #default="scope">
+              <user-item
+                class="user-item"
+                :userId="scope.row.userId"
+              ></user-item>
+            </template>
+          </el-table-column>
+          <el-table-column label="分享状态" width="100px">
+            <template #default="scope">
+              <el-tag
+                v-if="scope.row.status === shareInfoStatus.unsent"
+                type="info"
+                effect="dark"
+                >未发送</el-tag
+              >
+              <el-tag
+                v-if="scope.row.status === shareInfoStatus.pending_confirmation"
+                type="warning"
+                effect="dark"
+                >待确认</el-tag
+              >
+              <el-tag
+                v-if="scope.row.status === shareInfoStatus.confirmed"
+                type="success"
+                effect="dark"
+                >已确认</el-tag
+              >
+              <el-tag
+                v-if="scope.row.status === shareInfoStatus.stoped"
+                type="danger"
+                effect="dark"
+                >已停止</el-tag
+              >
+            </template>
+          </el-table-column>
+          <el-table-column label="备注">
+            <template #default="scope">
+              <el-text line-clamp="2"> {{ scope.row.note }} </el-text>
+            </template>
+          </el-table-column>
+          <el-table-column width="100px">
+            <template #header>
+              <el-button type="primary" round> 添加用户 </el-button>
+            </template>
+            <template>
+              <el-button type="primary" round> 操作 </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-card>
-    <el-card class="e5manage-card" v-else>
+    <el-card class="e5header-card" v-else>
       <div class="header-box">
         <el-text tag="b" size="large" type="primary"> 您还未开始分享 </el-text>
         <div class="header-button">
@@ -96,43 +159,55 @@ const user = computed(() => {
       padding: 30px;
     }
   }
-  .header-box {
+}
+.e5header-card {
+  margin: 10px 20px;
+  border-radius: 20px;
+}
+
+.header-box {
+  display: flex;
+  justify-content: space-between;
+}
+.user-e5 {
+  margin-left: 5px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap; /* 不换行 */
+  .user-avatar {
     display: flex;
-    justify-content: space-between;
-  }
-  .user-e5 {
-    margin-left: 5px;
-    display: flex;
-    justify-content: space-between;
     flex-wrap: nowrap; /* 不换行 */
-    .user-avatar {
+    margin: 4px 0;
+    .tag-box {
+      height: 80px;
       display: flex;
-      flex-wrap: nowrap; /* 不换行 */
-      margin: 4px 0;
-      .tag-box {
-        height: 80px;
-        display: flex;
-        align-items: center;
-        margin: 0 20px;
-      }
+      align-items: center;
+      margin: 0 20px;
     }
-    .e5info-botton {
+  }
+  .e5info-botton {
+    display: flex;
+    // flex-wrap: nowrap; /* 不换行 */
+    .button-box {
+      height: 126px;
       display: flex;
-      // flex-wrap: nowrap; /* 不换行 */
-      .button-box {
-        height: 126px;
+      align-items: center;
+      margin: 0 20px;
+      .button-col {
         display: flex;
-        align-items: center;
-        margin: 0 20px;
-        .button-col {
-          display: flex;
-          flex-direction: column;
-          .el-button {
-            margin: 3px;
-          }
+        flex-direction: column;
+        .el-button {
+          margin: 3px;
         }
       }
     }
+  }
+}
+
+.share-table {
+  margin-top: 20px;
+  .user-item {
+    min-width: 200px;
   }
 }
 </style>

@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { useProfileStore } from '@/stores'
 import { userUpdateProfileService } from '@/api/user'
-import { loadAll } from '@/utils/dataManage'
+import { loadUserData } from '@/utils/dataManage'
 import { userRules } from '@/config/rules'
 
 // 表单组件
@@ -66,7 +66,7 @@ const submitProfile = async () => {
     // 调用修改用户信息的接口
     await userUpdateProfileService(profileForm.value)
     // 重新获取数据
-    await loadAll()
+    await loadUserData()
     showOldData()
     ElMessage.success('修改成功')
   } finally {

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useProfileStore } from '@/stores'
-import { loadAll } from '@/utils/dataManage'
+import { loadUserData } from '@/utils/dataManage'
 import { formatDate } from '@/utils/timeUtils'
 import { userUpdateE5infoService } from '@/api/user'
 
@@ -122,7 +122,7 @@ const submitE5info = async () => {
     // 调用修改E5订阅信息的接口
     await userUpdateE5infoService(e5Form.value)
     // 重新获取数据
-    await loadAll()
+    await loadUserData()
     showOldData()
     ElMessage.success('修改成功')
   } finally {

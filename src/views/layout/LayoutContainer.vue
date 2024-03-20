@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   HomeFilled,
@@ -10,7 +10,7 @@ import {
   Tools
 } from '@element-plus/icons-vue'
 import { useAuthStore, useProfileStore, usePostsStore } from '@/stores'
-import { loadAll } from '@/utils/dataManage'
+import { loadAllData } from '@/utils/dataManage'
 import { avatarConfig, logoImage } from '@/config'
 import NotifDrawer from './components/NotifDrawer.vue'
 import { removeLogin } from '@/utils/dataManage'
@@ -25,7 +25,7 @@ const profileStore = useProfileStore()
 const postsStore = usePostsStore()
 
 // 请求获取数据
-loadAll()
+loadAllData()
 
 // 退出登录
 const logout = async () => {
@@ -36,7 +36,10 @@ const logout = async () => {
   //   cancelButtonText: '取消'
   // })
 
-  // 清除本地登录的数据
+  // 退出前跳转到首页
+  await router.push('/home')
+  // 在下一个渲染周期执行清除本地登录的数据
+  await nextTick()
   await removeLogin()
 
   // 跳转路由

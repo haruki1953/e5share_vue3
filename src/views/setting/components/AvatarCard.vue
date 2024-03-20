@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { Plus } from '@element-plus/icons-vue'
 import { userUpdateAvatarService } from '@/api/user'
-import { loadAll } from '@/utils/dataManage'
+import { loadUserData } from '@/utils/dataManage'
 import { avatarRule } from '@/config/rules'
 
 const avatarObj = ref('') // 图片对象用于提交
@@ -50,7 +50,7 @@ const submitAvatar = async () => {
     // 清除
     clearAvatar()
     // 重新获取数据
-    await loadAll()
+    await loadUserData()
     ElMessage.success('修改成功')
   } finally {
     // 无论提交成功或失败，都要解除提交中状态

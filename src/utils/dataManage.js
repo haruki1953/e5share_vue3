@@ -19,7 +19,7 @@ const postsStore = usePostsStore()
 const shareStore = useShareStore()
 
 // 请求获取全部数据
-export const loadAll = async () => {
+export const loadAllData = async () => {
   // 获取用户列表
   const getUsersPromise = usersStore.getUsers()
 
@@ -82,10 +82,23 @@ export const loadAll = async () => {
 }
 
 // 请求获取用户信息与用户列表（修改用户信息后调用）
+export const loadUserData = async () => {
+  // 获取用户列表
+  const getUsersPromise = usersStore.getUsers()
+  // 获取用户信息
+  await profileStore.getProfile()
+  await getUsersPromise
+}
 
 // 请求获取帖子信息（发帖等操作后调用）
+export const loadPostData = async () => {
+  await postsStore.getPostsList()
+}
 
 // 请求获取分享信息（修改分享信息后）
+export const loadShareData = async () => {
+  await shareStore.getShareInfo()
+}
 
 // 退出登录
 export const removeLogin = async () => {

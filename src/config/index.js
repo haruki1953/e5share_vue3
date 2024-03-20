@@ -84,3 +84,11 @@ export const notificationType = {
   // 用户停止接受分享通知
   e5_share_receiver_stop: 'e5_share_receiver_stop'
 }
+
+// 分享信息状态
+export const shareInfoStatus = {
+  unsent: 'unsent',
+  pending_confirmation: 'pending_confirmation',
+  confirmed: 'confirmed',
+  stoped: 'stoped'
+}
