@@ -1,7 +1,11 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useUsersStore, useProfileStore, useShareStore } from '@/stores'
 import { accountStatus, shareInfoStatus } from '@/config'
+import ShareRegisterDrawer from './components/ShareRegisterDrawer.vue'
+import ShareCancelDrawer from './components/ShareCancelDrawer.vue'
+import ShareInfoUpdateDialog from './components/ShareInfoUpdateDialog.vue'
+import ShareInfoAddDialog from './components/ShareInfoAddDialog.vue'
 
 const usersStore = useUsersStore()
 const profileStore = useProfileStore()
@@ -19,6 +23,13 @@ const user = computed(() => {
 const shareInfo = computed(() => {
   return shareStore.shareInfoList
 })
+
+// 分享登记抽屉 分享注销抽屉
+const shareRegisterDrawerRef = ref()
+const shareCancelDrawerRef = ref()
+// 分享信息操作、添加对话框
+const shareInfoUpdateDialogRef = ref()
+const shareInfoAddDialogRef = ref()
 </script>
 
 <template>
@@ -32,10 +43,17 @@ const shareInfo = computed(() => {
         <div class="header-box">
           <el-text tag="b" size="large" type="primary"> 您正在分享： </el-text>
           <div class="header-button">
-            <el-button type="primary" round> 说明 / 注销分享 </el-button>
+            <el-button
+              type="primary"
+              round
+              @click="shareCancelDrawerRef.open()"
+            >
+              说明 / 注销分享
+            </el-button>
           </div>
         </div>
       </template>
+      <share-cancel-drawer ref="shareCancelDrawerRef"></share-cancel-drawer>
       <!-- 当前用户信息 -->
       <el-row class="user-e5">
         <div>
@@ -98,26 +116,30 @@ const shareInfo = computed(() => {
                 v-if="scope.row.status === shareInfoStatus.unsent"
                 type="info"
                 effect="dark"
-                >未发送</el-tag
               >
+                未发送
+              </el-tag>
               <el-tag
                 v-if="scope.row.status === shareInfoStatus.pending_confirmation"
                 type="warning"
                 effect="dark"
-                >待确认</el-tag
               >
+                待确认
+              </el-tag>
               <el-tag
                 v-if="scope.row.status === shareInfoStatus.confirmed"
                 type="success"
                 effect="dark"
-                >已确认</el-tag
               >
+                已确认
+              </el-tag>
               <el-tag
                 v-if="scope.row.status === shareInfoStatus.stoped"
                 type="danger"
                 effect="dark"
-                >已停止</el-tag
               >
+                已停止
+              </el-tag>
             </template>
           </el-table-column>
           <el-table-column label="备注">
@@ -127,22 +149,49 @@ const shareInfo = computed(() => {
           </el-table-column>
           <el-table-column width="100px">
             <template #header>
-              <el-button type="primary" round> 添加用户 </el-button>
+              <el-button
+                type="primary"
+                round
+                @click="shareInfoAddDialogRef.open()"
+              >
+                添加用户
+              </el-button>
             </template>
-            <template>
-              <el-button type="primary" round> 操作 </el-button>
+            <template #default="scope">
+              <el-button
+                type="primary"
+                round
+                @click="shareInfoUpdateDialogRef.open(scope.row.userid)"
+              >
+                操作
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
+        <share-info-update-dialog
+          ref="shareInfoUpdateDialogRef"
+        ></share-info-update-dialog>
+        <share-info-add-dialog
+          ref="shareInfoAddDialogRef"
+        ></share-info-add-dialog>
       </div>
     </el-card>
     <el-card class="e5header-card" v-else>
       <div class="header-box">
         <el-text tag="b" size="large" type="primary"> 您还未开始分享 </el-text>
         <div class="header-button">
-          <el-button type="primary" round> 说明 / 登记分享 </el-button>
+          <el-button
+            type="primary"
+            round
+            @click="shareRegisterDrawerRef.open()"
+          >
+            说明 / 登记分享
+          </el-button>
         </div>
       </div>
+      <share-register-drawer
+        ref="shareRegisterDrawerRef"
+      ></share-register-drawer>
     </el-card>
 
     <!-- 用户卡片容器 -->

@@ -183,6 +183,9 @@ const notifContent = computed(() => {
       .el-icon {
         margin-right: 10px;
       }
+      .el-text {
+        line-height: 20px;
+      }
     }
   }
   .user-container {

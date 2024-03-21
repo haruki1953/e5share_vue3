@@ -1,12 +1,9 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useProfileStore } from '@/stores'
 import { loadUserData } from '@/utils/dataManage'
 import { formatDate } from '@/utils/timeUtils'
 import { userUpdateE5infoService } from '@/api/user'
-
-// 是否为直接选择日期
-const isSelectedDate = ref(false)
 
 // 日期字符串，用于导出与提交
 const e5Form = ref({
@@ -17,71 +14,8 @@ defineExpose({
   e5Form
 })
 
-// 计算属性
-// 开始日期
-const startDate = computed({
-  get: () => new Date(e5Form.value.subscriptionDate),
-  set: (val) => {
-    e5Form.value.subscriptionDate = formatDate(val)
-  }
-})
-// 结束日期
-const endDate = computed({
-  get: () => new Date(e5Form.value.expirationDate),
-  set: (val) => {
-    e5Form.value.expirationDate = formatDate(val)
-  }
-})
-
-// 根据总天数和剩余天数计算日期
-function calculateDates(totalDays, remainingDays) {
-  const now = new Date()
-  const newStartDate = new Date()
-  newStartDate.setDate(now.getDate() - (totalDays - remainingDays))
-  const newEndDate = new Date()
-  newEndDate.setDate(now.getDate() + remainingDays)
-  startDate.value = newStartDate
-  endDate.value = newEndDate
-}
-// 总天数
-const totalDays = computed({
-  get: () => {
-    const days = Math.round(
-      (endDate.value - startDate.value) / (1000 * 60 * 60 * 24)
-    )
-    return days >= 1 ? days : 1
-  },
-  set: (val) => {
-    calculateDates(val, val)
-  }
-})
-// 剩余天数
-const remainingDays = computed({
-  get: () => {
-    const days = Math.round(
-      (endDate.value - new Date()) / (1000 * 60 * 60 * 24)
-    )
-    return days >= 0 ? days : 0
-  },
-  set: (val) => {
-    calculateDates(totalDays.value, val)
-  }
-})
-
-// 日期范围选择器绑定的计算属性
-const daterange = computed({
-  get: () => [startDate.value, endDate.value],
-  set: (val) => {
-    if (!val) {
-      return
-    }
-    if (formatDate(val[0]) === formatDate(val[1])) {
-      // val[1].setDate(val[1].getDate() + 1)
-    }
-    startDate.value = val[0]
-    endDate.value = val[1]
-  }
-})
+// 日期选择表单的引用
+const e5dateFormRef = ref()
 
 const profileStore = useProfileStore()
 // 显示初始化订阅信息，并判断是否合法
@@ -90,12 +24,14 @@ const showOldData = () => {
   const subDate = formatDate(profileStore.user.e5_subscription_date)
   const expDate = formatDate(profileStore.user.e5_expiration_date)
   // 数据非法时 设置默认为90天
-  if (!subDate || !expDate) return calculateDates(90, 90)
+  if (!subDate || !expDate) return e5dateFormRef.value.calculateDates(90, 90)
   // 数据有效
-  startDate.value = subDate
-  endDate.value = expDate
+  e5Form.value.subscriptionDate = subDate
+  e5Form.value.expirationDate = expDate
 }
-showOldData()
+onMounted(() => {
+  showOldData()
+})
 
 // 判断当前表单是否和原来相同
 const isFormUnchanged = computed(() => {
@@ -136,62 +72,21 @@ const submitE5info = async () => {
     <template #header>
       <el-text tag="b" size="large"> 修改E5订阅信息 </el-text>
     </template>
-    <div class="form-box">
-      <div v-if="isSelectedDate" class="picker-box">
-        <el-date-picker
-          v-model="daterange"
-          type="daterange"
+    <e5date-form v-model="e5Form" ref="e5dateFormRef">
+      <template #buttons>
+        <el-button
           size="large"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          unlink-panels
-          :clearable="false"
-        />
-      </div>
-      <div v-else class="num-box">
-        <div>
-          <el-text>总天数</el-text>
-          <el-slider
-            v-model="totalDays"
-            :min="1"
-            :max="365"
-            :step="1"
-            step-strictly
-            show-input
-            size="large"
-          />
-        </div>
-        <div>
-          <el-text>剩余天数</el-text>
-          <el-slider
-            v-model="remainingDays"
-            :min="0"
-            :max="totalDays"
-            :step="1"
-            step-strictly
-            show-input
-            size="large"
-          />
-        </div>
-      </div>
-      <div class="button-box">
-        <el-checkbox v-model="isSelectedDate"> 直接选择日期 </el-checkbox>
-        <div>
-          <el-button
-            size="large"
-            type="primary"
-            @click="submitE5info"
-            :loading="isSubmitting"
-          >
-            保存
-          </el-button>
-          <el-button size="large" type="info" @click="showOldData">
-            还原
-          </el-button>
-        </div>
-      </div>
-    </div>
+          type="primary"
+          @click="submitE5info"
+          :loading="isSubmitting"
+        >
+          保存
+        </el-button>
+        <el-button size="large" type="info" @click="showOldData">
+          还原
+        </el-button>
+      </template>
+    </e5date-form>
   </el-card>
 </template>
 
