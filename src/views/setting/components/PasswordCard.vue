@@ -83,6 +83,7 @@ const submitPassword = async () => {
           v-model="passwordForm.oldPassword"
           placeholder="请输入旧密码"
           type="password"
+          @keydown.enter.prevent
         ></el-input>
       </el-form-item>
       <el-form-item label="新密码" prop="newPassword">
@@ -90,6 +91,7 @@ const submitPassword = async () => {
           v-model="passwordForm.newPassword"
           placeholder="请输入新密码"
           type="password"
+          @keydown.enter.prevent
         ></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="rePassword">
@@ -97,6 +99,7 @@ const submitPassword = async () => {
           v-model="passwordForm.rePassword"
           placeholder="请确认密码"
           type="password"
+          @keydown.enter.prevent
         ></el-input>
       </el-form-item>
       <el-form-item>

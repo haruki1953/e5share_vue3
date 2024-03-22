@@ -43,3 +43,11 @@ export const avatarRule = {
   maxSize: 2 * 1024 * 1024,
   sizeError: '图片文件大小不能超过 2MB'
 }
+
+// 分享相关信息的验证规则
+export const shareRules = {
+  message: [
+    { max: 500, message: '留言长度不能超过500个字符', trigger: 'blur' }
+  ],
+  note: [{ max: 500, message: '备注长度不能超过500个字符', trigger: 'blur' }]
+}

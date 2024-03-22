@@ -98,7 +98,6 @@ const shareInfoAddDialogRef = ref()
       <div class="share-table">
         <el-table
           :data="shareInfo"
-          stripe
           table-layout="auto"
           empty-text="暂无分享信息"
         >
@@ -195,7 +194,10 @@ const shareInfoAddDialogRef = ref()
     </el-card>
 
     <!-- 用户卡片容器 -->
-    <usercard-container :dataList="helpingByUsers"></usercard-container>
+    <usercard-container
+      class="usercard-container"
+      :dataList="helpingByUsers"
+    ></usercard-container>
   </el-scrollbar>
 </template>
 
@@ -258,5 +260,9 @@ const shareInfoAddDialogRef = ref()
   .user-item {
     min-width: 200px;
   }
+}
+
+.usercard-container {
+  margin-top: 15px;
 }
 </style>

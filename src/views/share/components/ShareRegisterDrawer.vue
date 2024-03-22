@@ -1,6 +1,7 @@
 <script setup>
 import { ref, nextTick } from 'vue'
 import { shareRegisterService } from '@/api/share'
+import { loadUserData } from '@/utils/dataManage'
 
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
@@ -36,6 +37,8 @@ const submitE5info = async () => {
   try {
     // 调用修改E5订阅信息的接口
     await shareRegisterService(e5Form.value)
+    // 刷新数据
+    await loadUserData()
     ElMessage.success('登记成功')
     // 关闭抽屉
   } finally {
@@ -60,9 +63,9 @@ defineExpose({
     <el-scrollbar>
       <!-- 登记表单 -->
       <div class="register-form">
-        <el-text tag="h1" size="large" class="form-title"
-          >设置E5订阅信息 | 登记分享</el-text
-        >
+        <el-text tag="h1" size="large" class="form-title">
+          设置E5订阅信息 | 登记分享
+        </el-text>
         <e5date-form v-model="e5Form" ref="e5dateFormRef">
           <template #buttons>
             <el-button
@@ -72,9 +75,6 @@ defineExpose({
               :loading="isSubmitting"
             >
               登记
-            </el-button>
-            <el-button size="large" type="info" @click="showOldData">
-              还原
             </el-button>
           </template>
         </e5date-form>

@@ -99,6 +99,7 @@ defineExpose({
           placeholder="请输入昵称"
           maxlength="32"
           show-word-limit
+          @keydown.enter.prevent
         ></el-input>
       </el-form-item>
       <el-form-item label="简介" prop="bio">

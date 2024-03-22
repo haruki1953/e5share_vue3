@@ -19,10 +19,18 @@ export const useShareStore = defineStore(
     const removeShareInfo = () => {
       shareInfoList.value = []
     }
+
+    // 根据用户id获取分享信息
+    const findShareInfoByUserId = (userId) => {
+      return shareInfoList.value.find(
+        (shareInfo) => shareInfo.userId === userId
+      )
+    }
     return {
       shareInfoList,
       getShareInfo,
-      removeShareInfo
+      removeShareInfo,
+      findShareInfoByUserId
     }
   },
   {

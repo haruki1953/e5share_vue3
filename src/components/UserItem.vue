@@ -6,6 +6,11 @@ const props = defineProps({
   userId: {
     required: true,
     type: Number
+  },
+  // 用户名链接是否可跳转，默认为true
+  usernameLink: {
+    type: Boolean,
+    default: true
   }
 })
 const usersStore = useUsersStore()
@@ -23,7 +28,11 @@ const user = computed(() => {
       type="info"
       :underline="false"
       @click.stop="$router.push(`/user/${user.id}`)"
+      v-if="usernameLink"
     >
+      @{{ user.username }}
+    </el-link>
+    <el-link type="info" :underline="false" v-else>
       @{{ user.username }}
     </el-link>
   </div>

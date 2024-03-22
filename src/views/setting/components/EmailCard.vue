@@ -77,6 +77,7 @@ defineExpose({
         <el-input
           v-model="emailForm.email"
           placeholder="请输入新邮箱"
+          @keydown.enter.prevent
         ></el-input>
       </el-form-item>
       <el-form-item>

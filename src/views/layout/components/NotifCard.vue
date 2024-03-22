@@ -153,9 +153,16 @@ const notifContent = computed(() => {
       <el-main>
         <div>
           <el-text tag="b">留言： </el-text>
-          <el-text type="info">
-            {{ notif.content || '无' }}
-          </el-text>
+          <div>
+            <el-popover effect="light" trigger="click" width="300px">
+              <template #reference>
+                <el-text type="info" class="notif-message" line-clamp="9">
+                  {{ notif.content || '无' }}
+                </el-text>
+              </template>
+              {{ notif.content || '无' }}
+            </el-popover>
+          </div>
         </div>
       </el-main>
     </el-container>
@@ -198,6 +205,9 @@ const notifContent = computed(() => {
       align-items: center;
       padding: 0 20px;
     }
+  }
+  .notif-message {
+    white-space: pre-line;
   }
 }
 </style>
