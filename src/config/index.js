@@ -92,3 +92,6 @@ export const shareInfoStatus = {
   confirmed: 'confirmed',
   stoped: 'stoped'
 }
+
+// 分享信息不能删除的状态：已确认后不能删除
+export const shareInfoCantDelStatus = [shareInfoStatus.confirmed]

@@ -1,5 +1,6 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useUsersStore, useProfileStore, useShareStore } from '@/stores'
 import { accountStatus, shareInfoStatus } from '@/config'
 import ShareRegisterDrawer from './components/ShareRegisterDrawer.vue'
@@ -30,6 +31,15 @@ const shareCancelDrawerRef = ref()
 // 分享信息操作、添加对话框
 const shareInfoUpdateDialogRef = ref()
 const shareInfoAddDialogRef = ref()
+
+// 根据路由参数快速添加用户
+const route = useRoute()
+onMounted(() => {
+  const addUserId = Number(route.query.add)
+  if (addUserId) {
+    shareInfoAddDialogRef.value.open(addUserId)
+  }
+})
 </script>
 
 <template>
@@ -143,7 +153,9 @@ const shareInfoAddDialogRef = ref()
           </el-table-column>
           <el-table-column label="备注">
             <template #default="scope">
-              <el-text line-clamp="2"> {{ scope.row.note }} </el-text>
+              <el-text class="text-info" line-clamp="3">
+                {{ scope.row.note }}
+              </el-text>
             </template>
           </el-table-column>
           <el-table-column width="100px">
@@ -160,7 +172,7 @@ const shareInfoAddDialogRef = ref()
               <el-button
                 type="primary"
                 round
-                @click="shareInfoUpdateDialogRef.open(scope.row.userid)"
+                @click="shareInfoUpdateDialogRef.open(scope.row.userId)"
               >
                 操作
               </el-button>
@@ -259,6 +271,9 @@ const shareInfoAddDialogRef = ref()
   margin-top: 20px;
   .user-item {
     min-width: 200px;
+  }
+  .text-info {
+    white-space: pre-line;
   }
 }
 

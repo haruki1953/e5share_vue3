@@ -10,3 +10,9 @@ export const shareCancelService = ({ message }) =>
 
 export const shareAddInfoService = ({ userId, note }) =>
   request.post(`/e5share/info`, { userId, note })
+
+export const shareUpdateInfoService = ({ userId, note }) =>
+  request.patch(`/e5share/info`, { userId, note })
+
+export const shareDeleteInfoService = ({ userId }) =>
+  request.delete(`/e5share/info/${userId}`)
