@@ -67,27 +67,23 @@ export const loadAllData = async () => {
     getShareInfoPromise = shareStore.getShareInfo()
   }
 
-  // 等待所有请求完成
-  await getUsersPromise
-  // 安全地进行 await
-  if (getPostsListPromise) {
-    await getPostsListPromise
-  }
-  if (getShareInfoPromise) {
-    await getShareInfoPromise
-  }
-  if (newGetPostsListPromise) {
-    await newGetPostsListPromise
-  }
+  // 等待所有请求完成，安全地进行 await
+  await Promise.all([
+    getUsersPromise,
+    getPostsListPromise ? getPostsListPromise : Promise.resolve(),
+    getShareInfoPromise ? getShareInfoPromise : Promise.resolve(),
+    newGetPostsListPromise ? newGetPostsListPromise : Promise.resolve()
+  ])
 }
 
 // 请求获取用户信息与用户列表（修改用户信息后调用）
 export const loadUserData = async () => {
-  // 获取用户列表
-  const getUsersPromise = usersStore.getUsers()
-  // 获取用户信息
-  await profileStore.getProfile()
-  await getUsersPromise
+  await Promise.all([
+    // 获取用户列表
+    usersStore.getUsers(),
+    // 获取用户信息
+    profileStore.getProfile()
+  ])
 }
 
 // 请求获取帖子信息（发帖等操作后调用）

@@ -18,6 +18,9 @@ const props = defineProps({
   }
 })
 
+// 添加分享事件 shareAdd、确认分享事件shareConfirm
+const emit = defineEmits(['shareAdd', 'shareConfirm'])
+
 // 用户列表
 const usersStore = useUsersStore()
 
@@ -119,13 +122,13 @@ const notifContent = computed(() => {
         <el-button
           v-if="notif.type === notificationType.e5_share_application"
           type="primary"
-          @click="handleApplication"
+          @click="emit('shareAdd', otherUser.id)"
           >加入分享管理</el-button
         >
         <el-button
           v-else-if="notif.type === notificationType.e5_share_confirmation"
           type="primary"
-          @click="handleConfirmation"
+          @click="emit('shareConfirm', otherUser.id)"
           >确认</el-button
         >
       </div>

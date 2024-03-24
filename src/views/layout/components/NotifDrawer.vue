@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useProfileStore } from '@/stores'
 import NotifCard from './NotifCard.vue'
 
@@ -15,14 +16,22 @@ const open = () => {
   profileStore.markAllNotifAsRead()
 }
 
+defineExpose({
+  open
+})
+
 // 对通知进行倒序排序
 const sortedNotifications = computed(() => {
   return profileStore.notifications.slice().reverse()
 })
 
-defineExpose({
-  open
-})
+const router = useRouter()
+// 添加分享：跳转至分享页面并带上add参数
+const addShareInfo = (userId) => {
+  router.push(`/share?add=${userId}`)
+  // 关闭抽屉
+  visibleDrawer.value = false
+}
 </script>
 
 <template>
@@ -42,6 +51,7 @@ defineExpose({
         v-for="item in sortedNotifications"
         :key="item.id"
         :notif="item"
+        @shareAdd="addShareInfo"
       ></notif-card>
     </el-scrollbar>
   </el-drawer>

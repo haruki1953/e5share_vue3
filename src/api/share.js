@@ -16,3 +16,9 @@ export const shareUpdateInfoService = ({ userId, note }) =>
 
 export const shareDeleteInfoService = ({ userId }) =>
   request.delete(`/e5share/info/${userId}`)
+
+export const shareConfmSendService = ({ userId, message }) =>
+  request.put(`/e5share/confirmation/send`, { userId, message })
+
+export const shareStopSharingService = ({ userId, message }) =>
+  request.put(`/e5share/stop/sharing`, { userId, message })

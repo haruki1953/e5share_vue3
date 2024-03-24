@@ -1,12 +1,13 @@
 <script setup>
-import { computed, ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, ref, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useUsersStore, useProfileStore, useShareStore } from '@/stores'
-import { accountStatus, shareInfoStatus } from '@/config'
+import { accountStatus } from '@/config'
 import ShareRegisterDrawer from './components/ShareRegisterDrawer.vue'
 import ShareCancelDrawer from './components/ShareCancelDrawer.vue'
 import ShareInfoUpdateDialog from './components/ShareInfoUpdateDialog.vue'
 import ShareInfoAddDialog from './components/ShareInfoAddDialog.vue'
+import StatusTag from './components/StatusTag.vue'
 
 const usersStore = useUsersStore()
 const profileStore = useProfileStore()
@@ -34,12 +35,27 @@ const shareInfoAddDialogRef = ref()
 
 // 根据路由参数快速添加用户
 const route = useRoute()
-onMounted(() => {
+const router = useRouter()
+const addUserFromRoute = () => {
   const addUserId = Number(route.query.add)
   if (addUserId) {
     shareInfoAddDialogRef.value.open(addUserId)
+    // 打开添加对话框后清除路由参数add
+    // eslint-disable-next-line no-unused-vars
+    const { add, ...newQuery } = { ...route.query }
+    router.replace({ query: newQuery })
   }
+}
+onMounted(() => {
+  addUserFromRoute()
 })
+// 监听路由参数变化
+watch(
+  () => route.query,
+  () => {
+    addUserFromRoute()
+  }
+)
 </script>
 
 <template>
@@ -121,34 +137,7 @@ onMounted(() => {
           </el-table-column>
           <el-table-column label="分享状态" width="100px">
             <template #default="scope">
-              <el-tag
-                v-if="scope.row.status === shareInfoStatus.unsent"
-                type="info"
-                effect="dark"
-              >
-                未发送
-              </el-tag>
-              <el-tag
-                v-if="scope.row.status === shareInfoStatus.pending_confirmation"
-                type="warning"
-                effect="dark"
-              >
-                待确认
-              </el-tag>
-              <el-tag
-                v-if="scope.row.status === shareInfoStatus.confirmed"
-                type="success"
-                effect="dark"
-              >
-                已确认
-              </el-tag>
-              <el-tag
-                v-if="scope.row.status === shareInfoStatus.stoped"
-                type="danger"
-                effect="dark"
-              >
-                已停止
-              </el-tag>
+              <status-tag :status="scope.row.status"></status-tag>
             </template>
           </el-table-column>
           <el-table-column label="备注">
