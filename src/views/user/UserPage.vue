@@ -1,9 +1,11 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUsersStore, useProfileStore } from '@/stores'
 import { accountStatus } from '@/config'
 import { formatDate, formatTime } from '@/utils/timeUtils'
+import ApplyDrawer from './components/ApplyDrawer.vue'
+import StopDialog from './components/StopDialog.vue'
 
 const route = useRoute()
 const usersStore = useUsersStore()
@@ -18,30 +20,46 @@ const user = computed(() => {
   return usersStore.findUserById(userId)
 })
 
-// 是否显示申请按钮，当前用户状态为分享 && 当前用户未帮助登录用户 && 当前用户非登录用户
-const shouldDisplayApplyButton = computed(() => {
+// 控制按钮显示
+const buttonDisplay = computed(() => {
+  // 分享申请
+  let applyButton = false
+  // 分享停止接受
+  let stopButton = false
+
+  // 当前用户状态为分享 且 当前用户非登录用户 时显示分享相关按钮
   if (
     user.value.account_status === accountStatus.sharing &&
-    !user.value.helping_users.includes(profileStore.user.id) &&
     user.value.id !== profileStore.user.id
   ) {
-    return true
+    // 当前用户帮助登录用户时，显示停止接受分享按钮，否则显示申请分享按钮
+    if (user.value.helping_users.includes(profileStore.user.id)) {
+      stopButton = true
+    } else {
+      applyButton = true
+    }
   }
-  return false
+  return {
+    applyButton,
+    stopButton
+  }
 })
 
-// 是否显示查看分享信息按钮，当前用户为登录用户 || 当前用户正在被登录用户帮助
-const shouldDisplayShareInfoButton = computed(() => {
-  if (
-    user.value.id === profileStore.user.id ||
-    user.value.helped_by_users.includes(profileStore.user.id)
-  ) {
-    return true
-  }
-  return false
-})
+// 分享申请抽屉
+const applyDrawerRef = ref()
+const shareApply = () => {
+  applyDrawerRef.value.open()
+}
+
+// 分享停止接受对话框
+const stopDialogRef = ref()
+const shareStop = () => {
+  stopDialogRef.value.open()
+}
 </script>
 <template>
+  <apply-drawer :e5id="user.id" ref="applyDrawerRef"></apply-drawer>
+  <stop-dialog :e5id="user.id" ref="stopDialogRef"></stop-dialog>
   <el-scrollbar>
     <el-card v-if="user" class="userinfo-card">
       <el-row class="user-e5">
@@ -68,19 +86,21 @@ const shouldDisplayShareInfoButton = computed(() => {
           <div class="button-box">
             <div class="button-col">
               <el-button
-                v-if="shouldDisplayApplyButton"
+                v-if="buttonDisplay.applyButton"
                 type="primary"
                 size="large"
+                @click="shareApply"
               >
                 向TA申请E5账号
               </el-button>
               <el-button
-                v-if="shouldDisplayShareInfoButton"
-                type="primary"
+                v-if="buttonDisplay.stopButton"
+                type="danger"
                 size="large"
-                @click="$router.push('/share')"
+                plain
+                @click="shareStop"
               >
-                查看分享信息
+                停止接受TA的分享
               </el-button>
             </div>
           </div>

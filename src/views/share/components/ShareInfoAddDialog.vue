@@ -13,7 +13,6 @@ const open = (userId) => {
   if (userId) {
     addInfoForm.value.userId = userId
   }
-  console.log(userId)
   // 显示抽屉
   dialogVisible.value = true
 }

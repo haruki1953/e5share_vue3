@@ -6,7 +6,7 @@ import { loadShareData, loadUserData } from '@/utils/dataManage'
 import {
   shareUpdateInfoService,
   shareDeleteInfoService,
-  shareConfmSendService,
+  shareConfirmSendService,
   shareStopSharingService
 } from '@/api/share'
 import { shareInfoCantDelStatus, shareInfoStatus } from '@/config'
@@ -174,7 +174,7 @@ const submitSendConfirm = async () => {
   isSubmitting.value = true
   try {
     // 调用接口
-    await shareConfmSendService(shareInfoForm.value)
+    await shareConfirmSendService(shareInfoForm.value)
     // TODO 处理返回信息
 
     // 刷新数据
@@ -194,11 +194,15 @@ const submitStopShareing = async () => {
   // 预校验
   await form.value.validate()
 
-  await ElMessageBox.confirm('请事先告知用户', '您确认要停止对用户的分享吗', {
-    type: 'warning',
-    confirmButtonText: '确认',
-    cancelButtonText: '取消'
-  })
+  await ElMessageBox.confirm(
+    '请事先联系用户，或填写留言以说明情况',
+    '您确认要停止对用户的分享吗',
+    {
+      type: 'warning',
+      confirmButtonText: '确认',
+      cancelButtonText: '取消'
+    }
+  )
 
   // 设置为提交中状态
   isSubmitting.value = true
@@ -216,12 +220,7 @@ const submitStopShareing = async () => {
 }
 </script>
 <template>
-  <el-dialog
-    v-model="dialogVisible"
-    title="操作用户"
-    width="500px"
-    v-if="isUserIdExists"
-  >
+  <el-dialog v-model="dialogVisible" width="500px" v-if="isUserIdExists">
     <template #header>
       <user-item :userId="isUserIdExists"></user-item>
     </template>

@@ -8,7 +8,7 @@ import {
   More
 } from '@element-plus/icons-vue'
 import { notificationType } from '@/config'
-import { useUsersStore } from '@/stores'
+import { useProfileStore, useShareStore, useUsersStore } from '@/stores'
 import { formatTime } from '@/utils/timeUtils'
 
 const props = defineProps({
@@ -97,6 +97,18 @@ const notifContent = computed(() => {
       return props.notif.content
   }
 })
+
+const shareStore = useShareStore()
+// 是否已添加
+const isAdded = computed(() => {
+  return shareStore.findShareInfoByUserId(otherUser.value.id)
+})
+
+const profileStore = useProfileStore()
+// 是否已确认
+const isConfirmed = computed(() => {
+  return otherUser.value?.helping_users.includes(profileStore.user.id)
+})
 </script>
 
 <template>
@@ -119,18 +131,28 @@ const notifContent = computed(() => {
       </div>
       <div>
         <!-- 按钮 根据通知类型显示 -->
-        <el-button
-          v-if="notif.type === notificationType.e5_share_application"
-          type="primary"
-          @click="emit('shareAdd', otherUser.id)"
-          >加入分享管理</el-button
-        >
-        <el-button
-          v-else-if="notif.type === notificationType.e5_share_confirmation"
-          type="primary"
-          @click="emit('shareConfirm', otherUser.id)"
-          >确认</el-button
-        >
+        <div v-if="notif.type === notificationType.e5_share_application">
+          <el-button type="primary" disabled v-if="isAdded"> 已添加 </el-button>
+          <el-button
+            type="primary"
+            @click="emit('shareAdd', otherUser.id)"
+            v-else
+          >
+            加入分享管理
+          </el-button>
+        </div>
+        <div v-else-if="notif.type === notificationType.e5_share_confirmation">
+          <el-button type="primary" disabled v-if="isConfirmed">
+            分享已完成
+          </el-button>
+          <el-button
+            type="primary"
+            @click="emit('shareConfirm', otherUser.id)"
+            v-else
+          >
+            确认
+          </el-button>
+        </div>
       </div>
     </div>
 

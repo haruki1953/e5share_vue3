@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProfileStore } from '@/stores'
 import NotifCard from './NotifCard.vue'
+import ShareConfirmDialog from './ShareConfirmDialog.vue'
 
 // 用户信息
 const profileStore = useProfileStore()
@@ -32,6 +33,12 @@ const addShareInfo = (userId) => {
   // 关闭抽屉
   visibleDrawer.value = false
 }
+
+const shareConfirmDialogRef = ref()
+// 确认接受分享，打开对话框
+const confirmShare = (userId) => {
+  shareConfirmDialogRef.value.open(userId)
+}
 </script>
 
 <template>
@@ -52,9 +59,11 @@ const addShareInfo = (userId) => {
         :key="item.id"
         :notif="item"
         @shareAdd="addShareInfo"
+        @shareConfirm="confirmShare"
       ></notif-card>
     </el-scrollbar>
   </el-drawer>
+  <share-confirm-dialog ref="shareConfirmDialogRef"></share-confirm-dialog>
 </template>
 
 <style lang="scss" scoped></style>

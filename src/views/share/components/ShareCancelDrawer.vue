@@ -73,7 +73,6 @@ const submitCancel = async () => {
           :model="cancelForm"
           :rules="rules"
           ref="form"
-          label-width="50px"
           size="large"
           autocomplete="off"
         >
@@ -81,7 +80,7 @@ const submitCancel = async () => {
             <el-alert type="info" show-icon :closable="false">
               <p>注销分享将取消对所有用户的分享，请填写留言以说明情况</p>
             </el-alert>
-            <el-form-item label="留言" prop="message">
+            <el-form-item prop="message">
               <el-input
                 v-model="cancelForm.message"
                 type="textarea"

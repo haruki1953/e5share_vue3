@@ -95,3 +95,6 @@ export const shareInfoStatus = {
 
 // 分享信息不能删除的状态：已确认后不能删除
 export const shareInfoCantDelStatus = [shareInfoStatus.confirmed]
+
+// 申请信息的的过期时间 3天
+export const applyInfoExpirationTime = 3 * 24 * 60 * 60 * 1000

@@ -17,8 +17,17 @@ export const shareUpdateInfoService = ({ userId, note }) =>
 export const shareDeleteInfoService = ({ userId }) =>
   request.delete(`/e5share/info/${userId}`)
 
-export const shareConfmSendService = ({ userId, message }) =>
+export const shareConfirmSendService = ({ userId, message }) =>
   request.put(`/e5share/confirmation/send`, { userId, message })
 
 export const shareStopSharingService = ({ userId, message }) =>
   request.put(`/e5share/stop/sharing`, { userId, message })
+
+export const shareConfirmAcceptService = ({ e5id, message }) =>
+  request.put(`/e5share/confirmation/accept`, { e5id, message })
+
+export const shareApplicationService = ({ e5id, message }) =>
+  request.post(`/e5share/application`, { e5id, message })
+
+export const shareStopReceivingService = ({ e5id, message }) =>
+  request.put(`/e5share/stop/receiving`, { e5id, message })
