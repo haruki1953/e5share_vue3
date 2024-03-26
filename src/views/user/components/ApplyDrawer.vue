@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { shareRules } from '@/config/rules'
 import { shareApplicationService } from '@/api/share'
 import { useShareStore } from '@/stores'
+import { copyText } from '@/utils/copyText'
 
 const props = defineProps({
   // e5帐号主的id
@@ -66,6 +67,11 @@ const submitApply = async () => {
     isSubmitting.value = false
   }
 }
+
+// 已发送的申请信息
+const applyInfo = computed(() => {
+  return shareStore.findApplyInfoByUserId(props.e5id)
+})
 </script>
 
 <template>
@@ -78,12 +84,28 @@ const submitApply = async () => {
     <!-- 申请表单 -->
     <div class="cancel-form">
       <el-text tag="h1" size="large" class="form-title"> 申请E5账号 </el-text>
+      <div v-if="applyInfo">
+        <el-alert title="已发送申请" type="success" show-icon :closable="false">
+          <el-text type="success" tag="h3">
+            联系E5帐号主并发送链接，即可帮助其快速定位到您的申请信息
+          </el-text>
+        </el-alert>
+        <el-button
+          class="copy-button"
+          type="success"
+          round
+          @click="copyText(applyInfo.link)"
+        >
+          点击复制链接
+        </el-button>
+      </div>
       <el-form
         :model="applyForm"
         :rules="rules"
         ref="form"
         size="large"
         autocomplete="off"
+        v-else
       >
         <el-space fill>
           <el-alert type="info" show-icon :closable="false">
@@ -119,5 +141,8 @@ const submitApply = async () => {
 <style lang="scss" scoped>
 .form-title {
   margin-bottom: 20px;
+}
+.copy-button {
+  margin-top: 10px;
 }
 </style>

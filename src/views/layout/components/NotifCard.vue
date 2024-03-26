@@ -12,9 +12,15 @@ import { useProfileStore, useShareStore, useUsersStore } from '@/stores'
 import { formatTime } from '@/utils/timeUtils'
 
 const props = defineProps({
+  // 通知对象
   notif: {
     required: true,
     type: Object
+  },
+  // 是否为 重要
+  important: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -23,7 +29,6 @@ const emit = defineEmits(['shareAdd', 'shareConfirm'])
 
 // 用户列表
 const usersStore = useUsersStore()
-
 // 获取相关用户
 const otherUser = computed(() => {
   if (props.notif?.otherInfo.otherUserId) {
@@ -109,13 +114,34 @@ const profileStore = useProfileStore()
 const isConfirmed = computed(() => {
   return otherUser.value?.helping_users.includes(profileStore.user.id)
 })
+
+// 是否已读
+const isRead = computed(() => {
+  return profileStore.isNotifRead(props.notif.id)
+})
 </script>
 
 <template>
   <el-card shadow="hover">
     <template #header>
       <div class="header">
-        <el-text tag="h1" size="large">{{ notifType }}</el-text>
+        <el-badge
+          value="important"
+          type="danger"
+          v-if="important"
+          @mouseenter="profileStore.markNotifAsRead(notif.id)"
+        >
+          <el-text tag="h1" size="large">{{ notifType }}</el-text>
+        </el-badge>
+        <el-badge
+          value="new"
+          type="primary"
+          v-else-if="!isRead"
+          @mouseenter="profileStore.markNotifAsRead(notif.id)"
+        >
+          <el-text tag="h1" size="large">{{ notifType }}</el-text>
+        </el-badge>
+        <el-text tag="h1" size="large" v-else>{{ notifType }}</el-text>
         <el-text type="info" size="small">{{ notifTime }}</el-text>
       </div>
     </template>

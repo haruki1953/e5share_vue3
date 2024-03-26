@@ -40,9 +40,14 @@ export const useProfileStore = defineStore(
       ).length
     })
 
+    // 判断通知是否已读
+    const isNotifRead = (id) => {
+      return readNotifUuid.value.includes(id)
+    }
     // 设置单个通知为已读
     const markNotifAsRead = (id) => {
-      if (!readNotifUuid.value.includes(id)) {
+      // 不是已读再设置
+      if (!isNotifRead(id)) {
         readNotifUuid.value.push(id)
       }
     }
@@ -55,6 +60,11 @@ export const useProfileStore = defineStore(
       )
     }
 
+    // 根据id查找通知
+    const findNotifById = (id) => {
+      return notifications.value.find((notif) => notif.id === id)
+    }
+
     return {
       user,
       notifications,
@@ -62,8 +72,10 @@ export const useProfileStore = defineStore(
       getProfile,
       removeProfile,
       unreadNotifCount,
+      isNotifRead,
       markNotifAsRead,
-      markAllNotifAsRead
+      markAllNotifAsRead,
+      findNotifById
     }
   },
   {

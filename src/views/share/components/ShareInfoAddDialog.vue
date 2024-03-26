@@ -91,8 +91,9 @@ const querySearch = (queryString, cb) => {
 }
 
 // 选择的处理函数
-const handleSelect = (item) => {
+const handleSelect = async (item) => {
   addInfoForm.value.userId = item.id
+  form.value.validate()
 }
 
 // 重新选择，重置表单

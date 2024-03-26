@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   HomeFilled,
@@ -53,6 +53,10 @@ const openNotifDrawer = () => {
   if (!authStore.token) router.push('/login')
   notifDrawerRef.value.open()
 }
+// 是否有重要通知
+const isImportantNotif = computed(() => {
+  return notifDrawerRef.value?.importantNotif
+})
 </script>
 
 <template>
@@ -77,34 +81,32 @@ const openNotifDrawer = () => {
             <template #title>E5分享管理</template>
           </el-menu-item>
           <el-menu-item index="/post">
-            <el-icon v-if="postsStore.unreadPostCount">
+            <el-icon>
               <el-badge
                 :value="postsStore.unreadPostCount"
                 :max="9"
-                class="item"
                 type="primary"
+                :hidden="!postsStore.unreadPostCount"
               >
                 <Comment />
               </el-badge>
             </el-icon>
-            <el-icon v-else>
-              <Comment />
-            </el-icon>
             <template #title>动态</template>
           </el-menu-item>
           <el-menu-item @click="openNotifDrawer">
-            <el-icon v-if="profileStore.unreadNotifCount">
+            <el-icon>
               <el-badge
                 :value="profileStore.unreadNotifCount"
                 :max="9"
-                class="item"
-                type="primary"
+                :type="isImportantNotif ? 'danger' : 'primary'"
+                :hidden="!profileStore.unreadNotifCount && !isImportantNotif"
+                :is-dot="
+                  !profileStore.readNotifUuid.length ||
+                  (isImportantNotif && !profileStore.unreadNotifCount)
+                "
               >
                 <BellFilled />
               </el-badge>
-            </el-icon>
-            <el-icon v-else>
-              <BellFilled />
             </el-icon>
             <template #title>通知</template>
           </el-menu-item>

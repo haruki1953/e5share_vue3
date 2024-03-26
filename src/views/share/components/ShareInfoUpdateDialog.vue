@@ -11,6 +11,7 @@ import {
 } from '@/api/share'
 import { shareInfoCantDelStatus, shareInfoStatus } from '@/config'
 import StatusTag from './StatusTag.vue'
+import { copyText } from '@/utils/copyText'
 
 // 控制对话框显示隐藏
 const dialogVisible = ref(false)
@@ -174,9 +175,9 @@ const submitSendConfirm = async () => {
   isSubmitting.value = true
   try {
     // 调用接口
-    await shareConfirmSendService(shareInfoForm.value)
-    // TODO 处理返回信息
-
+    const res = await shareConfirmSendService(shareInfoForm.value)
+    // 处理返回信息
+    shareStore.addConfirmInfo(shareInfoForm.value.userId, res.data.data.id)
     // 刷新数据
     await loadShareData()
     showOldData()
@@ -186,6 +187,10 @@ const submitSendConfirm = async () => {
     isSubmitting.value = false
   }
 }
+// 已发送的确认信息
+const confirmInfo = computed(() => {
+  return shareStore.findConfirmInfoByUserId(shareInfoForm.value.userId)
+})
 
 // 停止分享
 const submitStopShareing = async () => {
@@ -333,10 +338,31 @@ const submitStopShareing = async () => {
           </el-button>
         </el-form-item>
       </div>
+      <!-- 状态为待确认时，显示发送的确认信息 -->
+      <div
+        v-else-if="
+          shareInfo.status === shareInfoStatus.pending_confirmation &&
+          confirmInfo
+        "
+      >
+        <el-alert title="已发送确认" type="success" show-icon :closable="false">
+          <el-text type="success" tag="h3">
+            联系用户并发送链接，即可帮助其快速定位到您的确认信息
+          </el-text>
+        </el-alert>
+        <el-button
+          class="copy-button"
+          type="success"
+          round
+          @click="copyText(confirmInfo.link)"
+        >
+          点击复制链接
+        </el-button>
+      </div>
       <!-- 停止分享表单 -->
       <div
         class="share-form"
-        v-if="shareInfo.status === shareInfoStatus.confirmed"
+        v-else-if="shareInfo.status === shareInfoStatus.confirmed"
       >
         <el-form-item>
           <el-text tag="b" size="large" class="form-title"> 停止分享 </el-text>
@@ -371,10 +397,10 @@ const submitStopShareing = async () => {
 }
 
 .el-step {
-  margin-top: 20px;
+  margin: 20px 0;
 }
 
-.share-form {
-  margin-top: 20px;
+.copy-button {
+  margin-top: 10px;
 }
 </style>

@@ -6,6 +6,9 @@ export { logoImage }
 import loginImage from '@/assets/login_bg.jpg'
 export { loginImage }
 
+// 网站的基地址
+export const webBaseUrl = 'http://localhost:5173'
+
 // axios配置，基地址、超时时间
 export const axiosConfig = {
   baseURL: 'http://127.0.0.1:3007',
