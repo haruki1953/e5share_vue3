@@ -197,7 +197,7 @@ onMounted(() => {
     border-right: none;
     :deep() {
       .is-active {
-        background-color: #ecf5ff;
+        background-color: #d9ecff;
       }
     }
   }
