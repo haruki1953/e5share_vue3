@@ -65,8 +65,9 @@ export const useShareStore = defineStore(
       const currentDate = new Date()
       // 计算申请信息的有效期截止时间
       const expirationDate = new Date(
-        info.time.getTime() + applyInfoExpirationTime * 60 * 1000
+        info.time.getTime() + applyInfoExpirationTime
       )
+
       // 如果当前日期时间大于有效期截止日期，则说明申请信息已过期，返回null
       if (currentDate > expirationDate) return null
 
