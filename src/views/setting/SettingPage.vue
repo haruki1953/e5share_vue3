@@ -43,7 +43,7 @@ const previewUser = computed(() => {
 })
 
 // 设置菜单项的活动状态
-const activeMenuItem = ref('1')
+const activeMenuItem = ref(1)
 
 // scrollToCard 函数，根据传入卡片的引用进行滚动
 const scrollToCard = (cardRef) => {
@@ -82,20 +82,20 @@ onMounted(() => {
           </template>
           <el-menu :default-active="activeMenuItem">
             <!-- 根据卡片引用对象中的键值来触发滚动 -->
-            <el-menu-item index="1" @click="scrollToCard(editProfileCard)">
+            <el-menu-item :index="1" @click="scrollToCard(editProfileCard)">
               <el-text tag="b" size="large"> 修改基本信息 </el-text>
             </el-menu-item>
-            <el-menu-item index="2" @click="scrollToCard(editAvatarCard)">
+            <el-menu-item :index="2" @click="scrollToCard(editAvatarCard)">
               <el-text tag="b" size="large"> 修改头像 </el-text>
             </el-menu-item>
-            <el-menu-item index="3" @click="scrollToCard(editEmailCard)">
+            <el-menu-item :index="3" @click="scrollToCard(editEmailCard)">
               <el-text tag="b" size="large"> 修改邮箱 </el-text>
             </el-menu-item>
-            <el-menu-item index="4" @click="scrollToCard(editPasswordCard)">
+            <el-menu-item :index="4" @click="scrollToCard(editPasswordCard)">
               <el-text tag="b" size="large"> 修改密码 </el-text>
             </el-menu-item>
             <el-menu-item
-              index="5"
+              :index="5"
               @click="scrollToCard(editE5Card)"
               :disabled="
                 profileStore.user.account_status !== accountStatus.sharing
@@ -186,8 +186,9 @@ onMounted(() => {
 }
 
 .setting-tab {
-  margin: 10px 5px 10px 20px;
-  border-radius: 20px;
+  margin: 0 5px 10px 20px;
+  border-radius: 0 0 20px 20px;
+  border-top-width: 0;
   :deep() {
     .el-card__body {
       padding: 0;

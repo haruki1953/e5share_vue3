@@ -80,19 +80,6 @@ const isImportantNotif = computed(() => {
             <el-icon><Share /></el-icon>
             <template #title>E5分享管理</template>
           </el-menu-item>
-          <el-menu-item index="/post">
-            <el-icon>
-              <el-badge
-                :value="postsStore.unreadPostCount"
-                :max="9"
-                type="primary"
-                :hidden="!postsStore.unreadPostCount"
-              >
-                <Comment />
-              </el-badge>
-            </el-icon>
-            <template #title>动态</template>
-          </el-menu-item>
           <el-menu-item @click="openNotifDrawer">
             <el-icon>
               <el-badge
@@ -109,6 +96,19 @@ const isImportantNotif = computed(() => {
               </el-badge>
             </el-icon>
             <template #title>通知</template>
+          </el-menu-item>
+          <el-menu-item index="/post">
+            <el-icon>
+              <el-badge
+                :value="postsStore.unreadPostCount"
+                :max="9"
+                type="primary"
+                :hidden="!postsStore.unreadPostCount"
+              >
+                <Comment />
+              </el-badge>
+            </el-icon>
+            <template #title>动态</template>
           </el-menu-item>
           <el-menu-item index="/setting">
             <el-icon><Tools /></el-icon>

@@ -93,7 +93,7 @@ const submitCancel = async () => {
           </el-space>
           <el-form-item>
             <el-button
-              type="primary"
+              type="danger"
               :loading="isSubmitting"
               @click="submitCancel"
             >

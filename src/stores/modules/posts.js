@@ -78,6 +78,11 @@ export const usePostsStore = defineStore(
       })
     }
 
+    // 获取e5id列表
+    const e5idList = computed(() => {
+      return postsList.value.map((e5post) => e5post.id)
+    })
+
     return {
       postsList,
       readPostUuid,
@@ -85,7 +90,8 @@ export const usePostsStore = defineStore(
       removePosts,
       unreadPostCount,
       markPostAsRead,
-      markAllPostAsRead
+      markAllPostAsRead,
+      e5idList
     }
   },
   {
