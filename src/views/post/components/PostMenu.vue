@@ -1,19 +1,33 @@
 <script setup>
-// import { ref, computed } from 'vue'
-// import { usePostsStore } from '@/stores'
+import { computed, onMounted } from 'vue'
+import { usePostsStore } from '@/stores'
+import PostMenuItem from './PostMenuItem.vue'
 
-// const props = defineProps({
-//   e5id: {
-//     type: Number,
-//     required: true
-//   }
-// })
+defineProps({
+  modelValue: {
+    type: Number,
+    required: true
+  }
+})
+const emit = defineEmits(['update:modelValue'])
 
-// const postsStore = usePostsStore()
-// // 获取e5id列表
-// const e5idList = computed(() => {
-//   return postsStore.e5idList
-// })
+const postsStore = usePostsStore()
+// 获取e5id列表
+const e5idList = computed(() => {
+  return postsStore.e5idList
+})
+
+// 选择动态
+const postSelect = (e5id) => {
+  emit('update:modelValue', e5id)
+}
+
+// 初始化e5id
+onMounted(() => {
+  if (e5idList.value.length) {
+    postSelect(e5idList.value[0])
+  }
+})
 </script>
 
 <template>
@@ -21,9 +35,17 @@
     <template #header>
       <el-text tag="b" size="large" type="primary"> 动态 </el-text>
     </template>
-    <el-menu :default-active="e5id">
-      <el-menu-item :index="1"> </el-menu-item>
+    <el-menu :default-active="modelValue" v-if="e5idList.length">
+      <el-menu-item
+        v-for="item in e5idList"
+        :key="item"
+        :index="item"
+        @click="postSelect(item)"
+      >
+        <PostMenuItem :e5id="item"></PostMenuItem>
+      </el-menu-item>
     </el-menu>
+    <el-empty description="暂无动态" :image-size="100" v-else />
   </el-card>
 </template>
 
@@ -40,6 +62,10 @@
       .is-active {
         background-color: #d9ecff;
       }
+    }
+    .el-menu-item {
+      height: 100px;
+      line-height: normal;
     }
   }
 }

@@ -83,6 +83,20 @@ export const usePostsStore = defineStore(
       return postsList.value.map((e5post) => e5post.id)
     })
 
+    // 根据id获取e5账号主的动态
+    const findE5PostsByE5id = (e5id) => {
+      return postsList.value.find((e5postInfo) => e5postInfo.id === e5id).posts
+    }
+
+    // 获取e5账号主最近的动态内容
+    const getE5PostLastContent = (e5id) => {
+      const posts = findE5PostsByE5id(e5id)
+      if (posts && posts.length) {
+        return posts[posts.length - 1]?.content
+      }
+      return null
+    }
+
     return {
       postsList,
       readPostUuid,
@@ -91,7 +105,9 @@ export const usePostsStore = defineStore(
       unreadPostCount,
       markPostAsRead,
       markAllPostAsRead,
-      e5idList
+      e5idList,
+      findE5PostsByE5id,
+      getE5PostLastContent
     }
   },
   {

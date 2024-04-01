@@ -1,7 +1,7 @@
 <script setup>
 import 'element-plus/theme-chalk/display.css'
-import { ref, onMounted } from 'vue'
-import { usePostsStore } from '@/stores'
+import { ref, onMounted, computed } from 'vue'
+import { usePostsStore, useUsersStore } from '@/stores'
 import { contactInfo, friendshipLinks } from '@/config'
 import PostMenu from './components/PostMenu.vue'
 import PostSend from './components/PostSend.vue'
@@ -17,13 +17,21 @@ onMounted(() => {
 
 // 选中的e5帐号主id
 const e5id = ref(0)
+
+const usersStore = useUsersStore()
+// e5帐号主信息
+const e5User = computed(() => {
+  const user = usersStore.findUserById(e5id.value)
+  console.log(user)
+  return user ? user : null
+})
 </script>
 <template>
   <el-container>
     <el-aside>
       <el-scrollbar>
         <!-- 动态菜单栏 -->
-        <PostMenu class="post-menu" v-model="e5id"></PostMenu>
+        <PostMenu v-model="e5id" class="post-menu"></PostMenu>
         <!-- 联系方式卡片 -->
         <links-card
           :dataObj="contactInfo"
@@ -53,7 +61,11 @@ const e5id = ref(0)
         <el-col :span="10" class="user-col hidden-md-and-down">
           <el-scrollbar>
             <PostSend class="send-card"></PostSend>
-            <user-card :user="1" class="user-card"></user-card>
+            <user-card
+              v-if="e5User"
+              :user="e5User"
+              class="user-card"
+            ></user-card>
           </el-scrollbar>
         </el-col>
       </el-row>

@@ -7,7 +7,7 @@ import { Delete } from '@element-plus/icons-vue'
     <template #header>
       <div class="post-header">
         <div class="user">
-          <user-item :userId="1"></user-item>
+          <user-item :userId="5" small></user-item>
         </div>
         <div class="button-time">
           <el-button class="del-button" type="danger" :icon="Delete" circle />
@@ -40,8 +40,12 @@ import { Delete } from '@element-plus/icons-vue'
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .del-button {
-    margin-right: 10px;
+  .button-time {
+    white-space: nowrap;
+    margin-left: 10px;
+    .del-button {
+      margin-right: 10px;
+    }
   }
 }
 .post-text {

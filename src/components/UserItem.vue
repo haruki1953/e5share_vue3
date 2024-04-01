@@ -11,6 +11,11 @@ const props = defineProps({
   usernameLink: {
     type: Boolean,
     default: true
+  },
+  // 是否以较短形态显示，昵称与id上下排列
+  small: {
+    type: Boolean,
+    default: false
   }
 })
 const usersStore = useUsersStore()
@@ -21,7 +26,24 @@ const user = computed(() => {
 })
 </script>
 <template>
-  <div class="user-item">
+  <div class="user-item" v-if="small">
+    <div class="user-item"><el-avatar :src="user.avatar" /></div>
+    <div>
+      <el-text tag="h3"> {{ user.nickname }} </el-text>
+      <el-link
+        type="info"
+        :underline="false"
+        @click.stop="$router.push(`/user/${user.id}`)"
+        v-if="usernameLink"
+      >
+        @{{ user.username }}
+      </el-link>
+      <el-link type="info" :underline="false" v-else>
+        @{{ user.username }}
+      </el-link>
+    </div>
+  </div>
+  <div class="user-item" v-else>
     <div class="user-item"><el-avatar :src="user.avatar" /></div>
     <el-text tag="b"> {{ user.nickname }} </el-text>
     <el-link
