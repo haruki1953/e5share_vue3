@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useProfileStore, useUsersStore, useShareStore } from '@/stores'
 import NotifCard from './NotifCard.vue'
@@ -26,7 +26,8 @@ const importantNotif = ref(null)
 const route = useRoute()
 const shareStore = useShareStore()
 const usersStore = useUsersStore()
-onMounted(async () => {
+// 检查重点通知
+const checkImportantNotif = async () => {
   // 根据路由参数查找重点通知
   const notifUuid = route.query.notif
   if (!notifUuid) return
@@ -66,7 +67,7 @@ onMounted(async () => {
     title: '链接无效',
     type: 'warning'
   })
-})
+}
 
 // 通知数据，倒序排序，剔除重点通知
 const notifData = computed(() => {
@@ -98,7 +99,8 @@ const confirmShare = (userId) => {
 
 defineExpose({
   open,
-  importantNotif
+  importantNotif,
+  checkImportantNotif
 })
 </script>
 

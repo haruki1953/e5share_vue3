@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick, computed } from 'vue'
+import { ref, nextTick, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   HomeFilled,
@@ -24,8 +24,12 @@ const profileStore = useProfileStore()
 // 动态列表
 const postsStore = usePostsStore()
 
-// 请求获取数据
-loadAllData()
+onMounted(() => {
+  // 请求获取数据
+  loadAllData().then(async () => {
+    notifDrawerRef.value.checkImportantNotif()
+  })
+})
 
 // 退出登录
 const logout = async () => {
@@ -104,6 +108,7 @@ const isImportantNotif = computed(() => {
                 :max="9"
                 type="primary"
                 :hidden="!postsStore.unreadPostCount"
+                :is-dot="!postsStore.readPostUuid.length"
               >
                 <Comment />
               </el-badge>
@@ -204,17 +209,12 @@ const isImportantNotif = computed(() => {
       background-size: 40px auto;
     }
     .el-badge {
-      font-style: normal;
-      font-family:
-        Inter,
-        Helvetica Neue,
-        Helvetica,
-        PingFang SC,
-        Hiragino Sans GB,
-        Microsoft YaHei,
-        \5fae\8f6f\96c5\9ed1,
-        Arial,
-        sans-serif;
+      :deep() {
+        .el-badge__content {
+          font-style: normal;
+          line-height: 18px;
+        }
+      }
     }
 
     .avatar-container {

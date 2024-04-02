@@ -40,6 +40,22 @@ export const usePostsStore = defineStore(
       postsList.value = tempPostsList
     }
 
+    // 请求获取单个e5账号主的动态
+    const getE5Posts = async (e5id) => {
+      const res = await postsGetService(e5id)
+      const e5postsObj = { id: e5id, posts: parsePostsInfo(res.data.data) }
+      console.log(e5postsObj)
+      // 找到要更新的对象的索引
+      const index = postsList.value.findIndex((e5posts) => e5posts.id === e5id)
+      if (index !== -1) {
+        // 如果找到了，就替换它
+        postsList.value.splice(index, 1, e5postsObj)
+      } else {
+        // 如果没有找到，就添加到数组的末尾
+        postsList.value.push(e5postsObj)
+      }
+    }
+
     // 清除信息
     const removePosts = () => {
       postsList.value = []
@@ -58,6 +74,18 @@ export const usePostsStore = defineStore(
       return count
     })
 
+    // 单个e5账号主的未读帖子数
+    const unreadCountInE5Posts = (e5id) => {
+      const e5posts = findE5PostsByE5id(e5id)
+      return e5posts.filter((post) => !readPostUuid.value.includes(post.id))
+        .length
+    }
+
+    // 帖子是否已读
+    const isPostRead = (id) => {
+      return readPostUuid.value.includes(id)
+    }
+
     // 设置单个帖子为已读
     const markPostAsRead = (id) => {
       if (!readPostUuid.value.includes(id)) {
@@ -65,9 +93,20 @@ export const usePostsStore = defineStore(
       }
     }
 
+    // 设置单个e5账号主动态全部已读
+    const markE5PostsAsRead = (e5id) => {
+      // if (!unreadPostCount.value) return // 没有未读则返回
+      const e5posts = findE5PostsByE5id(e5id)
+      e5posts.forEach((post) => {
+        if (!readPostUuid.value.includes(post.id)) {
+          readPostUuid.value.push(post.id)
+        }
+      })
+    }
+
     // 设置全部帖子为已读
     const markAllPostAsRead = () => {
-      if (!unreadPostCount.value) return // 没有未读则返回
+      // if (!unreadPostCount.value) return // 没有未读则返回
       // 清空 readPostUuid
       readPostUuid.value = []
       // 遍历所有动态，添加id
@@ -85,7 +124,7 @@ export const usePostsStore = defineStore(
 
     // 根据id获取e5账号主的动态
     const findE5PostsByE5id = (e5id) => {
-      return postsList.value.find((e5postInfo) => e5postInfo.id === e5id).posts
+      return postsList.value.find((e5postInfo) => e5postInfo.id === e5id)?.posts
     }
 
     // 获取e5账号主最近的动态内容
@@ -101,9 +140,13 @@ export const usePostsStore = defineStore(
       postsList,
       readPostUuid,
       getPostsList,
+      getE5Posts,
       removePosts,
       unreadPostCount,
+      unreadCountInE5Posts,
+      isPostRead,
       markPostAsRead,
+      markE5PostsAsRead,
       markAllPostAsRead,
       e5idList,
       findE5PostsByE5id,

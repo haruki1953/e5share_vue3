@@ -221,6 +221,15 @@ const isRead = computed(() => {
 </template>
 
 <style lang="scss" scoped>
+.el-badge {
+  :deep() {
+    .el-badge__content {
+      font-style: normal;
+      line-height: 18px;
+    }
+  }
+}
+
 .el-card {
   border-radius: 15px;
   margin-bottom: 20px;

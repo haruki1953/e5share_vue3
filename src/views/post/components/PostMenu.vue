@@ -35,11 +35,11 @@ onMounted(() => {
     <template #header>
       <el-text tag="b" size="large" type="primary"> 动态 </el-text>
     </template>
-    <el-menu :default-active="modelValue" v-if="e5idList.length">
+    <el-menu :default-active="String(modelValue)" v-if="e5idList.length">
       <el-menu-item
         v-for="item in e5idList"
         :key="item"
-        :index="item"
+        :index="String(item)"
         @click="postSelect(item)"
       >
         <PostMenuItem :e5id="item"></PostMenuItem>

@@ -34,37 +34,59 @@ const lastContent = computed(() => {
   }
   return '暂无消息'
 })
+
+// 未读通知数
+const unreadCountInE5Posts = computed(() => {
+  console.log(postsStore.unreadCountInE5Posts(props.e5id))
+  return postsStore.unreadCountInE5Posts(props.e5id)
+})
 </script>
 <template>
-  <div class="post-info">
-    <div class="user-box">
-      <UserItem :userId="e5id" small :usernameLink="false"></UserItem>
-    </div>
-    <div class="info-box">
-      <div class="content-box">
-        <el-text type="info" size="small" truncated>
-          {{ lastContent }}
-        </el-text>
+  <el-badge
+    :value="unreadCountInE5Posts"
+    :max="9"
+    type="primary"
+    :hidden="!unreadCountInE5Posts"
+  >
+    <div class="post-info">
+      <div class="user-box">
+        <UserItem :userId="e5id" small :usernameLink="false"></UserItem>
       </div>
-      <div class="hrlping-box">
-        <div class="avatar-list">
-          <el-avatar
-            :size="20"
-            v-for="item in postUsers"
-            :key="item.id"
-            :src="item.avatar"
-          ></el-avatar>
+      <div class="info-box">
+        <div class="content-box">
+          <el-text type="info" size="small" truncated>
+            {{ lastContent }}
+          </el-text>
         </div>
+        <div class="hrlping-box">
+          <div class="avatar-list">
+            <el-avatar
+              :size="20"
+              v-for="item in postUsers"
+              :key="item.id"
+              :src="item.avatar"
+            ></el-avatar>
+          </div>
 
-        <el-text type="info" size="small" tag="b">
-          {{ postUsersId.length }}人
-        </el-text>
+          <el-text type="info" size="small" tag="b">
+            {{ postUsersId.length }}人
+          </el-text>
+        </div>
       </div>
     </div>
-  </div>
+  </el-badge>
 </template>
 
 <style lang="scss" scoped>
+.el-badge {
+  width: 100%;
+  :deep() {
+    .el-badge__content {
+      font-style: normal;
+      line-height: 18px;
+    }
+  }
+}
 .post-info {
   width: 100%;
   overflow: hidden;

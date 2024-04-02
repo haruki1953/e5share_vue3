@@ -80,22 +80,22 @@ onMounted(() => {
           <template #header>
             <el-text tag="b" size="large" type="primary"> 设置 </el-text>
           </template>
-          <el-menu :default-active="activeMenuItem">
+          <el-menu :default-active="String(activeMenuItem)">
             <!-- 根据卡片引用对象中的键值来触发滚动 -->
-            <el-menu-item :index="1" @click="scrollToCard(editProfileCard)">
+            <el-menu-item index="1" @click="scrollToCard(editProfileCard)">
               <el-text tag="b" size="large"> 修改基本信息 </el-text>
             </el-menu-item>
-            <el-menu-item :index="2" @click="scrollToCard(editAvatarCard)">
+            <el-menu-item index="2" @click="scrollToCard(editAvatarCard)">
               <el-text tag="b" size="large"> 修改头像 </el-text>
             </el-menu-item>
-            <el-menu-item :index="3" @click="scrollToCard(editEmailCard)">
+            <el-menu-item index="3" @click="scrollToCard(editEmailCard)">
               <el-text tag="b" size="large"> 修改邮箱 </el-text>
             </el-menu-item>
-            <el-menu-item :index="4" @click="scrollToCard(editPasswordCard)">
+            <el-menu-item index="4" @click="scrollToCard(editPasswordCard)">
               <el-text tag="b" size="large"> 修改密码 </el-text>
             </el-menu-item>
             <el-menu-item
-              :index="5"
+              index="5"
               @click="scrollToCard(editE5Card)"
               :disabled="
                 profileStore.user.account_status !== accountStatus.sharing
