@@ -41,22 +41,29 @@ const openLink = (url) => {
           effect="light"
           placement="right"
         >
-          <div>
-            <el-icon v-if="dataObj[linkKey].fontawesomeClass">
+          <div v-if="dataObj[linkKey].fontawesomeClass">
+            <el-icon>
               <i :class="dataObj[linkKey].fontawesomeClass"></i>
-            </el-icon>
-            <el-icon v-else-if="dataObj[linkKey].logoUrl" class="logo-box">
-              <div
-                class="logo"
-                :style="{
-                  backgroundImage: `url(${dataObj[linkKey].logoUrl})`
-                }"
-              ></div>
             </el-icon>
             <el-text tag="b" size="large">
               {{ dataObj[linkKey].name }}
             </el-text>
           </div>
+          <div class="logo-text" v-else-if="dataObj[linkKey].logoUrl">
+            <div
+              class="logo"
+              :style="{
+                backgroundImage: `url(${dataObj[linkKey].logoUrl})`
+              }"
+            ></div>
+
+            <el-text tag="b" size="large">
+              {{ dataObj[linkKey].name }}
+            </el-text>
+          </div>
+          <el-text tag="b" size="large" v-else>
+            {{ dataObj[linkKey].name }}
+          </el-text>
         </el-tooltip>
       </el-menu-item>
     </el-menu>
@@ -73,14 +80,16 @@ const openLink = (url) => {
   .el-menu {
     border-right: none;
   }
-  .logo-box {
-    width: 28px;
+  .logo-text {
+    display: flex;
+    align-items: center;
     .logo {
       width: 28px;
       height: 28px;
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
+      margin-right: 5px;
     }
   }
 }

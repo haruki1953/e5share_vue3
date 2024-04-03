@@ -89,7 +89,7 @@ const updateLoading = (val) => {
     </el-aside>
     <el-main class="post-main">
       <el-row>
-        <el-col :lg="14" class="post-col">
+        <el-col :lg="14" class="post-col" v-loading="isloading">
           <el-scrollbar>
             <!-- 动态发送卡片 小屏时显示在顶部 -->
             <PostSend
@@ -99,7 +99,7 @@ const updateLoading = (val) => {
               @updateLoading="updateLoading"
             ></PostSend>
             <!-- 消息卡片列表 -->
-            <div v-loading="isloading" v-if="e5Posts.length">
+            <div v-if="e5Posts.length">
               <PostMessage
                 class="post-card"
                 v-for="item in e5Posts"

@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { shareRules } from '@/config/rules'
 import { loadUserData } from '@/utils/dataManage'
 import { shareCancelService } from '@/api/share'
+import { useShareStore } from '@/stores'
 
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
@@ -29,6 +30,8 @@ const rules = { ...shareRules }
 
 // 提交中状态标记
 const isSubmitting = ref(false)
+
+const shareStore = useShareStore()
 // 提交注销分享
 const submitCancel = async () => {
   // 去除首尾空格
@@ -47,6 +50,8 @@ const submitCancel = async () => {
   try {
     // 调用接口
     await shareCancelService(cancelForm.value)
+    // 清除本地分享信息
+    shareStore.removeInfoOnCancelShare()
     // 刷新数据
     await loadUserData()
     ElMessage.success('注销成功')

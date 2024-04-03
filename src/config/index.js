@@ -51,7 +51,7 @@ export const friendshipLinks = {
     name: '小祥の小窝',
     logoUrl: 'https://static.sakiko.top/sakiko/sakiko.ico',
     description: '一个番剧小窝',
-    link: 'https://pan.sakiko.top/'
+    link: 'https://bangumi.sakiko.top/'
   }
 }
 

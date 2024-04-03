@@ -1,15 +1,17 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useUsersStore, useProfileStore } from '@/stores'
+import { useUsersStore, useProfileStore, usePostsStore } from '@/stores'
 import { accountStatus } from '@/config'
 import { formatDate, formatTime } from '@/utils/timeUtils'
 import ApplyDrawer from './components/ApplyDrawer.vue'
 import StopDialog from './components/StopDialog.vue'
+import { Star } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const usersStore = useUsersStore()
 const profileStore = useProfileStore()
+const postsStore = usePostsStore()
 
 // 根据路由参数获取用户数据
 const user = computed(() => {
@@ -26,6 +28,13 @@ const buttonDisplay = computed(() => {
   let applyButton = false
   // 分享停止接受
   let stopButton = false
+  // 关注动态
+  let followButton = false
+
+  // 关注动态是否显示
+  if (user.value) {
+    followButton = postsStore.shouldAddFollow(user.value.id)
+  }
 
   // 当前用户状态为分享 且 当前用户非登录用户 时显示分享相关按钮
   if (
@@ -41,7 +50,8 @@ const buttonDisplay = computed(() => {
   }
   return {
     applyButton,
-    stopButton
+    stopButton,
+    followButton
   }
 })
 
@@ -55,6 +65,12 @@ const shareApply = () => {
 const stopDialogRef = ref()
 const shareStop = () => {
   stopDialogRef.value.open()
+}
+
+// 关注动态
+const postFollow = async () => {
+  await postsStore.addFollow(user.value.id)
+  ElMessage.success('关注动态成功')
 }
 </script>
 <template>
@@ -101,6 +117,15 @@ const shareStop = () => {
                 @click="shareStop"
               >
                 停止接受TA的分享
+              </el-button>
+              <el-button
+                v-if="buttonDisplay.followButton"
+                type="warning"
+                :icon="Star"
+                round
+                @click="postFollow"
+              >
+                关注动态
               </el-button>
             </div>
           </div>

@@ -7,9 +7,15 @@ defineProps({
   modelValue: {
     type: Number,
     required: true
+  },
+  // 控制切换时的加载
+  isloading: {
+    type: Boolean,
+    required: true
   }
 })
-const emit = defineEmits(['update:modelValue'])
+// v-model 与 更新加载状态事件
+const emit = defineEmits(['update:modelValue', 'updateLoading'])
 
 const postsStore = usePostsStore()
 // 获取e5id列表
@@ -40,7 +46,7 @@ onMounted(() => {
         v-for="item in e5idList"
         :key="item"
         :index="String(item)"
-        @click="postSelect(item)"
+        @mousedown="postSelect(item)"
       >
         <PostMenuItem :e5id="item"></PostMenuItem>
       </el-menu-item>

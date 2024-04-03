@@ -27,6 +27,12 @@ export const useShareStore = defineStore(
       confirmInfo.value = []
     }
 
+    // 在注销分享时清除信息
+    const removeInfoOnCancelShare = () => {
+      shareInfoList.value = []
+      confirmInfo.value = []
+    }
+
     // 根据用户id获取分享信息
     const findShareInfoByUserId = (userId) => {
       return shareInfoList.value.find(
@@ -135,6 +141,7 @@ export const useShareStore = defineStore(
       confirmInfo,
       getShareInfo,
       removeShareInfo,
+      removeInfoOnCancelShare,
       findShareInfoByUserId,
       addApplyInfo,
       findApplyInfoByUserId,

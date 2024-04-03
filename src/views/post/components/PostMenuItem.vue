@@ -37,7 +37,6 @@ const lastContent = computed(() => {
 
 // 未读通知数
 const unreadCountInE5Posts = computed(() => {
-  console.log(postsStore.unreadCountInE5Posts(props.e5id))
   return postsStore.unreadCountInE5Posts(props.e5id)
 })
 </script>

@@ -83,13 +83,13 @@ const postClear = async () => {
   // 设置为提交中状态
   emit('updateLoading', true)
   try {
+    // 关闭对话框
+    closeSetting()
     // 调用接口
     await postsClearPostService()
     // 重新请求当前动态
     await loadE5PostsData(props.e5id)
     ElMessage.success('清空成功')
-    // 关闭对话框
-    closeSetting()
   } finally {
     // 无论提交成功或失败，都要解除提交中状态
     emit('updateLoading', false)
@@ -122,13 +122,19 @@ const markAllPostAsRead = () => {
       ></el-input>
     </div>
     <div class="button-box">
-      <el-button type="info" :icon="Setting" circle @click="openSetting" />
+      <el-button
+        type="info"
+        :icon="Setting"
+        circle
+        @click="openSetting"
+        :disabled="isloading || !isE5idExists"
+      />
       <el-button
         class="send-button"
         type="primary"
         round
         :icon="ChatLineSquare"
-        :disabled="isloading"
+        :disabled="isloading || !isE5idExists"
         @click="postSend"
       >
         发送动态
@@ -177,7 +183,7 @@ const markAllPostAsRead = () => {
           title="关于“动态”"
           type="info"
           description="类似 X 的社群？可以充当公告栏，被帮助的用户也可以发言。
-          聊天的话还是去 Discord 比较好，联系管理员可以为您创建频道"
+          不过聊天的话还是去 Discord 比较好，联系管理员可以为您创建频道"
           show-icon
           :closable="false"
         />
