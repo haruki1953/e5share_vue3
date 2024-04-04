@@ -22,8 +22,8 @@ const props = defineProps({
     required: true
   }
 })
-// 更新加载状态事件
-const emit = defineEmits(['updateLoading'])
+// 更新加载状态事件, 重新初始化e5id事件
+const emit = defineEmits(['updateLoading', 'initE5id'])
 
 const content = ref('')
 
@@ -107,38 +107,87 @@ const markAllPostAsRead = () => {
   postsStore.markAllPostAsRead()
   closeSetting()
 }
+
+// 是否为关注
+const isFollowing = computed(() => {
+  return postsStore.followE5ids.includes(props.e5id)
+})
+
+// 取消关注
+const removeFollow = async () => {
+  await ElMessageBox.confirm('您确认要取消关注动态吗', '温馨提示', {
+    type: 'warning',
+    confirmButtonText: '确认',
+    cancelButtonText: '取消'
+  })
+  postsStore.removeFollow(props.e5id)
+  ElMessage.success('取消关注成功')
+  // 发送重新初始化e5id事件
+  emit('initE5id')
+}
 </script>
 
 <template>
   <el-card shadow="hover" class="send-card">
-    <div class="input-box">
-      <el-input
-        v-model="content"
-        type="textarea"
-        placeholder=""
-        maxlength="500"
-        show-word-limit
-        :autosize="{ minRows: 3, maxRows: 6 }"
-      ></el-input>
+    <div v-if="isFollowing">
+      <div>
+        <el-alert
+          title="关于“关注动态”"
+          type="info"
+          description="您已关注此动态，可以浏览但无法发言，被帮助的用户可以发言。
+          关注信息保存在本地，退出登录时将取消关注。"
+          :closable="false"
+        />
+      </div>
+      <div class="button-box">
+        <el-button
+          type="info"
+          :icon="Setting"
+          circle
+          @click="openSetting"
+          :disabled="isloading || !isE5idExists"
+        />
+        <el-button
+          class="send-button"
+          type="danger"
+          round
+          :icon="Delete"
+          @click="removeFollow"
+        >
+          取消关注
+        </el-button>
+      </div>
     </div>
-    <div class="button-box">
-      <el-button
-        type="info"
-        :icon="Setting"
-        circle
-        @click="openSetting"
-        :disabled="isloading || !isE5idExists"
-      />
-      <el-button
-        class="send-button"
-        type="primary"
-        round
-        :icon="ChatLineSquare"
-        :disabled="isloading || !isE5idExists"
-        @click="postSend"
-      >
-        发送动态
-      </el-button>
+    <div v-else>
+      <div class="input-box">
+        <el-input
+          v-model="content"
+          type="textarea"
+          placeholder=""
+          maxlength="500"
+          show-word-limit
+          :autosize="{ minRows: 3, maxRows: 6 }"
+        ></el-input>
+      </div>
+      <div class="button-box">
+        <el-button
+          type="info"
+          :icon="Setting"
+          circle
+          @click="openSetting"
+          :disabled="isloading || !isE5idExists"
+        />
+        <el-button
+          class="send-button"
+          type="primary"
+          round
+          :icon="ChatLineSquare"
+          :disabled="isloading || !isE5idExists"
+          @click="postSend"
+        >
+          发送动态
+        </el-button>
+      </div>
     </div>
     <el-dialog v-model="dialogVisible" width="400px" v-if="isE5idExists">
       <template #header>

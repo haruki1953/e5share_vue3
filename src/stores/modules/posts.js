@@ -27,10 +27,10 @@ export const usePostsStore = defineStore(
       // 不能添加关注则返回
       if (!shouldAddFollow(e5id)) return ElMessage.error('不能关注')
 
-      // followE5ids添加
-      followE5ids.value.push(e5id)
       // 请求获取动态
       await getE5Posts(e5id)
+      // followE5ids添加（后添加，使在等待请求时，关注按钮也可以显示）
+      followE5ids.value.push(e5id)
     }
 
     // 取消关注指定e5帐号主
@@ -76,7 +76,7 @@ export const usePostsStore = defineStore(
       // 缺失必要数据返回
       if (!isCheckData.value) return
 
-      // 过滤关注的e5帐号主
+      // 过滤不应关注的e5帐号主
       followE5ids.value = followE5ids.value.filter((e5id) => {
         return shouldFollow(e5id)
       })
@@ -92,22 +92,28 @@ export const usePostsStore = defineStore(
 
     // 请求获取动态
     const getPostsList = async () => {
-      // const tempPostsList = []
+      // 用一个新数组保存，保证顺序、并丢弃不需要的动态
+      const tempPostsList = []
       // 如果当前状态为正在分享，则请求自己的动态信息
       if (profileStore.user.account_status === accountStatus.sharing) {
-        await getE5Posts(profileStore.user.id)
+        const e5postObj = await getE5Posts(profileStore.user.id)
+        tempPostsList.push(e5postObj)
       }
 
+      /* 获取帮助的动态 */
       // 根据profile中helping_by_users字段，获取多个e5帐号主的动态
       // 构造一个包含所有异步操作的 Promise 数组
       const promises = profileStore.user.helping_by_users.map(async (e5id) => {
         // 请求获取单个e5账号主的动态
-        await getE5Posts(e5id)
+        const e5postObj = await getE5Posts(e5id)
+        tempPostsList.push(e5postObj)
       })
       // 等待所有异步操作完成
       await Promise.all(promises)
+      // 保存
+      postsList.value = tempPostsList
 
-      // 最后获取关注动态
+      /* 获取关注动态 */
       await getFollowPosts()
     }
 
@@ -115,7 +121,6 @@ export const usePostsStore = defineStore(
     const getE5Posts = async (e5id) => {
       const res = await postsGetService(e5id)
       const e5postsObj = { id: e5id, posts: parsePostsInfo(res.data.data) }
-      console.log(e5postsObj)
       // 找到要更新的对象的索引
       const index = postsList.value.findIndex((e5posts) => e5posts.id === e5id)
       if (index !== -1) {
@@ -125,6 +130,7 @@ export const usePostsStore = defineStore(
         // 如果没有找到，就添加到数组的末尾
         postsList.value.push(e5postsObj)
       }
+      return e5postsObj
     }
 
     // 清除信息

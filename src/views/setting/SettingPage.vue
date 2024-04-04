@@ -7,6 +7,7 @@ import AvatarCard from './components/AvatarCard.vue'
 import EmailCard from './components/EmailCard.vue'
 import PasswordCard from './components/PasswordCard.vue'
 import E5Card from './components/E5Card.vue'
+import ClearNotifCard from './components/ClearNotifCard.vue'
 import { contactInfo, friendshipLinks, accountStatus } from '@/config'
 import { useProfileStore } from '@/stores'
 
@@ -15,6 +16,7 @@ const editAvatarCard = ref()
 const editEmailCard = ref()
 const editPasswordCard = ref()
 const editE5Card = ref()
+const clearNotifCard = ref()
 
 const profileStore = useProfileStore()
 // 预览用户信息
@@ -106,6 +108,9 @@ onMounted(() => {
             <el-menu-item @click="$router.push('/share')">
               <el-text tag="b" size="large"> E5分享管理 </el-text>
             </el-menu-item>
+            <el-menu-item index="6" @click="scrollToCard(clearNotifCard)">
+              <el-text tag="b" size="large"> 清空通知 </el-text>
+            </el-menu-item>
           </el-menu>
         </el-card>
         <!-- 联系方式卡片 -->
@@ -167,6 +172,13 @@ onMounted(() => {
               @mouseenter="setActiveMenuItem('5')"
               v-if="profileStore.user.account_status === accountStatus.sharing"
             ></e5-card>
+
+            <!-- 清空通知 -->
+            <ClearNotifCard
+              ref="clearNotifCard"
+              class="setting-card"
+              @mouseenter="setActiveMenuItem('6')"
+            ></ClearNotifCard>
           </el-scrollbar>
         </el-col>
         <!-- 预览卡片 大屏时显示在右侧 -->
@@ -214,7 +226,7 @@ onMounted(() => {
   .setting-col {
     height: 100vh;
     .setting-card {
-      margin: 10px 5px 20px 5px;
+      margin: 10px 5px;
       border-radius: 20px;
     }
   }

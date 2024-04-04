@@ -1,5 +1,6 @@
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
+
 import { usePostsStore } from '@/stores'
 import PostMenuItem from './PostMenuItem.vue'
 
@@ -27,13 +28,6 @@ const e5idList = computed(() => {
 const postSelect = (e5id) => {
   emit('update:modelValue', e5id)
 }
-
-// 初始化e5id
-onMounted(() => {
-  if (e5idList.value.length) {
-    postSelect(e5idList.value[0])
-  }
-})
 </script>
 
 <template>

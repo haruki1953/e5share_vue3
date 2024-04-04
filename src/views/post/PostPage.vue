@@ -1,6 +1,7 @@
 <script setup>
 import 'element-plus/theme-chalk/display.css'
 import { ref, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { usePostsStore, useUsersStore } from '@/stores'
 import { contactInfo, friendshipLinks } from '@/config'
 import PostMenu from './components/PostMenu.vue'
@@ -12,15 +13,30 @@ import { loadE5PostsData } from '@/utils/dataManage'
 // 动态
 const postsStore = usePostsStore()
 
+// 选中的e5帐号主id
+const e5id = ref(0)
+
+const route = useRoute()
+// 初始化e5id
+const initE5id = () => {
+  // 没有动态则返回
+  if (!postsStore.e5idList.length) return
+  // 根据路由参数选择动态
+  const queryE5id = Number(route.query.e5id)
+  if (postsStore.e5idList.includes(queryE5id)) {
+    e5id.value = queryE5id
+    return
+  }
+  // 默认选择第一个
+  e5id.value = postsStore.e5idList[0]
+}
 onMounted(() => {
+  initE5id()
   // 首次登录时（readPostUuid为空）设置全部已读
   if (!postsStore.readPostUuid.length) {
     postsStore.markAllPostAsRead()
   }
 })
-
-// 选中的e5帐号主id
-const e5id = ref(0)
 
 const usersStore = useUsersStore()
 // e5帐号主信息
@@ -72,7 +88,12 @@ const updateLoading = (val) => {
     <el-aside>
       <el-scrollbar>
         <!-- 动态菜单栏 -->
-        <PostMenu v-model="e5id" class="post-menu"></PostMenu>
+        <PostMenu
+          v-model="e5id"
+          class="post-menu"
+          :isloading="isloading"
+          @updateLoading="updateLoading"
+        ></PostMenu>
         <!-- 联系方式卡片 -->
         <links-card
           :dataObj="contactInfo"
@@ -97,6 +118,7 @@ const updateLoading = (val) => {
               :e5id="e5id"
               :isloading="isloading"
               @updateLoading="updateLoading"
+              @initE5id="initE5id"
             ></PostSend>
             <!-- 消息卡片列表 -->
             <div v-if="e5Posts.length">
@@ -120,6 +142,7 @@ const updateLoading = (val) => {
               :e5id="e5id"
               :isloading="isloading"
               @updateLoading="updateLoading"
+              @initE5id="initE5id"
             ></PostSend>
             <user-card
               v-if="e5User"

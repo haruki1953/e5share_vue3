@@ -277,7 +277,7 @@ const submitStopShareing = async () => {
       <!-- 状态 -->
       <el-divider content-position="left">
         <el-text tag="b" size="large"> 当前状态为： </el-text>
-        <status-tag :status="shareInfo.status" size="default"></status-tag>
+        <status-tag :status="shareInfo.status"></status-tag>
       </el-divider>
       <!-- 已停止的提示 -->
       <el-alert

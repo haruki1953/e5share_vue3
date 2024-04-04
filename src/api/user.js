@@ -16,3 +16,5 @@ export const userUpdatePasswordService = ({ oldPassword, newPassword }) =>
 
 export const userUpdateE5infoService = ({ subscriptionDate, expirationDate }) =>
   request.put('/user/e5info', { subscriptionDate, expirationDate })
+
+export const userClearNotifService = () => request.delete('/user/notifications')

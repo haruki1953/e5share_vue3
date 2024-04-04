@@ -42,7 +42,7 @@ const minCardCount = computed(() => {
 <template>
   <el-scrollbar>
     <!-- 搜索栏 -->
-    <el-affix :offset="-5">
+    <el-affix :offset="5">
       <el-card class="search-card">
         <div class="search-row">
           <el-input
@@ -65,6 +65,7 @@ const minCardCount = computed(() => {
     </el-affix>
     <!-- 用户卡片容器 -->
     <usercard-container
+      class="usercard-container"
       :dataList="dataList"
       :minCardCount="minCardCount"
     ></usercard-container>
@@ -79,7 +80,7 @@ const minCardCount = computed(() => {
 
 <style lang="scss" scoped>
 .search-card {
-  margin: 10px 20px;
+  margin: 0 20px;
   padding: 0 15px;
   border-radius: 35px;
   .search-row {
@@ -94,5 +95,8 @@ const minCardCount = computed(() => {
       padding: 15px;
     }
   }
+}
+.usercard-container {
+  margin-top: 15px;
 }
 </style>

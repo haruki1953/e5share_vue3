@@ -86,6 +86,11 @@ export const loadUserData = async () => {
   ])
 }
 
+// 请求获取用户信息（清空通知后调用）
+export const loadProfileData = async () => {
+  await profileStore.getProfile()
+}
+
 // 请求获取单个e5账号主的动态（发帖等操作后调用）
 export const loadE5PostsData = async (e5id) => {
   await postsStore.getE5Posts(e5id)

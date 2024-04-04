@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useUsersStore, useProfileStore, usePostsStore } from '@/stores'
 import { accountStatus } from '@/config'
 import { formatDate, formatTime } from '@/utils/timeUtils'
@@ -9,6 +9,7 @@ import StopDialog from './components/StopDialog.vue'
 import { Star } from '@element-plus/icons-vue'
 
 const route = useRoute()
+const router = useRouter()
 const usersStore = useUsersStore()
 const profileStore = useProfileStore()
 const postsStore = usePostsStore()
@@ -29,12 +30,9 @@ const buttonDisplay = computed(() => {
   // 分享停止接受
   let stopButton = false
   // 关注动态
-  let followButton = false
-
-  // 关注动态是否显示
-  if (user.value) {
-    followButton = postsStore.shouldAddFollow(user.value.id)
-  }
+  let followButton = postsStore.shouldAddFollow(user.value.id)
+  // 查看动态
+  let toPostButton = Boolean(postsStore.findE5PostsByE5id(user.value.id))
 
   // 当前用户状态为分享 且 当前用户非登录用户 时显示分享相关按钮
   if (
@@ -51,7 +49,8 @@ const buttonDisplay = computed(() => {
   return {
     applyButton,
     stopButton,
-    followButton
+    followButton,
+    toPostButton
   }
 })
 
@@ -67,10 +66,25 @@ const shareStop = () => {
   stopDialogRef.value.open()
 }
 
+// 关注加载状态
+const isFollowingLoading = ref(false)
 // 关注动态
 const postFollow = async () => {
-  await postsStore.addFollow(user.value.id)
-  ElMessage.success('关注动态成功')
+  // 设置为提交中状态
+  isFollowingLoading.value = true
+  try {
+    await postsStore.addFollow(user.value.id)
+    ElMessage.success('关注动态成功')
+    // 跳转至动态页面
+    toPostPage()
+  } finally {
+    // 无论提交成功或失败，都要解除提交中状态
+    isFollowingLoading.value = false
+  }
+}
+// 查看动态,跳转至动态页
+const toPostPage = () => {
+  router.push(`/post?e5id=${user.value.id}`)
 }
 </script>
 <template>
@@ -113,7 +127,6 @@ const postFollow = async () => {
                 v-if="buttonDisplay.stopButton"
                 type="danger"
                 size="large"
-                plain
                 @click="shareStop"
               >
                 停止接受TA的分享
@@ -124,8 +137,18 @@ const postFollow = async () => {
                 :icon="Star"
                 round
                 @click="postFollow"
+                :loading="isFollowingLoading"
               >
                 关注动态
+              </el-button>
+              <el-button
+                v-if="buttonDisplay.toPostButton"
+                type="warning"
+                :icon="Star"
+                round
+                @click="toPostPage"
+              >
+                查看动态
               </el-button>
             </div>
           </div>
