@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { publicGetUsersService } from '@/api/public'
+import { userGetLastLoginTimeService } from '@/api/user'
 import { parseUserInfo } from '@/utils/resDataHandle'
 import { accountStatus } from '@/config'
 
@@ -65,6 +66,13 @@ export const useUsersStore = defineStore(
       })
     }
 
+    // 获取用户最后登录时间
+    const getLastLoginTime = async (userId) => {
+      const res = await userGetLastLoginTimeService(userId)
+      const userIndex = userList.value.findIndex((user) => user.id === userId)
+      if (userIndex !== -1) userList.value[userIndex].last_login = res.data.data
+    }
+
     return {
       userList,
       getUsers,
@@ -72,7 +80,8 @@ export const useUsersStore = defineStore(
       filterUsersByIds,
       mapUsersByIds,
       sharingUsers,
-      searchUsers
+      searchUsers,
+      getLastLoginTime
     }
   },
   {

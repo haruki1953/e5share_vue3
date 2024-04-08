@@ -22,6 +22,12 @@ const user = computed(() => {
   }
   return usersStore.findUserById(userId)
 })
+// 获取获取用户最后登录时间
+const last_login = computed(() => {
+  if (user.value.last_login) return formatTime(user.value.last_login)
+  usersStore.getLastLoginTime(user.value.id)
+  return '获取中...'
+})
 
 // 控制按钮显示
 const buttonDisplay = computed(() => {
@@ -88,10 +94,10 @@ const toPostPage = () => {
 }
 </script>
 <template>
-  <apply-drawer :e5id="user.id" ref="applyDrawerRef"></apply-drawer>
-  <stop-dialog :e5id="user.id" ref="stopDialogRef"></stop-dialog>
   <el-scrollbar>
     <el-card v-if="user" class="userinfo-card">
+      <apply-drawer :e5id="user.id" ref="applyDrawerRef"></apply-drawer>
+      <stop-dialog :e5id="user.id" ref="stopDialogRef"></stop-dialog>
       <el-row class="user-e5">
         <div>
           <el-row class="user-avatar">
@@ -184,7 +190,7 @@ const toPostPage = () => {
             <el-col :span="12">
               <el-text tag="b" size="large"> 上次登录： </el-text>
               <el-text type="info" size="large">
-                {{ formatTime(user.last_login) }}
+                {{ last_login }}
               </el-text>
             </el-col>
           </el-row>

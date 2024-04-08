@@ -18,3 +18,6 @@ export const userUpdateE5infoService = ({ subscriptionDate, expirationDate }) =>
   request.put('/user/e5info', { subscriptionDate, expirationDate })
 
 export const userClearNotifService = () => request.delete('/user/notifications')
+
+export const userGetLastLoginTimeService = (userId) =>
+  request.get(`/user/last-login/${userId}`)

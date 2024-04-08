@@ -14,6 +14,7 @@ import { loadAllData } from '@/utils/dataManage'
 import { avatarConfig, logoImage } from '@/config'
 import NotifDrawer from './components/NotifDrawer.vue'
 import { removeLogin } from '@/utils/dataManage'
+import { isLoading } from '@/router'
 
 // 路由
 const router = useRouter()
@@ -183,7 +184,10 @@ const isImportantNotif = computed(() => {
         </el-menu>
       </el-scrollbar>
     </el-aside>
-    <el-main>
+    <el-main
+      v-loading="isLoading"
+      element-loading-background="rgba(245, 245, 245, 0.8)"
+    >
       <router-view></router-view>
     </el-main>
   </el-container>

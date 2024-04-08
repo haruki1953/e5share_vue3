@@ -6,7 +6,7 @@
  * @returns {string} 格式化后的本地时间字符串，例如 "2024-02-29 10:05"
  */
 export const formatTime = (time) => {
-  const date = typeof time === 'string' ? new Date(time) : time
+  const date = new Date(time)
 
   // 检查日期对象是否有效
   if (Number.isNaN(date.getTime())) {
@@ -31,7 +31,7 @@ export const formatTime = (time) => {
  * @returns {string} 格式化后的本地日期字符串，例如 "2024-02-29"
  */
 export const formatDate = (time) => {
-  const date = typeof time === 'string' ? new Date(time) : time
+  const date = new Date(time)
 
   // 检查日期对象是否有效
   if (Number.isNaN(date.getTime())) {

@@ -79,9 +79,9 @@ const login = async () => {
     }
     // 保存token
     authStore.setToken(res.data.token)
+    // 跳转至首页
+    await router.push('/home')
     ElMessage.success('登录成功')
-    // 跳转至根路径
-    router.push('/')
   } finally {
     // 无论成功或失败，都要解除状态
     isLogingIn.value = false
