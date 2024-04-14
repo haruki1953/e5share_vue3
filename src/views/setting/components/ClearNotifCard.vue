@@ -32,9 +32,7 @@ const clearNotif = async () => {
       <el-text tag="b" size="large"> 清空通知 </el-text>
     </template>
     <el-alert title="温馨提示" type="info" show-icon :closable="false">
-      <el-text type="info" tag="b">
-        通知过多可能会导致卡顿，在此清空通知
-      </el-text>
+      <el-text type="info" tag="b"> 通知过多时，可在此清空通知 </el-text>
     </el-alert>
     <el-button type="info" round @click="clearNotif" :loading="isSubmitting">
       清空通知

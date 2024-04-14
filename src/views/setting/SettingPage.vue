@@ -8,6 +8,7 @@ import EmailCard from './components/EmailCard.vue'
 import PasswordCard from './components/PasswordCard.vue'
 import E5Card from './components/E5Card.vue'
 import ClearNotifCard from './components/ClearNotifCard.vue'
+import DeleteUserCard from './components/DeleteUserCard.vue'
 import { contactInfo, friendshipLinks, accountStatus } from '@/config'
 import { useProfileStore } from '@/stores'
 
@@ -17,6 +18,7 @@ const editEmailCard = ref()
 const editPasswordCard = ref()
 const editE5Card = ref()
 const clearNotifCard = ref()
+const deleteUserCard = ref()
 
 const profileStore = useProfileStore()
 // 预览用户信息
@@ -105,11 +107,11 @@ onMounted(() => {
             >
               <el-text tag="b" size="large"> 修改E5订阅信息 </el-text>
             </el-menu-item>
-            <el-menu-item @click="$router.push('/share')">
-              <el-text tag="b" size="large"> E5分享管理 </el-text>
-            </el-menu-item>
             <el-menu-item index="6" @click="scrollToCard(clearNotifCard)">
               <el-text tag="b" size="large"> 清空通知 </el-text>
+            </el-menu-item>
+            <el-menu-item index="7" @click="scrollToCard(deleteUserCard)">
+              <el-text tag="b" size="large"> 注销用户 </el-text>
             </el-menu-item>
           </el-menu>
         </el-card>
@@ -179,6 +181,13 @@ onMounted(() => {
               class="setting-card"
               @mouseenter="setActiveMenuItem('6')"
             ></ClearNotifCard>
+
+            <!-- 注销用户 -->
+            <DeleteUserCard
+              ref="deleteUserCard"
+              class="setting-card"
+              @mouseenter="setActiveMenuItem('7')"
+            ></DeleteUserCard>
           </el-scrollbar>
         </el-col>
         <!-- 预览卡片 大屏时显示在右侧 -->

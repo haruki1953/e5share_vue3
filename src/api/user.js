@@ -21,3 +21,5 @@ export const userClearNotifService = () => request.delete('/user/notifications')
 
 export const userGetLastLoginTimeService = (userId) =>
   request.get(`/user/last-login/${userId}`)
+
+export const userDeleteUserService = () => request.delete('/user')

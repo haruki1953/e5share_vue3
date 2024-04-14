@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   HomeFilled,
@@ -43,8 +43,8 @@ const logout = async () => {
 
   // 退出前跳转到首页
   await router.push('/home')
-  // 在下一个渲染周期执行清除本地登录的数据
-  await nextTick()
+  // 在下一个渲染周期执行清除本地登录的数据（不需要？）
+  // await nextTick()
   await removeLogin()
 
   // 跳转路由

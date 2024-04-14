@@ -29,6 +29,32 @@ export const useUsersStore = defineStore(
       return userList.value.find((user) => user.id === id)
     }
 
+    // 当找不到时，返回不存在用户的对象，用于显示可能不存在的用户时不报错
+    const findUserForShow = (id) => {
+      let user = findUserById(id)
+      if (!user) {
+        user = {
+          isUser: false,
+          id,
+          username: '用户不存在',
+          nickname: '用户不存在',
+          account_status: 'active',
+          avatar: '',
+          bio: '',
+          contact_info: '',
+          e5_expiration_date: null,
+          e5_subscription_date: null,
+          email: '',
+          registered_at: '',
+          helped_by_users: [],
+          helped_users: [],
+          helping_by_users: [],
+          helping_users: []
+        }
+      }
+      return user
+    }
+
     // 根据id数组返回用户列表 （不重复）
     const filterUsersByIds = (idList) => {
       // 使用 Array.filter 方法过滤出与给定id数组匹配的用户
@@ -77,6 +103,7 @@ export const useUsersStore = defineStore(
       userList,
       getUsers,
       findUserById,
+      findUserForShow,
       filterUsersByIds,
       mapUsersByIds,
       sharingUsers,

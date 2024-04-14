@@ -70,7 +70,17 @@ const submitE5info = async () => {
 <template>
   <el-card shadow="hover">
     <template #header>
-      <el-text tag="b" size="large"> 修改E5订阅信息 </el-text>
+      <div class="tittle-button">
+        <el-text tag="b" size="large"> 修改E5订阅信息 </el-text>
+        <el-button
+          type="info"
+          round
+          size="small"
+          @click="$router.push('/share')"
+        >
+          E5分享管理
+        </el-button>
+      </div>
     </template>
     <e5date-form v-model="e5Form" ref="e5dateFormRef">
       <template #buttons>
@@ -99,7 +109,10 @@ const submitE5info = async () => {
 //     }
 //   }
 // }
-
+.tittle-button {
+  display: flex;
+  justify-content: space-between;
+}
 .form-box {
   margin: 10px 20px;
   .picker-box {

@@ -22,7 +22,7 @@ const usersStore = useUsersStore()
 // 获取用户
 const user = computed(() => {
   // 根据id查找用户
-  return usersStore.findUserById(props.userId)
+  return usersStore.findUserForShow(props.userId)
 })
 </script>
 <template>

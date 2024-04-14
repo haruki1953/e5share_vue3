@@ -46,6 +46,7 @@ const unreadCountInE5Posts = computed(() => {
     :max="9"
     type="primary"
     :hidden="!unreadCountInE5Posts"
+    v-if="e5User"
   >
     <div class="post-info">
       <div class="user-box">

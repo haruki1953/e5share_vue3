@@ -44,22 +44,28 @@ const checkImportantNotif = async () => {
   // 如果找到则弹出通知提示
   if (applyInfo) {
     const user = usersStore.findUserById(applyInfo.userId)
-    ElNotification({
-      title: `这是您与 @${user.username} 的分享申请链接`,
-      message: applyInfo.link,
-      type: 'info'
-    })
-    return
+    if (user) {
+      // 确保用户存在
+      ElNotification({
+        title: `这是您与 @${user.username} 的分享申请链接`,
+        message: applyInfo.link,
+        type: 'info'
+      })
+      return
+    }
   }
   const confirmInfo = shareStore.findConfirmInfoByUuid(notifUuid)
   // 如果找到则弹出通知提示
   if (confirmInfo) {
     const user = usersStore.findUserById(confirmInfo.userId)
-    ElNotification({
-      title: `这是您与 @${user.username} 的分享确认链接`,
-      message: confirmInfo.link,
-      type: 'info'
-    })
+    if (user) {
+      // 确保用户存在
+      ElNotification({
+        title: `这是您与 @${user.username} 的分享确认链接`,
+        message: confirmInfo.link,
+        type: 'info'
+      })
+    }
     return
   }
 

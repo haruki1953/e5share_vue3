@@ -32,7 +32,7 @@ const usersStore = useUsersStore()
 // 获取相关用户
 const otherUser = computed(() => {
   if (props.notif?.otherInfo.otherUserId) {
-    return usersStore.findUserById(props.notif.otherInfo.otherUserId)
+    return usersStore.findUserForShow(props.notif.otherInfo.otherUserId)
   }
   return null
 })
