@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import { publicGetUsersService } from '@/api/public'
 import { userGetLastLoginTimeService } from '@/api/user'
 import { parseUserInfo } from '@/utils/resDataHandle'
-import { accountStatus } from '@/config'
+import { accountStatus, avatarConfig } from '@/config'
 
 export const useUsersStore = defineStore(
   'e5share-users',
@@ -39,7 +39,7 @@ export const useUsersStore = defineStore(
           username: '用户不存在',
           nickname: '用户不存在',
           account_status: 'active',
-          avatar: '',
+          avatar: avatarConfig.emptyAvatar,
           bio: '',
           contact_info: '',
           e5_expiration_date: null,

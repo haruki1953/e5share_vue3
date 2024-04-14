@@ -18,11 +18,13 @@ export const axiosConfig = {
   timeout: 10000
 }
 
-// 头像配置，基地址‘默认头像
+// 头像配置，基地址，默认头像，空头像（用户不存在）
 import defaultAvatar from '@/assets/default_avatar.jpg'
+import emptyAvatar from '@/assets/empty_avatar.jpg'
 export const avatarConfig = {
   baseURL: 'http://127.0.0.1:3007/static/avatar',
-  defaultAvatar
+  defaultAvatar,
+  emptyAvatar
 }
 
 // 联系方式

@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores'
-import { publicRoutes } from '@/config'
+import { publicRoutes, webName } from '@/config'
 import { ref } from 'vue'
-import { webName } from '@/config'
 
 // createRouter 创建路由实例
 // 配置 history 模式

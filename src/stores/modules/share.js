@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { shareGetInfoService } from '@/api/share'
-import { parseShareInfo } from '@/utils/resDataHandle/shareData'
+import { parseShareInfo } from '@/utils/resDataHandle'
 import { applyInfoExpirationTime, webBaseUrl } from '@/config'
 
 export const useShareStore = defineStore(

@@ -10,10 +10,9 @@ import {
   Tools
 } from '@element-plus/icons-vue'
 import { useAuthStore, useProfileStore, usePostsStore } from '@/stores'
-import { loadAllData } from '@/utils/dataManage'
+import { loadAllData, removeLogin } from '@/utils/dataManage'
 import { avatarConfig, logoImage } from '@/config'
 import NotifDrawer from './components/NotifDrawer.vue'
-import { removeLogin } from '@/utils/dataManage'
 import { isLoading } from '@/router'
 
 // 路由
@@ -245,4 +244,3 @@ const isImportantNotif = computed(() => {
   }
 }
 </style>
-@/utils/dataManage
