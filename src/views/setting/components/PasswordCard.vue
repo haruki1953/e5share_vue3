@@ -77,6 +77,7 @@ const submitPassword = async () => {
       label-width="80px"
       size="large"
       autocomplete="off"
+      v-loading="isSubmitting"
     >
       <el-form-item label="旧密码" prop="oldPassword">
         <el-input

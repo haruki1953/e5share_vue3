@@ -74,7 +74,7 @@ watch(
               round
               @click="shareCancelDrawerRef.open()"
             >
-              说明 / 注销分享
+              注销分享
             </el-button>
           </div>
         </div>
@@ -185,7 +185,7 @@ watch(
             round
             @click="shareRegisterDrawerRef.open()"
           >
-            说明 / 登记分享
+            登记分享
           </el-button>
         </div>
       </div>
@@ -199,13 +199,21 @@ watch(
       class="usercard-container"
       :dataList="helpingByUsers"
     ></usercard-container>
+    <el-empty
+      description="您还未被分享"
+      v-if="
+        profileStore.user.account_status !== accountStatus.sharing &&
+        !helpingByUsers.length
+      "
+    />
   </el-scrollbar>
 </template>
 
 <style lang="scss" scoped>
 .e5manage-card {
-  margin: 10px 20px;
-  border-radius: 20px;
+  margin: 0 20px 10px 20px;
+  border-radius: 0 0 20px 20px;
+  border-top-width: 0;
   :deep() {
     .el-card__body {
       padding: 30px;
@@ -213,8 +221,9 @@ watch(
   }
 }
 .e5header-card {
-  margin: 10px 20px;
-  border-radius: 20px;
+  margin: 0 20px 10px 20px;
+  border-radius: 0 0 20px 20px;
+  border-top-width: 0;
 }
 
 .header-box {

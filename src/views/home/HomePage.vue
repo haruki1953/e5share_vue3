@@ -16,7 +16,7 @@ const dataList = computed(() => {
     <!-- 使用用户卡片容器 -->
     <usercard-container
       :dataList="dataList"
-      :minCardCount="5"
+      :minCardCount="3"
     ></usercard-container>
   </el-scrollbar>
 </template>
