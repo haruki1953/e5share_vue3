@@ -34,8 +34,8 @@ const minCardCount = computed(() => {
   if (searchKey.value) {
     return 0
   }
-  // 默认显示全部用户时，最小卡片数为5
-  return 5
+  // 默认显示全部用户时，最小卡片数为3
+  return 3
 })
 </script>
 

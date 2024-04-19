@@ -1,4 +1,3 @@
-// import { escape } from 'lodash'
 import { avatarConfig } from '@/config'
 
 // 解析用户信息

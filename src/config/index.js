@@ -7,14 +7,14 @@ import loginImage from '@/assets/login_bg.jpg'
 export { loginImage }
 
 // 网站的基地址
-export const webBaseUrl = 'http://localhost:5173'
+export const webBaseUrl = 'https://e5.sakiko.top'
 
 // 网站名称
 export const webName = '小祥のE5分享'
 
 // axios配置，基地址、超时时间
 export const axiosConfig = {
-  baseURL: 'http://127.0.0.1:3007',
+  baseURL: 'https://e5node.sakiko.top',
   timeout: 10000
 }
 
@@ -22,7 +22,7 @@ export const axiosConfig = {
 import defaultAvatar from '@/assets/default_avatar.jpg'
 import emptyAvatar from '@/assets/empty_avatar.jpg'
 export const avatarConfig = {
-  baseURL: 'http://127.0.0.1:3007/static/avatar',
+  baseURL: 'https://e5avatar.sakiko.top',
   defaultAvatar,
   emptyAvatar
 }
@@ -40,7 +40,7 @@ export const contactInfo = {
     name: 'Discord',
     fontawesomeClass: 'fab fa-discord',
     description: '小祥の小窝',
-    link: 'https://discord.gg/'
+    link: 'https://discord.gg/xCYW3THQye'
   },
   github: {
     name: 'Github',

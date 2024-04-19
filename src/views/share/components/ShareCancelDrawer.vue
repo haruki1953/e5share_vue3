@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { shareRules } from '@/config/rules'
-import { loadUserData } from '@/utils/dataManage'
+import { loadAllData, loadProfileData } from '@/utils/dataManage'
 import { shareCancelService } from '@/api/share'
 import { useShareStore } from '@/stores'
 
@@ -53,7 +53,8 @@ const submitCancel = async () => {
     // 清除本地分享信息
     shareStore.removeInfoOnCancelShare()
     // 刷新数据
-    await loadUserData()
+    await loadProfileData()
+    await loadAllData()
     ElMessage.success('注销成功')
   } finally {
     // 无论提交成功或失败，都要解除提交中状态

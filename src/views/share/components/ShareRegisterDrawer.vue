@@ -1,7 +1,7 @@
 <script setup>
 import { ref, nextTick } from 'vue'
 import { shareRegisterService } from '@/api/share'
-import { loadUserData } from '@/utils/dataManage'
+import { loadAllData, loadProfileData } from '@/utils/dataManage'
 
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
@@ -38,7 +38,8 @@ const submitE5info = async () => {
     // 调用修改E5订阅信息的接口
     await shareRegisterService(e5Form.value)
     // 刷新数据
-    await loadUserData()
+    await loadProfileData()
+    await loadAllData()
     ElMessage.success('登记成功')
     // 关闭抽屉
   } finally {
