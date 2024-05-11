@@ -37,7 +37,7 @@ const rules = { ...shareRules }
 
 // 提交中状态标记
 const isSubmitting = ref(false)
-// 提交分享申请
+// 提交停止接受分享
 const submitStop = async () => {
   // 去除首尾空格
   stopForm.value.message = stopForm.value.message.trim()
