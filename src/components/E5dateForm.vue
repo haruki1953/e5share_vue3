@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { formatDate } from '@/utils/timeUtils'
+import { formatDate, dateRound } from '@/utils/timeUtils'
 
 // 选择e5日期的表单
 // modelValue包含两个属性 subscriptionDate expirationDate 为日期字符串，如2024-03-21
@@ -29,37 +29,14 @@ const setDate = (startDate, endDate) => {
   })
 }
 
-// 日期四舍五入
-const dataRound = (date) => {
-  // 舍入到前一天的起始时间
-  const previousDay = new Date(date)
-  previousDay.setHours(0, 0, 0, 0)
-
-  // 舍入到后一天的起始时间
-  const nextDay = new Date(date)
-  nextDay.setDate(nextDay.getDate() + 1)
-  nextDay.setHours(0, 0, 0, 0)
-
-  // 计算时间差
-  const diffPrevious = Math.abs(date.getTime() - previousDay.getTime())
-  const diffNext = Math.abs(date.getTime() - nextDay.getTime())
-
-  // 选择时间差较小的日期
-  if (diffPrevious < diffNext) {
-    return previousDay
-  } else {
-    return nextDay
-  }
-}
-
 // 根据总天数和剩余天数计算日期
 const calculateDates = (totalDays, remainingDays) => {
-  const now = new Date()
-  const newStartDate = new Date()
+  const now = dateRound(new Date())
+  const newStartDate = new Date(now)
   newStartDate.setDate(now.getDate() - (totalDays - remainingDays))
-  const newEndDate = new Date()
+  const newEndDate = new Date(now)
   newEndDate.setDate(now.getDate() + remainingDays)
-  setDate(dataRound(newStartDate), dataRound(newEndDate))
+  setDate(newStartDate, newEndDate)
 }
 // 总天数
 const totalDays = computed({
@@ -81,7 +58,7 @@ const totalDays = computed({
 const remainingDays = computed({
   get: () => {
     const days = Math.round(
-      (endDate.value - new Date()) / (1000 * 60 * 60 * 24)
+      (endDate.value - dateRound(new Date())) / (1000 * 60 * 60 * 24)
     )
     return days >= 0 ? days : 0
   },

@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { accountStatus } from '@/config'
-import { formatDate } from '@/utils/timeUtils'
+import { formatDate, dateRound } from '@/utils/timeUtils'
 
 const props = defineProps({
   // 要展示的用户对象
@@ -24,11 +24,11 @@ const totalDays = computed(() =>
 )
 // 剩余天数
 const remainingDays = computed(() =>
-  Math.round((endDate.value - new Date()) / (1000 * 60 * 60 * 24))
+  Math.round((endDate.value - dateRound(new Date())) / (1000 * 60 * 60 * 24))
 )
 // 进度值
 const progressVal = computed(() => {
-  if (startDate.value > new Date()) {
+  if (startDate.value > dateRound(new Date())) {
     return 0 // 未开始状态，即订阅开始日期晚于当前日期
   }
   return Math.min(
@@ -43,7 +43,7 @@ const progressStatus = computed(() => {
     status = 'warning' // 警告状态
   } else if (remainingDays.value <= 0) {
     status = 'exception' // 异常状态
-  } else if (startDate.value > new Date()) {
+  } else if (startDate.value > dateRound(new Date())) {
     status = 'notStarted' // 未开始状态，即订阅开始日期晚于当前日期
   }
   return status

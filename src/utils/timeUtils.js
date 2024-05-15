@@ -46,3 +46,26 @@ export const formatDate = (time) => {
   // 将日期格式从 "yyyy/MM/dd" 改为 "yyyy-MM-dd"
   return localDate.replace(/\//g, '-')
 }
+
+// 日期四舍五入
+export const dateRound = (date) => {
+  // 舍入到前一天的起始时间
+  const previousDay = new Date(date)
+  previousDay.setHours(0, 0, 0, 0)
+
+  // 舍入到后一天的起始时间
+  const nextDay = new Date(date)
+  nextDay.setDate(nextDay.getDate() + 1)
+  nextDay.setHours(0, 0, 0, 0)
+
+  // 计算时间差
+  const diffPrevious = Math.abs(date.getTime() - previousDay.getTime())
+  const diffNext = Math.abs(date.getTime() - nextDay.getTime())
+
+  // 选择时间差较小的日期
+  if (diffPrevious < diffNext) {
+    return previousDay
+  } else {
+    return nextDay
+  }
+}
