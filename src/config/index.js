@@ -14,8 +14,8 @@ export const webName = '小祥のE5分享'
 
 // axios配置，基地址、超时时间
 export const axiosConfig = {
-  // baseURL: 'https://e5node.sakiko.top',
-  baseURL: 'http://127.0.0.1:23769',
+  baseURL: 'https://e5node.sakiko.top',
+  // baseURL: 'http://127.0.0.1:23769',
   timeout: 10000
 }
 
@@ -23,8 +23,8 @@ export const axiosConfig = {
 import defaultAvatar from '@/assets/default_avatar.jpg'
 import emptyAvatar from '@/assets/empty_avatar.jpg'
 export const avatarConfig = {
-  // baseURL: 'https://e5avatar.sakiko.top',
-  baseURL: 'http://127.0.0.1:23769/static/avatar',
+  baseURL: 'https://e5avatar.sakiko.top',
+  // baseURL: 'http://127.0.0.1:23769/static/avatar',
   defaultAvatar,
   emptyAvatar
 }

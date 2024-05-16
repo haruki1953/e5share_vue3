@@ -103,7 +103,7 @@ const updateLoading = (val) => {
         <!-- 友情链接 -->
         <links-card
           :dataObj="friendshipLinks"
-          title="广告位（bushi）"
+          title="友情链接"
           class="links-card"
         ></links-card>
       </el-scrollbar>

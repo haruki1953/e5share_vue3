@@ -86,6 +86,10 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+.el-progress {
+  display: flex;
+  align-items: center;
+}
 .percentage-value {
   display: block;
   margin-top: 10px;

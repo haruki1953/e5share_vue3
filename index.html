@@ -10,15 +10,23 @@
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      // 获取当前窗口宽度
+      const screenWidth = window.innerWidth
+      // 如果屏幕宽度小于800像素，则重定向到移动端网站
+      if (screenWidth < 800) {
+        window.location.href = 'https://e5mobile.sakiko.top'
+      }
+    </script>
     <script type="module" src="/src/main.js"></script>
     <!-- 嵌入discord -->
-    <!-- <script src='https://static.sakiko.top/cdn_jsdelivr_net/npm/@widgetbot/crate@3' async defer>
+    <script src='https://static.sakiko.top/cdn_jsdelivr_net/npm/@widgetbot/crate@3' async defer>
       new Crate({
           server: '1192346949635026944',  // 服务器
           channel: '1230717254694469722', // 频道
           // location: ['bottom', 'left'], // 位置
           color: '#337ecc'  // 颜色
       });
-    </script> -->
+    </script>
   </body>
 </html>
