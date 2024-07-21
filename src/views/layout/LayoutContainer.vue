@@ -14,6 +14,7 @@ import { loadAllData, removeLogin } from '@/utils/dataManage'
 import { avatarConfig, logoImage } from '@/config'
 import NotifDrawer from './components/NotifDrawer.vue'
 import { isLoading } from '@/router'
+import { setupWsService } from '@/services/ws'
 
 // 路由
 const router = useRouter()
@@ -29,6 +30,8 @@ onMounted(() => {
   loadAllData().then(async () => {
     notifDrawerRef.value.checkImportantNotif()
   })
+  // 启用ws
+  setupWsService()
 })
 
 // 退出登录

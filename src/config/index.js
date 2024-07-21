@@ -14,17 +14,23 @@ export const webName = '小祥のE5分享'
 
 // axios配置，基地址、超时时间
 export const axiosConfig = {
-  baseURL: 'https://e5node.sakiko.top',
+  // baseURL: 'https://e5node.sakiko.top',
   // baseURL: 'http://127.0.0.1:23769',
+  baseURL: 'http://127.0.0.1:3007',
   timeout: 10000
+}
+
+export const wsConfig = {
+  url: 'ws://127.0.0.1:3008'
 }
 
 // 头像配置，基地址，默认头像，空头像（用户不存在）
 import defaultAvatar from '@/assets/default_avatar.jpg'
 import emptyAvatar from '@/assets/empty_avatar.jpg'
 export const avatarConfig = {
-  baseURL: 'https://e5avatar.sakiko.top',
+  // baseURL: 'https://e5avatar.sakiko.top',
   // baseURL: 'http://127.0.0.1:23769/static/avatar',
+  baseURL: 'http://127.0.0.1:5500/avatar',
   defaultAvatar,
   emptyAvatar
 }
